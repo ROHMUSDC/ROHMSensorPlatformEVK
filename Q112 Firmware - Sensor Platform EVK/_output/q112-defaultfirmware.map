@@ -1,0 +1,52 @@
+RLU8 Object Linker, Ver.1.51.2 Linkage Information
+[Mon Jun 23 02:20:03 2014]
+
+
+                         ------------------
+                          Control Synopsis
+                         ------------------
+
+I/O controls:    D  SD NS NA
+Other controls: CC STACK( 0100H(256) )
+                COMB( $$content_of_init $$end_of_init )
+                COMB( $$init_info $$init_info_end )
+
+
+
+                        ------------------------
+                         Object Module Synopsis
+                        ------------------------
+                                                                Creator
+Module Name           File Name                                 CCU8     RASU8
+-----------           ---------                                 -----    -----
+i2c                   _output\_obj\i2c.obj                      3.41     1.61
+irq                   _output\_obj\irq.obj                      3.41     1.61
+main                  _output\_obj\main.obj                     3.41     1.61
+ml610112              _output\_obj\ml610112.obj                 -.--     1.61
+tbc                   _output\_obj\tbc.obj                      3.41     1.61
+timer                 _output\_obj\timer.obj                    3.41     1.61
+uart                  _output\_obj\uart.obj                     3.41     1.61
+ULDIVSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+DIV32SW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+UIDIVSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+DTOFSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DTOESW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ROUNSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+NORMSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+CIDIMOSW              C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+ETOFSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DADDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+EADDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+SHIFTSW               C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ETODSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DILDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+LTOESW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DMULSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+EMULSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FTODSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FTOESW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+IMULSW                C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+
+Error E010: Unresolved external symbol '_sprintf_nn'
+
+ Discontinue!  Loading error detected.
