@@ -190,6 +190,28 @@ void _intUart( void );
 void _intI2c( void );
 void _intADC( void );
 void NOPms( unsigned int ms );
+
+
+void DeviceSelection(void); // Initializes port D for registering Sensor Control States
+ 
+void Hall_Effect_Sensors_0();
+void Hall_Effect_Sensors_1();
+void Ambient_Light_Sensor_5();
+void Ambient_Light_Sensor_6();
+void Ambient_Light_Sensor_7();
+void Ambient_Light_Sensor_8();
+void Ambient_Light_Sensor_9();
+void UV_Sensor_10();
+void KX022();
+void KMX061();
+void Temperature_Sensor_20();
+void Temperature_Sensor_21();
+void Temperature_Sensor_22();
+void Temperature_Sensor_23();
+
+void Configure_KMX61();
+
+void testPrint(char * CS);
 //*****************************************************************************
 
 //GLOBALS...
@@ -198,6 +220,44 @@ unsigned char	_flgUartFin;
 unsigned char 	_flgI2CFin;
 unsigned char	_flgADCFin;
 unsigned char	_reqNotHalt;
+
+static unsigned char			SAD_KMX61 = 0x0E;
+static unsigned char			STBY_REG = 0x29;
+static unsigned char			SELF_TEST = 0x60;
+static unsigned char			CNTL1 = 0x2A;
+static unsigned char			CNTL2 = 0x2B;
+static unsigned char			ODCNTL = 0x2C;
+static unsigned char			TEMP_EN_CNTL = 0x4C;
+static unsigned char			BUF_CTRL1 = 0x78;
+static unsigned char			BUF_CTRL2 = 0x79;	
+
+static unsigned char			STBY_REG_DATA = 0x00;
+static unsigned char			STBY_REG_OFF_DATA = 0x03;
+
+static unsigned char			SELF_TEST_DATA = 0x00;
+static unsigned char			CNTL1_DATA = 0x13;
+static unsigned char			CNTL2_DATA = 0x00;
+static unsigned char			ODCNTL_DATA = 0x00;
+static unsigned char			TEMP_EN_CNTL_DATA = 0x01;
+static unsigned char			BUF_CTRL1_DATA = 0x00;//0xA3;
+static unsigned char			BUF_CTRL2_DATA = 0x00;//0xC1;
+
+static unsigned char			KMX61_AXL = 0x0A;
+static unsigned char			KMX61_AXH = 0x0B;
+static unsigned char			KMX61_AYL = 0x0C;
+static unsigned char			KMX61_AYH = 0x0D;
+static unsigned char			KMX61_AZL = 0x0E;
+static unsigned char			KMX61_AZH = 0x0F;
+	
+static unsigned char			KMX61_MXL = 0x12;
+static unsigned char			KMX61_MXH = 0x13;
+static unsigned char			KMX61_MYL = 0x14;
+static unsigned char			KMX61_MYH = 0x15;
+static unsigned char			KMX61_MZL = 0x16;
+static unsigned char			KMX61_MZH = 0x17;
+
+static unsigned char			KMX61_TL = 0x10;
+static unsigned char			KMX61_TH = 0x11;
 
 //General Variables
 static unsigned char	HelloWorld[17] = 	{"UV Sensor Demo"};
@@ -208,10 +268,16 @@ static unsigned int		UV_Offset;
 static float			UVIndex;
 static unsigned int		ScaledUVReturn = 0;
 static unsigned char	SensorReturn[50]; 
+static unsigned char	PrintContent[50];
 
 unsigned int ret;
 unsigned int testI2C;
 
+static unsigned char SensorPlatformSelection;
+static unsigned int SensorOutput;
+
+static int i,j, tmp, tmp1,tempVal;
+unsigned char KMX61_VALUE[2]; 
 /*############################################################################*/
 /*#                                  APIs                                    #*/
 /*############################################################################*/
@@ -220,181 +286,478 @@ unsigned int testI2C;
 //  	Start of MAIN FUNCTION
 //===========================================================================
 int main(void) 
-{
-int i,c,d;
-
-Init:
+{ 
 	Initialization(); //Ports, UART, Timers, Oscillator, Comparators, etc.
- 
-		for(i=0;i<49;i++)
-		{
-			main_clrWDT(); 
-			SensorReturn[i] = 0x20;
-		}
-		
-		SensorReturn[0] = 12;   
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 1, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-		 
-		
-		for ( c = 1 ; c <= 1000 ; c++ )
-		{
-			for ( c = 1 ; c <= 1000 ; c++ )
-			{}
-		} 
-			 
-		SensorReturn[0] = 128; 
-		SensorReturn[1] = 13;  
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 2, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-	 
-		
-		 
-		SensorReturn[0] = 0x20; 
-		SensorReturn[1] = 214; 
-		SensorReturn[2] = 215; 
-		SensorReturn[3] = 220;  
-		SensorReturn[4] = 22;  
-		SensorReturn[5] = 0x20; 
-		SensorReturn[6] = 128; 
-		//SensorReturn[6] = 13;
-	 
-	 
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 7, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-     
-		 
-	    sprintf(SensorReturn, "UV SENSOR DEMO", 0); 
-		
-		SensorReturn[14] = 13; 
-		
-		//Send Returned Sensor Output to PC!
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 15, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-			    
-		SARUN = 1;					//Start Obtaining ADC Info
-		while(_flgADCFin == 0)		//Wait for ADC to finish running
-		{
-			main_clrWDT();
-		}		
-		UV_Offset = (SADR1L>>6)+(SADR1H<<2);	 
-		UV_Offset += 5; 
-Loop:	
-
+	Configure_KMX61();
+	    
+	while(1){
+		DeviceSelection(); // SensorPlatformSelection holds 8-bits of sensor type
 		main_clrWDT();
- 			
-		_flgADCFin = 0;
-	//Get UV Sensor Data Reading
-		SARUN = 1;					//Start Obtaining ADC Info
-		while(_flgADCFin == 0)		//Wait for ADC to finish running
-		{
-			main_clrWDT();
-		}		
-		UVReturn = (SADR1L>>6)+(SADR1H<<2);		//Format RAW UV Sensor Output
-		UVIndex = UVReturn*(0.04029)-12.49;
-		if(UVIndex >= 10){
-			UVIndex = 10;
-		}
-		
-	    //sprintf(SensorReturn,"UVI= %2.2f        ",UVIndex); 
-		sprintf(SensorReturn,"UVI= %2.2u        ",UVIndex); 
-     
-		//Send Returned Sensor Output to PC!
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 19, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-		
-	    SensorReturn[0] = 159; 
-     
-		//Send Returned Sensor Output to PC!
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 1, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-		
-	    sprintf(SensorReturn,"[%d]",UVReturn); 
-     
-		//Send Returned Sensor Output to PC!
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 19, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-		
-		
-		SensorReturn[0] = 128;    
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 1, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-		
-		if(UV_Offset < UVReturn)
-		{
-		    
-			sprintf(SensorReturn," UV DETECTED     ",UVIndex); 
-		
-			//Send Returned Sensor Output to PC!
-			_flgUartFin = 0;
-			uart_stop();
-			uart_startSend(SensorReturn, 15, _funcUartFin);
-			while(_flgUartFin != 1){
-				main_clrWDT();
-			} 
-		}
-		else
-		{ 
-			sprintf(SensorReturn," UV SENSOR DEMO ",UVIndex); 
-			//Send Returned Sensor Output to PC!
-			_flgUartFin = 0;
-			uart_stop();
-			uart_startSend(SensorReturn, 15, _funcUartFin);
-			while(_flgUartFin != 1){
-				main_clrWDT();
-			}
-		}
-		
-		SensorReturn[0]=148;
-		SensorReturn[1]= 0;
-		
-		_flgUartFin = 0;
-		uart_stop();
-		uart_startSend(SensorReturn, 1, _funcUartFin);
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		} 
-		   
-		HLT = 1;	//Confirmed that this works... tested using WDT = 8sec and it does take that much time to get back into the loop.
-					//For now, lets comment this out so we know operation works correctly
-				 
-		goto Loop;
-		 
+		switch(SensorPlatformSelection){
+			case 0:
+				testPrint(&SensorPlatformSelection);
+				Hall_Effect_Sensors_0(); // Refer to function description for list of sensors 
+				break;
+			case 1:
+				testPrint(&SensorPlatformSelection);
+				Hall_Effect_Sensors_1(); // Refer to function description for list of sensors
+				break;
+			case 5: 
+				testPrint(&SensorPlatformSelection);
+				Ambient_Light_Sensor_5(); // Refer to function description for list of sensors
+				break;
+			case 6:
+				testPrint(&SensorPlatformSelection);
+				Ambient_Light_Sensor_6(); // Refer to function description for list of sensors 
+				break;
+			case 7:
+				testPrint(&SensorPlatformSelection);
+				Ambient_Light_Sensor_7(); // Refer to function description for list of sensors 
+				break;
+			case 8:
+				testPrint(&SensorPlatformSelection);
+				Ambient_Light_Sensor_8(); // Refer to function description for list of sensors 
+				break;
+			case 9:
+				testPrint(&SensorPlatformSelection);
+				Ambient_Light_Sensor_9(); // Refer to function description for list of sensors 
+				break;
+			case 10:
+				testPrint(&SensorPlatformSelection);
+				UV_Sensor_10(); // Refer to function description for list of sensors 
+				break;
+			case 15:
+				testPrint(&SensorPlatformSelection);
+				KX022(); // Refer to function description for list of sensors 
+				break;
+			case 16:
+				testPrint(&SensorPlatformSelection);
+				KMX061(); // Refer to function description for list of sensors 
+				break;
+			case 20:
+				testPrint(&SensorPlatformSelection);
+				Temperature_Sensor_20(); // Refer to function description for list of sensors 
+				break;
+			case 21:
+				testPrint(&SensorPlatformSelection);
+				Temperature_Sensor_21(); // Refer to function description for list of sensors
+				break;
+			case 22:
+				testPrint(&SensorPlatformSelection);
+				Temperature_Sensor_22(); // Refer to function description for list of sensors 
+				break;
+			case 23:
+				testPrint(&SensorPlatformSelection);
+				Temperature_Sensor_23(); // Refer to function description for list of sensors
+				break; 
+		} 	 
+	}
 } 
- 
+void testPrint(char * CS)
+{
+		int c = sprintf(PrintContent, "Selected %d\r", *CS);  
+		
+		_flgUartFin = 0; 
+		uart_stop();
+		uart_startSend(PrintContent, c, _funcUartFin);  
+		while(_flgUartFin != 1){
+			main_clrWDT();
+		}  
+}
+/*******************************************************************************
+	Routine Name:	Hall_Effect_Sensors_0
+	Form:			void Hall_Effect_Sensors_0( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Hall-Effect Sensors	
+						BU52001GUL
+						BU52002GUL
+						BU52003GUL
+						BU52011HFV
+						BU52021HFV
+						BU52012HFV
+						BU52040HFV
+						BU52025G (SSOP5)
+						BU52015GUL
+						BU52053NVX
+						BU52056NVX
+						BU52061NVX
+						BU52012NVX
+						BU52054GWZ
+						BU52055GWZ
+******************************************************************************/
+void Hall_Effect_Sensors_0(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
 
+/*******************************************************************************
+						BU52013HFV
+	Routine Name:	Hall_Effect_Sensors_1
+	Form:			void Hall_Effect_Sensors_1( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Hall-Effect Sensors			
+						BU52004GUL
+						BU52014HFV
+******************************************************************************/
+void Hall_Effect_Sensors_1(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Ambient_Light_Sensor_5
+	Form:			void Ambient_Light_Sensor_5( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Ambient Light Sensor
+						BH1600FVC
+						BH1603FVC
+						BH1620FVC
+						BH1621FVC
+						BH1680FVC
+
+******************************************************************************/
+void Ambient_Light_Sensor_5(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+/*******************************************************************************
+	Routine Name:	Ambient_Light_Sensor_6
+	Form:			void Ambient_Light_Sensor_6( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Ambient Light Sensor	
+						BH1710FVC
+						BH1715FVC
+						BH1750FVI (WSOF6I)
+						BH1751FVI (WSOF6I)
+******************************************************************************/
+void Ambient_Light_Sensor_6(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Ambient_Light_Sensor_7
+	Form:			void Ambient_Light_Sensor_7( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Ambient Light Sensor		
+						BH1730FVC	
+******************************************************************************/
+void Ambient_Light_Sensor_7(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Ambient_Light_Sensor_8
+	Form:			void Ambient_Light_Sensor_8( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Ambient Light Sensor
+						BH1721FVC
+******************************************************************************/
+void Ambient_Light_Sensor_8(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Ambient_Light_Sensor_9
+	Form:			void Ambient_Light_Sensor_9( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Ambient Light Sensor	
+						BH1780GLI
+******************************************************************************/
+void Ambient_Light_Sensor_9(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	UV_Sensor_10
+	Form:			void UV_Sensor_10( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): UV-Sensor
+						ML8511
+******************************************************************************/
+void UV_Sensor_10(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	KX022
+	Form:			void KX022( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): 3-axis accelerometer	
+						KX022
+******************************************************************************/
+void KX022(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	KMX061
+	Form:			void KMX061( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): 6-Axis Accelerometer/Magnetometer
+						KMX061
+******************************************************************************/
+void KMX061(){ 
+	char Flag = 0xff;
+	int c;
+	//Conn: Vio->3.3, int->p7, scl->p9, sda->10
+	        while(PC7D)
+			{
+				main_clrWDT(); 
+				
+				//EPB3 = 0;		//Turn off Accel/Gyro Interrupt.  This can probably be removed...
+				//----- Accel/Gryo Start I2C Command ----- 
+				_flgI2CFin = 0;																	//reset I2C completed Flag
+				i2c_stop();																		//Make sure I2C is not currently running
+				I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
+				i2c_startReceive(SAD_KMX61, &KMX61_AXL, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
+				while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
+					main_clrWDT();
+				}  
+				tmp = (KMX61_VALUE[0]);
+				_flgI2CFin = 0;																	//reset I2C completed Flag
+				i2c_stop();				 													//Make sure I2C is not currently running
+				I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
+				i2c_startReceive(SAD_KMX61, &KMX61_AXH, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
+				while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
+					main_clrWDT();
+				} 
+				tmp1 = (KMX61_VALUE[0])<<8; 
+				tempVal = (tmp|tmp1)>>2;
+				//Better UART Send w/ String Formatting
+				c = sprintf(PrintContent, "ax( %d )\r", tempVal);  
+				
+				_flgUartFin = 0; 
+				uart_stop();
+				uart_startSend(PrintContent, c, _funcUartFin);  
+				while(_flgUartFin != 1){
+					main_clrWDT();
+				}  
+				//EPB3 = 1;		//Turns Accel/Gyro Interrupt back on... again, this may not be necessary 
+			} 
+}
+
+/*******************************************************************************
+	Routine Name:	Temperature_Sensor_20
+	Form:			void Temperature_Sensor_20( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Temperature Sensors	
+						BD1020HFV
+******************************************************************************/
+void Temperature_Sensor_20(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Temperature_Sensor_21
+	Form:			void Temperature_Sensor_21( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Temperature Sensors
+						BDJ0601HFV
+						BDJ0701HFV
+						BDJ0751HFV
+						BDJ0801HFV
+						BDJ0851HFV
+						BDJ0901HFV						
+******************************************************************************/
+void Temperature_Sensor_21(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Temperature_Sensor_22
+	Form:			void Temperature_Sensor_22( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Temperature Sensors
+						BDE0600G
+						BDE0700G
+						BDE0800G
+						BDE0900G
+						BDE1000G
+						BDE1100G	
+******************************************************************************/
+void Temperature_Sensor_22(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	Temperature_Sensor_23
+	Form:			void Temperature_Sensor_23( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Temperature Sensors
+						BDJ0550HFV
+						BDJ0600HFV
+						BDJ0650HFV
+						BDJ0700HFV
+						BDJ0800HFV
+******************************************************************************/
+void Temperature_Sensor_23(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+	Routine Name:	DeviceSelection
+	Form:			void DeviceSelection( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: SensorPlatformSelection is zeroized.
+	Description:	Configures the Port D0..D5 to input and stores their respective
+					bits [0..5] to the global char SensorPlatformSelection.
+******************************************************************************/
+void DeviceSelection(void)
+{  
+	SensorPlatformSelection = 0x00; 
+	
+	SensorPlatformSelection |= PD0D;
+	SensorPlatformSelection |= PD1D<<1;
+	SensorPlatformSelection |= PD2D<<2;
+	SensorPlatformSelection |= PD3D<<3;
+	SensorPlatformSelection |= PD4D<<4; 
+	SensorPlatformSelection |= PD5D<<5; 
+}
 
 /* 	// Originally intended to use this for Low Power operation, but now will use the WDT to trigger it.
 	// IRQ and function definition needs to be initialized to use this function.
@@ -556,6 +919,63 @@ static void Initialization(void){
 }//End Initialization
 //===========================================================================
 
+void Configure_KMX61()
+{
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &STBY_REG , 1,&STBY_REG_OFF_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &SELF_TEST , 1,&SELF_TEST_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &CNTL1 , 1,&CNTL1_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &CNTL2 , 1,&CNTL2_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &ODCNTL , 1,&ODCNTL_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	}  
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &TEMP_EN_CNTL , 1,&TEMP_EN_CNTL_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	}
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &BUF_CTRL1 , 1,&BUF_CTRL1_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &BUF_CTRL2 , 1,&BUF_CTRL2_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+	_flgI2CFin = 0;														//reset I2C completed flag
+	i2c_stop();															//Make sure I2C is not currently running
+	i2c_startSend(SAD_KMX61, &STBY_REG , 1,&STBY_REG_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
+	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
+		main_clrWDT();
+	} 
+}
 /*******************************************************************************
 	Routine Name:	_funcUartFin
 	Form:			static void _funcUartFin( unsigned int size, unsigned char errStat )
@@ -790,7 +1210,7 @@ void PortC_Low(void){
 	PC4DIR = 0;		// PortC Bit4 set to Output Mode...
 	PC5DIR = 0;		// PortC Bit5 set to Output Mode...
 	PC6DIR = 0;		// PortC Bit6 set to Output Mode...
-	PC7DIR = 0;		// PortC Bit7 set to Output Mode...
+	PC7DIR = 1;		// PortC Bit7 set to Output Mode...
 
 	//I/O Type...
 	PC0C1  = 1;		// PortC Bit0 set to High-Impedance Output...
@@ -855,12 +1275,12 @@ void PortD_Low(void){
 //Step 3: Set Pin Data...
 
 	//Direction...	
-	PD0DIR = 0;		// PortD Bit0 set to Output Mode...
-	PD1DIR = 0;		// PortD Bit1 set to Output Mode...
-	PD2DIR = 0;		// PortD Bit2 set to Output Mode...
-	PD3DIR = 0;		// PortD Bit3 set to Output Mode...
-	PD4DIR = 0;		// PortD Bit4 set to Output Mode...
-	PD5DIR = 0;		// PortD Bit5 set to Output Mode...
+	PD0DIR = 1;		// PortD Bit0 set to Output Mode...
+	PD1DIR = 1;		// PortD Bit1 set to Output Mode...
+	PD2DIR = 1;		// PortD Bit2 set to Output Mode...
+	PD3DIR = 1;		// PortD Bit3 set to Output Mode...
+	PD4DIR = 1;		// PortD Bit4 set to Output Mode...
+	PD5DIR = 1;		// PortD Bit5 set to Output Mode...
 
 	//I/O Type...
 	PD0C1= 1;		// PortD Bit0 set to CMOS Output...
