@@ -1,35 +1,24 @@
 //*****************************************************************************
-// Program:	 IOT UV Sensor Board Firmware for Q112 LApis Microcontroller
-// Author:	 K. Bahar, C. Schell, F. Lee
+// Program:	 ROHM Sensor Platform Firmware for Q112 Lapis Microcontroller
 //		 ROHM Semiconductor USA, LLC
 //		 US Design Center
-// Started:  June 14th, 2014
-// Purpose:	 Firmware for Q112 for IOT Sensor Board 
-// Updated:	 June 14th, 2014
+// Started:  July 8th, 2014
+// Purpose:	 Firmware for Q112 for Sensor Platform Board 
+// Updated:	 July 8th, 2014
 //*****************************************************************************
 
-// ============================= IOT Board Specs ============================== 
-//	Needed Section:
-//	Pin A0 = UV Enable Signal	= Need to be analog output
-//	Pin A1 = UV Raw Output		= Need to be an ADC input
-//	Pin B0 = Phone to MCU Comm  = Manchester Encoded Input
-//	Pin B1 = MCU to Phone Comm	= Manchester Encoded Output
-//	Pin D0 = LDO_EN				= Needs to be analog output
-//
-//	Optional Sections:
-//	Sensor Header:
-//		Pin B5 = I2C SCL
-//		Pin B6 = I2C SDA
-//		Pin B2 = Int Pin for Sensor Header
-//		Pin B3 = Aux Pin for Sensor Header
-//	LED Block:
-//		Pin D1 = LED1			= Need to be analog Output
-//		Pin D2 = LED2			= Need to be analog Output
-//		Pin D3 = LED3			= Need to be analog Output
-//		Pin D4 = LED4			= Need to be analog Output
-//		Pin D5 = LED5			= Need to be analog Output
-//	Unused Block:
-//		Pins C0 to C7
+// ============================= Sensor Platform Board Specs ============================== 
+//	UART to USB/PC:
+//		UART to FTDI => B0, B1
+//		VBus Det => A2
+//	Sensor Interface:
+//		I2C => B5, B6
+//		ADC => A0, A1
+//		GPIO => B2, B3, B4, B7
+//	LED Feedback Section:
+//		LEDs = C0 to C7
+//	Sensor Control Section:
+//		DIP Switch = D0 to D3
 // ============================= IOT Board Specs ============================== 
 
 //*****************************************************************************
