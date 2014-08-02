@@ -1,3 +1,7 @@
 ROHM Semiconductor - USDC
-IOT UV Sensor Board for the LAPIS Development Kit - Q112
+
+See Documents Folder for Specification
+
+Sensor Platform Base Board Firmware 
+ML610Q112 Code
 
