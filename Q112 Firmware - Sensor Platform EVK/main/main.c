@@ -303,14 +303,14 @@ int main(void)
 { 
 	Initialization(); //Ports, UART, Timers, Oscillator, Comparators, etc.
 	
-	#ifdef DebugSensor
+	#ifdef DebugSensor //Debug Initialization For devices
 	Init_Ambient_Light_Sensor_8();
 	#endif
 	
 MainLoop:
 	main_clrWDT();
 	
-	#ifdef DebugSensor
+	#ifdef DebugSensor	//Debug Main Loop For Devices
 	MainOp_Ambient_Light_Sensor_8();
 	#endif
 	
@@ -418,6 +418,13 @@ static void Initialization(void){
 	
 	// Set Oscillator Rate
     SetOSC();
+	
+	// Settings for the ADC input (A0, A1)
+	PA0DIR = 1;
+	PA1DIR = 1;		//GPIO Input
+	SACH0 = 1;		//This enables the ADC Channel 0 from A0 Pin
+	SACH1 = 1;		//This enables the ADC Channel 1 from A1 Pin
+	SALP = 0;		//Single Read or Continuous Read... Single = 0, Consecutive = 1
 	
 	// IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 	// INTERRUPT SETUP...
@@ -788,14 +795,18 @@ void MainOp_Ambient_Light_Sensor_9(){
 						ML8511
 ******************************************************************************/
 void MainOp_UV_Sensor_10(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
+//Get UV Sensor Data Reading - GET Data from ADC0
+	_flgADCFin = 0;
+	SARUN = 1;					//Start Obtaining ADC Info
+	while(_flgADCFin == 0)		//Wait for ADC to finish running
+	{
+		main_clrWDT();
+	}		
+	UVReturn = (SADR0L>>6)+(SADR0H<<2);		//Format RAW UV Sensor Output
+	UVIndex = UVReturn*(0.04029)-12.49;
+	if(UVIndex >= 10){
+		UVIndex = 10;
 	}
-*/
 }
 
 /*******************************************************************************
