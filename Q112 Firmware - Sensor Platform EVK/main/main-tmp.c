@@ -6,7 +6,7 @@
 // Purpose:	 Firmware for Q112 for Sensor Platform Board 
 // Updated:	 July 8th, 2014
 //*****************************************************************************
-//#define DebugSensor	1
+#define DebugSensor	1
 
 // ============================= Sensor Platform Board Specs ============================== 
 //	UART to USB/PC:
@@ -123,16 +123,8 @@
 //===========================================================================
 //   MACROS: 
 //===========================================================================
-#define WelcomeString	(\
-	"*********************************************\n\r"\
-	"** Q112 Firmware - Sensor Platform EVK\n\r"\
-	"** Revision    : REV00\n\r"\
-	"** Release date: " __DATE__ " " __TIME__ "\n\r"\
-	"** By          : ROHM Semiconductor USA, LLC\n\r"\
-	"*********************************************\n\r"\
-)
-
-#define PRINTF(msg)		write(0, msg, sizeof(msg))
+#define WelcomeString		( "LAPIS ML610Q112 LaPi DEVELOPMENT DEMO\n\r" )
+#define WelcomeString_LEN	( sizeof(WelcomeString) - 1 )
 
 // ===== Peripheral setting.=====
 #define HSCLK_KHZ	( 8000u )	// 8MHz = 8000kHz (will be multiplied by 1024 to give 8,192,000Hz)
@@ -146,19 +138,6 @@
 #define UART_LOGIC			( UART_NEG_POS )		// Desired Logic
 #define UART_DIRECTION		( UART_DIR_LSB )		// LSB or MSB First
 //#define _TBC_H_
-
-/**
- * Sensor Interface Header 1
- */
-#define SENINTF_HDR1_GPIO0(reg)		PB2##reg
-#define SENINTF_HDR1_GPIO1(reg)		PB3##reg
-#define SENINTF_HDR1_GPIO2(reg)		PB4##reg
-#define SENINTF_HDR1_GPIO3(reg)		PB7##reg
-
-/**
- * LED[7-0]
- */
-#define LEDOUT						PCD
 
 //*****************************************************************************
 
@@ -193,9 +172,6 @@ void PortB_Low( void );				// no return value and no arguments
 void PortC_Low( void );				// no return value and no arguments
 void PortD_Low( void );				// no return value and no arguments
 
-//RTLU8: Low-level function
-int write(int handle, unsigned char *buffer, unsigned int len);
-
 //UART and I2C Functions
 void _funcUartFin( unsigned int size, unsigned char errStat );
 void _funcI2CFin( unsigned int size, unsigned char errStat );
@@ -209,7 +185,7 @@ void NOPms( unsigned int ms );
 void DeviceSelection(void); // Initializes port D for registering Sensor Control States
 void SensorInitialization(void); 
  
-void MainOp_Hall_Effect_Sensors_2();
+void MainOp_Hall_Effect_Sensors_0();
 void MainOp_Hall_Effect_Sensors_1();
 void MainOp_Ambient_Light_Sensor_5();
 void MainOp_Ambient_Light_Sensor_6();
@@ -224,7 +200,7 @@ void MainOp_Temperature_Sensor_21();
 void MainOp_Temperature_Sensor_22();
 void MainOp_Temperature_Sensor_23();
 
-void Init_Hall_Effect_Sensors_2();
+void Init_Hall_Effect_Sensors_0();
 void Init_Hall_Effect_Sensors_1();
 void Init_Ambient_Light_Sensor_5();
 void Init_Ambient_Light_Sensor_6();
@@ -239,9 +215,9 @@ void Init_Temperature_Sensor_21();
 void Init_Temperature_Sensor_22();
 void Init_Temperature_Sensor_23();
 
-//void testPrint(char * CS);
-
+void testPrint(char * CS);
 //*****************************************************************************
+
 //GLOBALS...
 //UART and I2C Variables
 unsigned char	_flgUartFin;
@@ -249,13 +225,13 @@ unsigned char 	_flgI2CFin;
 unsigned char	_flgADCFin;
 unsigned char	_reqNotHalt;
 
-/* //Sensor Variables - BH1721 (ALS8)
+//Sensor Variables - BH1721 (ALS8)
 static unsigned char			ALS8_DevAddress = 0x23;
 static unsigned char			ALS8_AutoResolution = 0x10;
 static unsigned char			ALS8_PowerOn = 0x01;
-static unsigned char			ALS8_SensorReturn[2]; */
+static unsigned char			ALS8_SensorReturn[2];
 
-/* //Sensor Variables
+//Sensor Variables
 static unsigned char			SAD_KMX61 = 0x0E;
 static unsigned char			STBY_REG = 0x29;
 static unsigned char			SELF_TEST = 0x60;
@@ -292,10 +268,10 @@ static unsigned char			KMX61_MZL = 0x16;
 static unsigned char			KMX61_MZH = 0x17;
 
 static unsigned char			KMX61_TL = 0x10;
-static unsigned char			KMX61_TH = 0x11; */
+static unsigned char			KMX61_TH = 0x11;
 
 //General Variables
-//static unsigned char			HelloWorld[17] = 	{"UV Sensor Demo"};
+static unsigned char			HelloWorld[17] = 	{"UV Sensor Demo"};
 //static unsigned char   		UV_DETECTED[16] = {"  UV DETECTED! "};
 //static unsigned int			Test = 0;
 //static unsigned int			UVReturn = 0;
@@ -303,19 +279,19 @@ static unsigned char			KMX61_TH = 0x11; */
 //static float					UVIndex;
 //static unsigned int			ScaledUVReturn = 0;
 //static unsigned char			SensorReturn[50]; 
-//static unsigned char			PrintContent[50];
+static unsigned char			PrintContent[50];
 
-/* unsigned int ret;
-unsigned int testI2C; */
+unsigned int ret;
+unsigned int testI2C;
 
 static unsigned char SensorPlatformSelection;
-//static unsigned char SensorPlatformSelection_Temp;
+static unsigned char SensorPlatformSelection_Temp;
 static unsigned char SensorIntializationFlag = 1;
-//static unsigned int SensorOutput;
+static unsigned int SensorOutput;
 
 
-/* static int i,j, tmp, tmp1,tempVal;
-unsigned char KMX61_VALUE[2];  */
+static int i,j, tmp, tmp1,tempVal;
+unsigned char KMX61_VALUE[2]; 
 /*############################################################################*/
 /*#                                  APIs                                    #*/
 /*############################################################################*/
@@ -323,95 +299,35 @@ unsigned char KMX61_VALUE[2];  */
 //===========================================================================
 //  	Start of MAIN FUNCTION
 //===========================================================================
+
 int main(void) 
 { 
+	char i=0;
 	Initialization(); //Ports, UART, Timers, Oscillator, Comparators, etc.
 	
-	PRINTF(WelcomeString);
-	
-#ifdef DebugSensor //Debug Initialization For devices
-	//Init_Ambient_Light_Sensor_8();
-#endif
-	
-MainLoop:
-	main_clrWDT();
-	
-#ifdef DebugSensor	//Debug Main Loop For Devices
-	//MainOp_Ambient_Light_Sensor_8();
-#else
-	DeviceSelection(); 	// SensorPlatformSelection holds 8-bits of sensor type
-	
-	if(SensorIntializationFlag==1){	//Holds the SW Statement for Initializing Sensors
-		SensorInitialization();
-		SensorIntializationFlag = 0;
-	}
-	
-	switch(SensorPlatformSelection){
-		case 1:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Hall_Effect_Sensors_1(); // Refer to function description for list of sensors
-			break;
-		case 2:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Hall_Effect_Sensors_2(); // Refer to function description for list of sensors 
-			break;
-		case 5: 
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Ambient_Light_Sensor_5(); // Refer to function description for list of sensors
-			break;
-		case 6:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Ambient_Light_Sensor_6(); // Refer to function description for list of sensors 
-			break;
-		case 7:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Ambient_Light_Sensor_7(); // Refer to function description for list of sensors 
-			break;
-		case 8:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Ambient_Light_Sensor_8(); // Refer to function description for list of sensors 
-			break;
-		case 9:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Ambient_Light_Sensor_9(); // Refer to function description for list of sensors 
-			break;
-		case 10:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_UV_Sensor_10(); // Refer to function description for list of sensors 
-			break;
-		case 15:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_KX022(); // Refer to function description for list of sensors 
-			break;
-		case 16:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_KMX061(); // Refer to function description for list of sensors 
-			break;
-		case 20:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Temperature_Sensor_20(); // Refer to function description for list of sensors 
-			break;
-		case 21:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Temperature_Sensor_21(); // Refer to function description for list of sensors
-			break;
-		case 22:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Temperature_Sensor_22(); // Refer to function description for list of sensors 
-			break;
-		case 23:
-			//testPrint(&SensorPlatformSelection);
-			MainOp_Temperature_Sensor_23(); // Refer to function description for list of sensors
-			break; 
-		default:
-			PRINTF("\rNo device connected.                                 ");
-			LEDOUT = 0x0;
-			break;
-	} 	 
-	#endif
-	
-	HLT = 1;	//Wait time here depends on the WDT timing
-	goto MainLoop;
+	while(1)
+	{
+		main_clrWDT();
+		
+		//_flgUartFin = 0; 
+		//uart_stop();
+		//uart_startSend(HelloWorld, sizeof(HelloWorld), _funcUartFin);  
+		//while(_flgUartFin != 1){
+		//	main_clrWDT();
+		//}
+		/* for(i=0;i<sizeof(HelloWorld);i++)
+		{
+			UA0BUF = HelloWorld[i];
+			U0EN = 1;
+			while(U0FUL!=0)
+			{
+				main_clrWDT();
+			}
+		} */	
+		
+		printf("\rCounter: %d", i++);
+		HLT = 1;
+	}	
 }
 //===========================================================================
 //  	End of MAIN FUNCTION
@@ -421,6 +337,19 @@ MainLoop:
 //===========================================================================
 //  	Start of Other Functions...
 //===========================================================================
+
+int write( int handle, unsigned char *buffer, unsigned int len )
+{
+	_flgUartFin = 0; 
+	uart_stop();
+	uart_startSend(buffer, len, _funcUartFin); 
+	while(_flgUartFin != 1)
+	{
+		main_clrWDT();
+	}
+	return len;
+}
+
 //==========================================================================
 //	Initialize Micro to Desired State...
 //===========================================================================
@@ -442,7 +371,7 @@ static void Initialization(void){
 	PortA_Low();	//Initialize all 3 Ports of Port A to GPIO-Low
 	PortB_Low();	//Initialize all 8 Ports of Port B to GPIO-Low
 	PortC_Low();	//Initialize all 8 Ports of Port C to GPIO-Low
-	PortD_Low();	//Initialize all 6 Ports of Port D to input GPIO
+	PortD_Low();	//Initialize all 6 Ports of Port D to GPIO-Low
 	
 	// Set Oscillator Rate
     SetOSC();
@@ -466,15 +395,15 @@ static void Initialization(void){
 
 	E2H = 0;	// E2H is the Enable flag for 2Hz TBC Interrupt (1=ENABLED)
 				
-	irq_setHdr((unsigned char)IRQ_NO_UA0INT, _intUart);
+	(void)irq_setHdr( (unsigned char)IRQ_NO_UA0INT, _intUart );
 	EUA0 = 1; 	// EUA0 is the enable flag for the UART0 interrupt (1=ENABLED)
 	
-	irq_setHdr((unsigned char)IRQ_NO_I2CMINT, _intI2c);
+	(void)irq_setHdr( (unsigned char)IRQ_NO_I2CMINT, _intI2c );
 	EI2CM = 1;
 	QI2CM = 0;
 	
 	//Enable ADC Interrupts Handler
-	irq_setHdr((unsigned char)IRQ_NO_SADINT, _intADC);
+	(void)irq_setHdr( (unsigned char)IRQ_NO_SADINT, _intADC );
 	ESAD = 1;
 	QSAD = 0;
 	
@@ -507,12 +436,12 @@ static void Initialization(void){
 	//P20C0 = 1;	/* CMOS output */
 	//P20C1 = 1;	
 	//P20D = 1;		/* write protect enable */
-	i2c_init(I2C_MOD_FST, (unsigned short)HSCLK_KHZ, I2C_SYN_OFF);
+	(void)i2c_init(I2C_MOD_FST, (unsigned short)HSCLK_KHZ, I2C_SYN_OFF);
 	
 	//UART Initialization...
-	uart_init((unsigned char)UART_CS_HSCLK,		/* Generator       */
-			  (unsigned short)HSCLK_KHZ,		/* HSCLK frequency */
-			   &_uartSetParam );				/* Param... 	 */
+	(void)uart_init( (unsigned char)UART_CS_HSCLK,		/* Generator       */
+			     (unsigned short)HSCLK_KHZ,				/* HSCLK frequency */
+			     &_uartSetParam );						/* Param... 	 */
 	uart_PortSet();
 	
 	//Write "Program Start" UART Control
@@ -520,27 +449,6 @@ static void Initialization(void){
 }//End Initialization
 //===========================================================================
 
-/*******************************************************************************
-	Routine Name	: write
-	Form			: int write(int handle, unsigned char *buffer, unsigned int len)
-	Parameters		: int handle
-					  unsigned char *buffer
-					  unsigned int len
-	Return value	: int
-	Initialization	: None.
-	Description		: The write function writes len bytes of data from the area specified by buffer to UART0.
-******************************************************************************/
-int write(int handle, unsigned char *buffer, unsigned int len)
-{
-	_flgUartFin = 0; 
-	uart_stop();
-	uart_startSend(buffer, len, _funcUartFin); 
-	while(_flgUartFin != 1)
-	{
-		main_clrWDT();
-	}
-	return len;
-}
 
 /*******************************************************************************
 	Routine Name:	DeviceSelection
@@ -553,22 +461,18 @@ int write(int handle, unsigned char *buffer, unsigned int len)
 ******************************************************************************/
 void DeviceSelection(void)
 {  
-	// SensorPlatformSelection_Temp = 0x00; 
-	// SensorPlatformSelection_Temp |= PD0D;
-	// SensorPlatformSelection_Temp |= PD1D<<1;
-	// SensorPlatformSelection_Temp |= PD2D<<2;
-	// SensorPlatformSelection_Temp |= PD3D<<3;
-	// SensorPlatformSelection_Temp |= PD4D<<4; 
-	// SensorPlatformSelection_Temp |= PD5D<<5; 
+	SensorPlatformSelection_Temp = 0x00; 
 	
-	// if(SensorPlatformSelection_Temp != SensorPlatformSelection){
-		// SensorIntializationFlag = 1;
-		// SensorPlatformSelection = SensorPlatformSelection_Temp;
-	// }
-	if(PDD!=SensorPlatformSelection)
-	{
+	SensorPlatformSelection_Temp |= PD0D;
+	SensorPlatformSelection_Temp |= PD1D<<1;
+	SensorPlatformSelection_Temp |= PD2D<<2;
+	SensorPlatformSelection_Temp |= PD3D<<3;
+	SensorPlatformSelection_Temp |= PD4D<<4; 
+	SensorPlatformSelection_Temp |= PD5D<<5; 
+	
+	if(SensorPlatformSelection_Temp != SensorPlatformSelection){
 		SensorIntializationFlag = 1;
-		SensorPlatformSelection = PDD;
+		SensorPlatformSelection = SensorPlatformSelection_Temp;
 	}
 }
 
@@ -582,11 +486,11 @@ void DeviceSelection(void)
 void SensorInitialization(void)
 {  
 	switch(SensorPlatformSelection){
+		case 0:
+			Init_Hall_Effect_Sensors_0(); // Refer to function description for list of sensors 
+			break;
 		case 1:
 			Init_Hall_Effect_Sensors_1(); // Refer to function description for list of sensors
-			break;
-		case 2:
-			Init_Hall_Effect_Sensors_2(); // Refer to function description for list of sensors 
 			break;
 		case 5: 
 			Init_Ambient_Light_Sensor_5(); // Refer to function description for list of sensors
@@ -624,80 +528,79 @@ void SensorInitialization(void)
 		case 23:
 			Init_Temperature_Sensor_23(); // Refer to function description for list of sensors
 			break; 
-		default:
-			break;
 	} 	 
 }
 
-// void testPrint(char * CS)
-// {
-		// int c = sprintf(PrintContent, "Selected %d\r", *CS);  
+void testPrint(char * CS)
+{
+		int c = sprintf(PrintContent, "Selected %d\r", *CS);  
 		
-		// _flgUartFin = 0; 
-		// uart_stop();
-		// uart_startSend(PrintContent, c, _funcUartFin);  
-		// while(_flgUartFin != 1){
-			// main_clrWDT();
-		// }  
-// }
-
+		_flgUartFin = 0; 
+		uart_stop();
+		uart_startSend(PrintContent, c, _funcUartFin);  
+		while(_flgUartFin != 1){
+			main_clrWDT();
+		}  
+}
 
 /*******************************************************************************
+	Routine Name:	MainOp_Hall_Effect_Sensors_0
+	Form:			void MainOp_Hall_Effect_Sensors_0( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Hall-Effect Sensors	
+						BU52001GUL
+						BU52002GUL
+						BU52003GUL
+						BU52011HFV
+						BU52021HFV
+						BU52012HFV
+						BU52040HFV
+						BU52025G (SSOP5)
+						BU52015GUL
+						BU52053NVX
+						BU52056NVX
+						BU52061NVX
+						BU52012NVX
+						BU52054GWZ
+						BU52055GWZ
+******************************************************************************/
+void MainOp_Hall_Effect_Sensors_0(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+						BU52013HFV
 	Routine Name:	MainOp_Hall_Effect_Sensors_1
 	Form:			void MainOp_Hall_Effect_Sensors_1( void )
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 1.
-	Sensor Platform(s): Hall-Effect Sensor(s)			
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Hall-Effect Sensors			
 						BU52004GUL
+						BU52014HFV
 ******************************************************************************/
-void MainOp_Hall_Effect_Sensors_1()
-{
-	if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==1)
-	{
-		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\rBU52004GUL> Hall – No Mag Fields Detected.");
+void MainOp_Hall_Effect_Sensors_1(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
 	}
-	else if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==0)
-	{
-		LEDOUT = 0x02;	// Turn on LED1
-		PRINTF("\rBU52004GUL> Hall – North Mag Field Detected.");
-	}
-	else if(SENINTF_HDR1_GPIO0(D)==0 && SENINTF_HDR1_GPIO1(D)==1)
-	{
-		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\rBU52004GUL> Hall – South Mag Field Detected.");
-	}
-	else
-	{
-		LEDOUT = 0x82;	// Turn on LED7 and LED1
-		PRINTF("\rBU52004GUL> Hall – Both Mag Fields Detected.");
-	}
-}
-
-/*******************************************************************************
-	Routine Name:	MainOp_Hall_Effect_Sensors_2
-	Form:			void MainOp_Hall_Effect_Sensors_2( void )
-	Parameters:		void
-	Return value:	void
-	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 2.
-	Sensor Platform(s): Hall-Effect Sensors
-						BU52011HFV
-******************************************************************************/
-void MainOp_Hall_Effect_Sensors_2()
-{
-	if(SENINTF_HDR1_GPIO0(D)==0)
-	{
-		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\rBU52011HFV> Hall – Mag Field Detected.");
-	}
-	else
-	{
-		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\rBU52011HFV> Hall – No Mag Fields Detected.");
-	}
+*/
 }
 
 /*******************************************************************************
@@ -706,19 +609,26 @@ void MainOp_Hall_Effect_Sensors_2()
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 5 and stores the
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
 					output to a var SensorOutput.
 	Sensor Platform(s): Ambient Light Sensor
-						BH1620FVC @ H-Gain mode
-******************************************************************************/
-void MainOp_Ambient_Light_Sensor_5()
-{
-	unsigned int adcValue=0;
-	float vout, ev;
-	// Convert to illuminance (lx)
-	vout = adcValue*(3.3/256);
-}
+						BH1600FVC
+						BH1603FVC
+						BH1620FVC
+						BH1621FVC
+						BH1680FVC
 
+******************************************************************************/
+void MainOp_Ambient_Light_Sensor_5(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
 /*******************************************************************************
 	Routine Name:	MainOp_Ambient_Light_Sensor_6
 	Form:			void MainOp_Ambient_Light_Sensor_6( void )
@@ -778,13 +688,13 @@ void MainOp_Ambient_Light_Sensor_7(){
 						BH1721FVC
 ******************************************************************************/
 void MainOp_Ambient_Light_Sensor_8(){
-	/*
-	static unsigned char			ALS8_DevAddress = 0x23;
-	static unsigned char			ALS8_AutoResolution = 0x10;
-	static unsigned char			ALS8_PowerOn = 0x01;
-	*/
-	/* int c;
-	unsigned int Return;
+/*
+static unsigned char			ALS8_DevAddress = 0x23;
+static unsigned char			ALS8_AutoResolution = 0x10;
+static unsigned char			ALS8_PowerOn = 0x01;
+*/
+int c;
+unsigned int Return;
 	
 	//----- ALS Get ALS Data Mode I2C Command ----- 
 	_flgI2CFin = 0;																	//reset I2C completed Flag
@@ -798,14 +708,14 @@ void MainOp_Ambient_Light_Sensor_8(){
 	// Format ALS Data
 	Return = (ALS8_SensorReturn[0]<<8) + ALS8_SensorReturn[1];
 	
-	Print ALS Data
+	// Print ALS Data
 	c = sprintf(PrintContent, "ALSRaw = %u \r", Return);  
 	_flgUartFin = 0; 
 	uart_stop();
 	uart_startSend(PrintContent, c, _funcUartFin);  
 	while(_flgUartFin != 1){
 		main_clrWDT();
-	} */
+	}
 }
 
 /*******************************************************************************
@@ -842,18 +752,21 @@ void MainOp_Ambient_Light_Sensor_9(){
 						ML8511
 ******************************************************************************/
 void MainOp_UV_Sensor_10(){
-	//Get UV Sensor Data Reading - GET Data from ADC0
-	// _flgADCFin = 0;
-	// SARUN = 1;					//Start Obtaining ADC Info
-	// while(_flgADCFin == 0)		//Wait for ADC to finish running
-	// {
-		// main_clrWDT();
-	// }		
-	// UVReturn = (SADR0L>>6)+(SADR0H<<2);		//Format RAW UV Sensor Output
-	// UVIndex = UVReturn*(0.04029)-12.49;
-	// if(UVIndex >= 10){
-		// UVIndex = 10;
-	// }
+//Get UV Sensor Data Reading - GET Data from ADC0
+	char UVReturn;
+	float UVIndex;
+	
+	_flgADCFin = 0;
+	SARUN = 1;					//Start Obtaining ADC Info
+	while(_flgADCFin == 0)		//Wait for ADC to finish running
+	{
+		main_clrWDT();
+	}		
+	UVReturn = (SADR0L>>6)+(SADR0H<<2);		//Format RAW UV Sensor Output
+	UVIndex = UVReturn*(0.04029)-12.49;
+	if(UVIndex >= 10){
+		UVIndex = 10;
+	}
 }
 
 /*******************************************************************************
@@ -890,42 +803,43 @@ void MainOp_KX022(){
 						KMX061
 ******************************************************************************/
 void MainOp_KMX061(){ 
-	/* char Flag = 0xff;
+	char Flag = 0xff;
 	int c;
 	//Conn: Vio->3.3, int->p7, scl->p9, sda->10
-	while(PC7D)
-	{
-		main_clrWDT(); 
-		
-		//EPB3 = 0;		//Turn off Accel/Gyro Interrupt.  This can probably be removed...
-		//----- Accel/Gryo Start I2C Command ----- 
-		_flgI2CFin = 0;																	//reset I2C completed Flag
-		i2c_stop();																		//Make sure I2C is not currently running
-		I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-		i2c_startReceive(SAD_KMX61, &KMX61_AXL, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-		while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-			main_clrWDT();
-		}  
-		tmp = (KMX61_VALUE[0]);
-		_flgI2CFin = 0;																	//reset I2C completed Flag
-		i2c_stop();				 													//Make sure I2C is not currently running
-		I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-		i2c_startReceive(SAD_KMX61, &KMX61_AXH, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-		while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-			main_clrWDT();
-		} 
-		tmp1 = (KMX61_VALUE[0])<<8; 
-		tempVal = (tmp|tmp1)>>2;
-		//Better UART Send w/ String Formatting
-		// c = sprintf(PrintContent, "ax( %d )\r", tempVal);  
-		// _flgUartFin = 0; 
-		// uart_stop();
-		// uart_startSend(PrintContent, c, _funcUartFin);  
-		// while(_flgUartFin != 1){
-			// main_clrWDT();
-		// }  
-		//EPB3 = 1;		//Turns Accel/Gyro Interrupt back on... again, this may not be necessary 
-	}  */
+	        while(PC7D)
+			{
+				main_clrWDT(); 
+				
+				//EPB3 = 0;		//Turn off Accel/Gyro Interrupt.  This can probably be removed...
+				//----- Accel/Gryo Start I2C Command ----- 
+				_flgI2CFin = 0;																	//reset I2C completed Flag
+				i2c_stop();																		//Make sure I2C is not currently running
+				I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
+				i2c_startReceive(SAD_KMX61, &KMX61_AXL, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
+				while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
+					main_clrWDT();
+				}  
+				tmp = (KMX61_VALUE[0]);
+				_flgI2CFin = 0;																	//reset I2C completed Flag
+				i2c_stop();				 													//Make sure I2C is not currently running
+				I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
+				i2c_startReceive(SAD_KMX61, &KMX61_AXH, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
+				while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
+					main_clrWDT();
+				} 
+				tmp1 = (KMX61_VALUE[0])<<8; 
+				tempVal = (tmp|tmp1)>>2;
+				//Better UART Send w/ String Formatting
+				c = sprintf(PrintContent, "ax( %d )\r", tempVal);  
+				
+				_flgUartFin = 0; 
+				uart_stop();
+				uart_startSend(PrintContent, c, _funcUartFin);  
+				while(_flgUartFin != 1){
+					main_clrWDT();
+				}  
+				//EPB3 = 1;		//Turns Accel/Gyro Interrupt back on... again, this may not be necessary 
+			} 
 }
 
 /*******************************************************************************
@@ -1031,52 +945,62 @@ void MainOp_Temperature_Sensor_23(){
 }
 
 /*******************************************************************************
+	Routine Name:	MainOp_Init_Hall_Effect_Sensors_0
+	Form:			void MainOp_Init_Hall_Effect_Sensors_0( void )
+	Parameters:		void
+	Return value:	void
+	Initialization: None.
+	Description:	Initialize Hall Effect Sensor 0
+	Sensor Platform(s): Hall-Effect Sensors	
+						BU52001GUL
+						BU52002GUL
+						BU52003GUL
+						BU52011HFV
+						BU52021HFV
+						BU52012HFV
+						BU52040HFV
+						BU52025G (SSOP5)
+						BU52015GUL
+						BU52053NVX
+						BU52056NVX
+						BU52061NVX
+						BU52012NVX
+						BU52054GWZ
+						BU52055GWZ
+******************************************************************************/
+void Init_Hall_Effect_Sensors_0(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
+}
+
+/*******************************************************************************
+						BU52013HFV
 	Routine Name:	Init_Hall_Effect_Sensors_1
 	Form:			void Init_Hall_Effect_Sensors_1( void )
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 1.
-	Sensor Platform(s): Hall-Effect Sensor(s)			
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
+					output to a var SensorOutput.
+	Sensor Platform(s): Hall-Effect Sensors			
 						BU52004GUL
+						BU52014HFV
 ******************************************************************************/
-void Init_Hall_Effect_Sensors_1()
-{
-	// Configure pins GPIO0, GPIO1 of Sensor Interface Header 1 are input with a pull-up resistor
-	SENINTF_HDR1_GPIO0(DIR) = 1;
-	SENINTF_HDR1_GPIO1(DIR) = 1;
-	
-	SENINTF_HDR1_GPIO0(C0) = 0;
-	SENINTF_HDR1_GPIO0(C1) = 1;
-	SENINTF_HDR1_GPIO1(C0) = 0;
-	SENINTF_HDR1_GPIO1(C1) = 1;
-	
-	SENINTF_HDR1_GPIO0(MD0) = 0;
-	SENINTF_HDR1_GPIO0(MD1) = 0;
-	SENINTF_HDR1_GPIO1(MD0) = 0;
-	SENINTF_HDR1_GPIO1(MD1) = 0;
-}
-
-/*******************************************************************************
-	Routine Name:	Init_Hall_Effect_Sensors_2
-	Form:			void Init_Hall_Effect_Sensors_2( void )
-	Parameters:		void
-	Return value:	void
-	Initialization: None.
-	Description:	Initialize Hall Effect Sensor 2
-	Sensor Platform(s): Hall-Effect Sensors	
-						BU52011HFV
-******************************************************************************/
-void Init_Hall_Effect_Sensors_2()
-{
-	// Configure pins GPIO0 of Sensor Interface Header 1 is input with a pull-up resistor
-	SENINTF_HDR1_GPIO0(DIR) = 1;
-	
-	SENINTF_HDR1_GPIO0(C0) = 0;
-	SENINTF_HDR1_GPIO0(C1) = 1;
-	
-	SENINTF_HDR1_GPIO0(MD0) = 0;
-	SENINTF_HDR1_GPIO0(MD1) = 0;
+void Init_Hall_Effect_Sensors_1(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
 }
 
 /*******************************************************************************
@@ -1085,15 +1009,25 @@ void Init_Hall_Effect_Sensors_2()
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 5 and stores the
+	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
 					output to a var SensorOutput.
 	Sensor Platform(s): Ambient Light Sensor
+						BH1600FVC
+						BH1603FVC
 						BH1620FVC
+						BH1621FVC
+						BH1680FVC
+
 ******************************************************************************/
-void Init_Ambient_Light_Sensor_5()
-{
-	// Do nothing!
-	// All settings/configurations are completed in the Initialization() function
+void Init_Ambient_Light_Sensor_5(){
+/*
+	char Flag = 0xff;
+	while(Flag)
+	{	
+		// Update SensorOutput
+		// SensorOutput = ;
+	}
+*/
 }
 
 /*******************************************************************************
@@ -1155,7 +1089,7 @@ void Init_Ambient_Light_Sensor_7(){
 						BH1721FVC
 ******************************************************************************/
 void Init_Ambient_Light_Sensor_8(){
-/* //----- ALS Start I2C Command ----- 
+//----- ALS Start I2C Command ----- 
 	_flgI2CFin = 0;																	//reset I2C completed Flag
 	i2c_stop();																		//Make sure I2C is not currently running
 	I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
@@ -1171,7 +1105,7 @@ void Init_Ambient_Light_Sensor_8(){
 	i2c_startSend(ALS8_DevAddress, &ALS8_AutoResolution, 0, &ALS8_AutoResolution, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
 	while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
 		main_clrWDT();
-	} */ 
+	} 
 	
 }
 
@@ -1252,7 +1186,7 @@ void Init_KX022(){
 						KMX061
 ******************************************************************************/
 void Init_KMX061(){ 
-	/* _flgI2CFin = 0;														//reset I2C completed flag
+	_flgI2CFin = 0;														//reset I2C completed flag
 	i2c_stop();															//Make sure I2C is not currently running
 	i2c_startSend(SAD_KMX61, &STBY_REG , 1,&STBY_REG_OFF_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
 	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
@@ -1305,7 +1239,7 @@ void Init_KMX061(){
 	i2c_startSend(SAD_KMX61, &STBY_REG , 1,&STBY_REG_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
 	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
 		main_clrWDT();
-	}  */
+	} 
 }
 
 /*******************************************************************************
@@ -1467,7 +1401,7 @@ static void _funcI2CFin( unsigned int size, unsigned char errStat )
 ******************************************************************************/
 static void _intI2c( void )
 {
-	i2c_continue();
+	(void)i2c_continue();
 	main_reqNotHalt();
 }
 
@@ -1720,45 +1654,46 @@ void PortC_Low(void){
 //===========================================================================
 void PortD_Low(void){
 
-	//Carl's Notes...
+//Carl's Notes...
 
-	//Step 1: Set Pin Direction...
-	//Step 2: Set Pin I/O Type...
-	//Step 3: Set Pin Data...
+//Step 1: Set Pin Direction...
+//Step 2: Set Pin I/O Type...
+//Step 3: Set Pin Data...
 
 	//Direction...	
-	PD0DIR = 1;		// PortD Bit0 set to Input Mode...
-	PD1DIR = 1;		// PortD Bit1 set to Input Mode...
-	PD2DIR = 1;		// PortD Bit2 set to Input Mode...
-	PD3DIR = 1;		// PortD Bit3 set to Input Mode...
-	PD4DIR = 1;		// PortD Bit4 set to Input Mode...
-	PD5DIR = 1;		// PortD Bit5 set to Input Mode...
+	PD0DIR = 1;		// PortD Bit0 set to Output Mode...
+	PD1DIR = 1;		// PortD Bit1 set to Output Mode...
+	PD2DIR = 1;		// PortD Bit2 set to Output Mode...
+	PD3DIR = 1;		// PortD Bit3 set to Output Mode...
+	PD4DIR = 1;		// PortD Bit4 set to Output Mode...
+	PD5DIR = 1;		// PortD Bit5 set to Output Mode...
 
 	//I/O Type...
-	PD0C1= 1;		// PortD Bit0 set to High-impedance input...
+	PD0C1= 1;		// PortD Bit0 set to CMOS Output...
 	PD0C0= 1;		
-	PD1C1= 1;		// PortD Bit1 set to High-impedance input...
+	PD1C1= 1;		// PortD Bit1 set to CMOS Output...
 	PD1C0= 1;	
-	PD2C1= 1;		// PortD Bit2 set to High-impedance input...
+	PD2C1= 1;		// PortD Bit2 set to CMOS Output...
 	PD2C0= 1;	
-	PD3C1= 1;		// PortD Bit3 set to High-impedance input...
+	PD3C1= 1;		// PortD Bit3 set to CMOS Output...
 	PD3C0= 1;		
-	PD4C1= 1;		// PortD Bit4 set to High-impedance input...
+	PD4C1= 1;		// PortD Bit4 set to CMOS Output...
 	PD4C0= 1;	
-	PD5C1= 1;		// PortD Bit5 set to High-impedance input...
+	PD5C1= 1;		// PortD Bit5 set to CMOS Output...
 	PD5C0= 1;	
 
 	//Data...
-	PD0D = 0;		// D.0 Input OFF....
-	PD1D = 0;		// D.1 Input OFF....
-	PD2D = 0;		// D.2 Input OFF....
-	PD3D = 0;		// D.3 Input OFF....
-	PD4D = 0;		// D.4 Input OFF....
-	PD5D = 0;		// D.5 Input OFF....
+	PD0D = 0;		// D.0 Output OFF....
+	PD1D = 0;		// D.1 Output OFF....
+	PD2D = 0;		// D.2 Output OFF....
+	PD3D = 0;		// D.3 Output OFF....
+	PD4D = 0;		// D.4 Output OFF....
+	PD5D = 0;		// D.5 Output OFF....
 
 	main_clrWDT(); 	// Clear WDT
 }
 //===========================================================================
+
 
 /*******************************************************************************
 	Routine Name:	NOPms
@@ -1772,11 +1707,11 @@ void PortD_Low(void){
 ******************************************************************************/
 void NOPms( unsigned int ms )
 {
-	unsigned int timerThres;
-	unsigned char TimeFlag;
-	unsigned int TempSec;
-	unsigned int timer;
-	unsigned int timertest;
+unsigned int timerThres;
+unsigned char TimeFlag;
+unsigned int TempSec;
+unsigned int timer;
+unsigned int timertest;
 
 	TempSec = ms;
 	TimeFlag = 0;
