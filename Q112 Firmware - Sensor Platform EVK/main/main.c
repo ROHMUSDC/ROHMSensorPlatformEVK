@@ -315,6 +315,15 @@ const unsigned char BH1780GLI_REG_MFG_ID		= 0x8bu;
 const unsigned char BH1780GLI_REG_DATALOW		= 0x8cu;
 const unsigned char BH1780GLI_REG_DATAHIGH		= 0x8du;
 
+/**
+ * ML8511 (UV Sensor)
+ */
+#define	ML8511_V1		0.99f
+#define	ML8511_UV1		0.0f
+#define	ML8511_V2		2.9f
+#define	ML8511_UV2		15.0f
+#define	ML8511_Voltage2UVIntensity(v)	(v-ML8511_V1)*(ML8511_UV2-ML8511_UV1)/(ML8511_V2-ML8511_V1)+ML8511_UV1
+
 /* //Sensor Variables - BH1721 (ALS8)
 static unsigned char			ALS8_DevAddress = 0x23;
 static unsigned char			ALS8_AutoResolution = 0x10;
@@ -397,7 +406,7 @@ int main(void)
 	
 #ifdef DebugSensor //Debug Initialization For devices
 	SensorIntializationFlag = 1;
-	SensorPlatformSelection = 9;
+	SensorPlatformSelection = 10;
 #endif
 	
 MainLoop:
@@ -799,22 +808,22 @@ void MainOp_Hall_Effect_Sensors_1()
 	if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==1)
 	{
 		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\rBU52004GUL> Hall – No Mag Fields Detected.");
+		PRINTF("\rBU52004GUL> Hall – No Mag Fields Detected.                    ");
 	}
 	else if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==0)
 	{
 		LEDOUT = 0x02;	// Turn on LED1
-		PRINTF("\rBU52004GUL> Hall – North Mag Field Detected.");
+		PRINTF("\rBU52004GUL> Hall – North Mag Field Detected.                  ");
 	}
 	else if(SENINTF_HDR1_GPIO0(D)==0 && SENINTF_HDR1_GPIO1(D)==1)
 	{
 		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\rBU52004GUL> Hall – South Mag Field Detected.");
+		PRINTF("\rBU52004GUL> Hall – South Mag Field Detected.                  ");
 	}
 	else
 	{
 		LEDOUT = 0x82;	// Turn on LED7 and LED1
-		PRINTF("\rBU52004GUL> Hall – Both Mag Fields Detected.");
+		PRINTF("\rBU52004GUL> Hall – Both Mag Fields Detected.                  ");
 	}
 }
 
@@ -833,12 +842,12 @@ void MainOp_Hall_Effect_Sensors_2()
 	if(SENINTF_HDR1_GPIO0(D)==0)
 	{
 		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\rBU52011HFV> Hall – Mag Field Detected.");
+		PRINTF("\rBU52011HFV> Hall – Mag Field Detected.                        ");
 	}
 	else
 	{
 		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\rBU52011HFV> Hall – No Mag Fields Detected.");
+		PRINTF("\rBU52011HFV> Hall – No Mag Fields Detected.                    ");
 	}
 }
 
@@ -879,7 +888,7 @@ void MainOp_Ambient_Light_Sensor_5()
 	}
 	// Scale for 10bits value to 8bits value
 	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
-	printf("\rBH1620FVC> Ambient Light = %lu[lx]              ", (unsigned long)uniSensorOut._float);
+	printf("\rBH1620FVC> Ambient Light = %lu[lx]                            ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -906,7 +915,7 @@ void MainOp_Ambient_Light_Sensor_6()
 	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
 	
 	LEDOUT = uniTempVal._ucharArr[0];
-	printf("\rBH1710FVC> Ambient Light = %lu[lx]              ", (unsigned long)uniSensorOut._float);
+	printf("\rBH1710FVC> Ambient Light = %lu[lx]                            ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -946,7 +955,7 @@ void MainOp_Ambient_Light_Sensor_7()
 		uniSensorOut._float = 0;
 	
 	LEDOUT = uniTempVal._ucharArr[1];
-	printf("\rBH1730FVC> Ambient Light = %lu[lx]            ", (unsigned long)uniSensorOut._float);
+	printf("\rBH1730FVC> Ambient Light = %lu[lx]                          ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -972,7 +981,7 @@ void MainOp_Ambient_Light_Sensor_8()
 	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
 	
 	LEDOUT = uniTempVal._ucharArr[0];
-	printf("\rBH1721FVC> Ambient Light = %lu[lx]              ", (unsigned long)uniSensorOut._float);
+	printf("\rBH1721FVC> Ambient Light = %lu[lx]                            ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -999,33 +1008,29 @@ void MainOp_Ambient_Light_Sensor_9()
 	uniSensorOut._float = uniTempVal._uint;
 	
 	LEDOUT = uniTempVal._ucharArr[1];
-	printf("\rBH1780GLI> Ambient Light = %lu[lx]            ", (unsigned long)uniSensorOut._float);
+	printf("\rBH1780GLI> Ambient Light = %lu[lx]                          ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_UV_Sensor_10
-	Form:			void MainOp_UV_Sensor_10( void )
+	Form:			void MainOp_UV_Sensor_10(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
-	Sensor Platform(s): UV-Sensor
+	Description:	Gets the output of Sensor of Sensor Control 10.
+	Sensor Platform(s): UV Sensor
 						ML8511
 ******************************************************************************/
-void MainOp_UV_Sensor_10(){
-	//Get UV Sensor Data Reading - GET Data from ADC0
-	// _flgADCFin = 0;
-	// SARUN = 1;					//Start Obtaining ADC Info
-	// while(_flgADCFin == 0)		//Wait for ADC to finish running
-	// {
-		// main_clrWDT();
-	// }		
-	// UVReturn = (SADR0L>>6)+(SADR0H<<2);		//Format RAW UV Sensor Output
-	// UVIndex = UVReturn*(0.04029)-12.49;
-	// if(UVIndex >= 10){
-		// UVIndex = 10;
-	// }
+void MainOp_UV_Sensor_10()
+{
+	uniTempVal._uint = ADC_Read(0);
+	// Vsenout = ADCVal x Vref / (2^10-1)
+	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	// Calculate UV Intensity (mW/cm2)
+	uniSensorOut._float = ML8511_Voltage2UVIntensity(uniTempVal2._float);
+	// Scale for 10bits value to 8bits value
+	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
+	printf("\rML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]      ", uniSensorOut._float, uniTempVal2._float);
 }
 
 /*******************************************************************************
@@ -1373,29 +1378,18 @@ void Init_Ambient_Light_Sensor_9()
 
 /*******************************************************************************
 	Routine Name:	Init_UV_Sensor_10
-	Form:			void Init_UV_Sensor_10( void )
+	Form:			void Init_UV_Sensor_10(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 10.
 	Sensor Platform(s): UV-Sensor
 						ML8511
 ******************************************************************************/
-void Init_UV_Sensor_10(){
-
-	// Settings for the Enable pin for the UV Sensor
-	PA2DIR = 0;		
-	PA2C0 = 1;		
-	PA2C1 = 1;		
-	PA2MD0 = 0;
-	PA2MD1 = 0;
-	PA2D = 1;
-	
-	// Settings for the ADC input for the output of the UV sensor
-	PA1DIR = 1;		//GPIO Input
-	SACH1 = 1;		//This enables the ADC Channel 1 from the corrected pin
-	SALP = 0;		//Single Read or Continuous Read... Single = 0, Consecutive = 1
+void Init_UV_Sensor_10()
+{
+	// Do nothing!
+	// All configures (ADC0) are completed in Initialization() function.
 }
 
 /*******************************************************************************
