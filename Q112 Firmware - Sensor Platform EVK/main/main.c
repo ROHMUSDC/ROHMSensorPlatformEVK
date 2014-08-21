@@ -6,7 +6,7 @@
 // Purpose:	 Firmware for Q112 for Sensor Platform Board 
 // Updated:	 July 8th, 2014
 //*****************************************************************************
-//#define DebugSensor	1
+#define DebugSensor	1
 
 // ============================= Sensor Platform Board Specs ============================== 
 //	UART to USB/PC:
@@ -123,7 +123,7 @@
 //===========================================================================
 //   MACROS: 
 //===========================================================================
-#define WelcomeString	(\
+#define WelcomeString	("\033[2J\033[1;1H"\
 	"*********************************************\n\r"\
 	"** Q112 Firmware - Sensor Platform EVK\n\r"\
 	"** Revision    : REV00\n\r"\
@@ -195,6 +195,9 @@ void PortD_Low( void );				// no return value and no arguments
 
 //RTLU8: Low-level function
 int write(int handle, unsigned char *buffer, unsigned int len);
+int ADC_Read(unsigned char idx);
+void I2C_Read(unsigned char slave_address, unsigned char *reg_address, unsigned char reg_address_size, unsigned char *buffer, unsigned char size);
+void I2C_Write(unsigned char slave_address, unsigned char *reg_address, unsigned char reg_address_size, unsigned char *buffer, unsigned char size);
 
 //UART and I2C Functions
 void _funcUartFin( unsigned int size, unsigned char errStat );
@@ -243,11 +246,74 @@ void Init_Temperature_Sensor_23();
 
 //*****************************************************************************
 //GLOBALS...
-//UART and I2C Variables
+// ADC, UART and I2C Variables
 unsigned char	_flgUartFin;
 unsigned char 	_flgI2CFin;
 unsigned char	_flgADCFin;
 unsigned char	_reqNotHalt;
+
+union {
+	unsigned char	_uchar;
+	unsigned char	_ucharArr[4];
+	unsigned int	_uint;
+	unsigned int	_uintArr[2];
+	float			_float;
+} uniSensorOut, uniTempVal, uniTempVal2;
+
+/**
+ * Ambient Light Sensors Variables
+ */ 
+// I2C device address of: BH1710FVC, BH1721FVC
+const unsigned char BH17xxFVC_ADDR_1			= 0x23u;
+// I2C device address of: BH1730FVC, BH1780GLI
+const unsigned char BH17xxFVC_ADDR_2			= 0x29u;
+
+const unsigned char BH17xxFVC_PWR_DOWN			= 0x00u;
+const unsigned char BH17xxFVC_PWR_ON			= 0x01u;
+/**
+ * BH1710FVC
+ */		
+const unsigned char BH1710FVC_RESET				= 0x07u;
+const unsigned char BH1710FVC_CONT_H_RES_MOD	= 0x10u;
+const unsigned char BH1710FVC_CONT_M_RES_MOD	= 0x13u;
+const unsigned char BH1710FVC_CONT_L_RES_MOD	= 0x16u;
+const unsigned char BH1710FVC_ONET_H_RES_MOD	= 0x20u;
+const unsigned char BH1710FVC_ONET_M_RES_MOD	= 0x23u;
+const unsigned char BH1710FVC_ONET_L_RES_MOD	= 0x26u;
+/**
+ * BH1721FVC
+ */
+const unsigned char BH1721FVC_CONT_A_RES_MOD	= 0x10u;	// or 0x20u
+const unsigned char BH1721FVC_CONT_H_RES_MOD	= 0x12u;	// or 0x22u
+const unsigned char BH1721FVC_CONT_L_RES_MOD	= 0x13u;	// or 0x16u or 0x23u or 0x26u
+/**
+ * BH1730FVC
+ */
+const unsigned char BH1730FVC_REG_CONTROL		= 0x80u;
+const unsigned char BH1730FVC_REG_TIMING		= 0x81u;
+const unsigned char BH1730FVC_REG_INTERRUPT		= 0x82u;
+const unsigned char BH1730FVC_REG_THLLOW		= 0x83u;
+const unsigned char BH1730FVC_REG_THLHIGH		= 0x84u;
+const unsigned char BH1730FVC_REG_THHLOW		= 0x85u;
+const unsigned char BH1730FVC_REG_THHHIGH		= 0x86u;
+const unsigned char BH1730FVC_REG_GAIN			= 0x87u;
+const unsigned char BH1730FVC_REG_ID			= 0x92u;
+const unsigned char BH1730FVC_REG_DATA0LOW		= 0x94u;
+const unsigned char BH1730FVC_REG_DATA0HIGH		= 0x95u;
+const unsigned char BH1730FVC_REG_DATA1LOW		= 0x96u;
+const unsigned char BH1730FVC_REG_DATA1HIGH		= 0x97u;
+const unsigned char BH1730FVC_CMD_RESET_INT_OUT	= 0xe1u;
+const unsigned char BH1730FVC_CMD_STOP_MIM		= 0xe2u;	// Stop manual integration mode.
+const unsigned char BH1730FVC_CMD_START_MIM		= 0xe3u;	// Start manual integration mode.
+const unsigned char BH1730FVC_CMD_SW_RESET		= 0xe4u;
+/**
+ * BH1780GLI
+ */
+const unsigned char BH1780GLI_REG_CONTROL		= 0x80u;
+const unsigned char BH1780GLI_REG_PART_ID		= 0x8au;
+const unsigned char BH1780GLI_REG_MFG_ID		= 0x8bu;
+const unsigned char BH1780GLI_REG_DATALOW		= 0x8cu;
+const unsigned char BH1780GLI_REG_DATAHIGH		= 0x8du;
 
 /* //Sensor Variables - BH1721 (ALS8)
 static unsigned char			ALS8_DevAddress = 0x23;
@@ -326,21 +392,21 @@ unsigned char KMX61_VALUE[2];  */
 int main(void) 
 { 
 	Initialization(); //Ports, UART, Timers, Oscillator, Comparators, etc.
-	
+
 	PRINTF(WelcomeString);
 	
 #ifdef DebugSensor //Debug Initialization For devices
-	//Init_Ambient_Light_Sensor_8();
+	SensorIntializationFlag = 1;
+	SensorPlatformSelection = 9;
 #endif
 	
 MainLoop:
 	main_clrWDT();
 	
-#ifdef DebugSensor	//Debug Main Loop For Devices
-	//MainOp_Ambient_Light_Sensor_8();
-#else
+#ifndef DebugSensor	//Debug Main Loop For Devices
 	DeviceSelection(); 	// SensorPlatformSelection holds 8-bits of sensor type
-	
+#endif
+
 	if(SensorIntializationFlag==1){	//Holds the SW Statement for Initializing Sensors
 		SensorInitialization();
 		SensorIntializationFlag = 0;
@@ -407,8 +473,7 @@ MainLoop:
 			PRINTF("\rNo device connected.                                 ");
 			LEDOUT = 0x0;
 			break;
-	} 	 
-	#endif
+	}
 	
 	HLT = 1;	//Wait time here depends on the WDT timing
 	goto MainLoop;
@@ -543,6 +608,83 @@ int write(int handle, unsigned char *buffer, unsigned int len)
 }
 
 /*******************************************************************************
+	Routine Name	: ADC_Read
+	Form			: int ADC_Read()
+	Parameters		: unsigned char idx
+	Return value	: int
+	Initialization	: None.
+	Description		: Read ADC(idx) value
+******************************************************************************/
+int ADC_Read(unsigned char idx)
+{
+	_flgADCFin = 0;
+	SADMOD0 = (unsigned char)(1<<idx);
+	SARUN = 1;
+	while(_flgADCFin == 0)
+	{
+		main_clrWDT();
+	}
+	switch(idx)
+	{
+		case 0:		return (SADR0H<<2|SADR0L>>6);
+		case 1:		return (SADR1H<<2|SADR1L>>6);
+		case 2:		return (SADR2H<<2|SADR2L>>6);
+		case 3:		return (SADR3H<<2|SADR3L>>6);
+		case 4:		return (SADR4H<<2|SADR4L>>6);
+		case 5:		return (SADR5H<<2|SADR5L>>6);
+		case 6:		return (SADR6H<<2|SADR6L>>6);
+		case 7:		return (SADR7H<<2|SADR7L>>6);
+		default:	return 0;
+	}
+}
+
+/*******************************************************************************
+	Routine Name	: I2C_Read
+	Form			: void I2C_Read(unsigned char slave_address, unsigned char *address, unsigned char address_size, unsigned char *buffer, unsigned char size)
+	Parameters		: unsigned char slave_address
+					  unsigned char *address
+					  unsigned char address_size
+					  unsigned char *buffer
+					  unsigned char size
+	Return value	: void
+	Initialization	: None.
+	Description		: 
+******************************************************************************/
+void I2C_Read(unsigned char slave_address, unsigned char *reg_address, unsigned char reg_address_size, unsigned char *buffer, unsigned char size)
+{
+	_flgI2CFin = 0;
+	i2c_stop();	
+	i2c_startReceive(slave_address, reg_address, reg_address_size, buffer, size, (cbfI2c)_funcI2CFin);
+	while(_flgI2CFin != 1)
+	{
+		main_clrWDT();
+	}
+}
+
+/*******************************************************************************
+	Routine Name	: I2C_Write
+	Form			: void I2C_Write(unsigned char slave_address, unsigned char *address, unsigned char address_size, unsigned char *buffer, unsigned char size)
+	Parameters		: unsigned char slave_address
+					  unsigned char *address
+					  unsigned char address_size
+					  unsigned char *buffer
+					  unsigned char size
+	Return value	: void
+	Initialization	: None.
+	Description		: 
+******************************************************************************/
+void I2C_Write(unsigned char slave_address, unsigned char *reg_address, unsigned char reg_address_size, unsigned char *buffer, unsigned char size)
+{
+	_flgI2CFin = 0;
+	i2c_stop();	
+	i2c_startSend(slave_address, reg_address, reg_address_size, buffer, size, (cbfI2c)_funcI2CFin);
+	while(_flgI2CFin != 1)
+	{
+		main_clrWDT();
+	}
+}
+
+/*******************************************************************************
 	Routine Name:	DeviceSelection
 	Form:			void DeviceSelection( void )
 	Parameters:		void
@@ -629,22 +771,22 @@ void SensorInitialization(void)
 	} 	 
 }
 
-// void testPrint(char * CS)
-// {
-		// int c = sprintf(PrintContent, "Selected %d\r", *CS);  
+/* void testPrint(char * CS)
+{
+		int c = sprintf(PrintContent, "Selected %d\r", *CS);  
 		
-		// _flgUartFin = 0; 
-		// uart_stop();
-		// uart_startSend(PrintContent, c, _funcUartFin);  
-		// while(_flgUartFin != 1){
-			// main_clrWDT();
-		// }  
-// }
+		_flgUartFin = 0; 
+		uart_stop();
+		uart_startSend(PrintContent, c, _funcUartFin);  
+		while(_flgUartFin != 1){
+			main_clrWDT();
+		}  
+} */
 
 
 /*******************************************************************************
 	Routine Name:	MainOp_Hall_Effect_Sensors_1
-	Form:			void MainOp_Hall_Effect_Sensors_1( void )
+	Form:			void MainOp_Hall_Effect_Sensors_1(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
@@ -678,7 +820,7 @@ void MainOp_Hall_Effect_Sensors_1()
 
 /*******************************************************************************
 	Routine Name:	MainOp_Hall_Effect_Sensors_2
-	Form:			void MainOp_Hall_Effect_Sensors_2( void )
+	Form:			void MainOp_Hall_Effect_Sensors_2(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
@@ -702,132 +844,162 @@ void MainOp_Hall_Effect_Sensors_2()
 
 /*******************************************************************************
 	Routine Name:	MainOp_Ambient_Light_Sensor_5
-	Form:			void MainOp_Ambient_Light_Sensor_5( void )
+	Form:			void MainOp_Ambient_Light_Sensor_5(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 5 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 5.
 	Sensor Platform(s): Ambient Light Sensor
-						BH1620FVC @ H-Gain mode
+						BH1620FVC
 ******************************************************************************/
 void MainOp_Ambient_Light_Sensor_5()
-{
-	unsigned int adcValue=0;
-	float vout, ev;
-	// Convert to illuminance (lx)
-	vout = adcValue*(3.3/256);
+{	
+	uniTempVal._uint = ADC_Read(0);
+	// Viout = ADCVal x Vref / (2^10-1)
+	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	// Calculate illuminance (lx)
+	//     - H-Gain mode(GC[2-1]=01): Viout = 0.57 x 10-6 x Ev x R1, Ev-max = 1000
+	//     - M-Gain mode(GC[2-1]=10): Viout = 0.057 x 10-6 x Ev x R1, Ev-max = 10000
+	//     - L-Gain mode(GC[2-1]=11): Viout = 0.0057 x 10-6 x Ev x R1, Ev-max = 100000
+	switch(SENINTF_HDR1_GPIO1(D)<<1|SENINTF_HDR1_GPIO0(D))
+	{
+		case 1: // H-Gain mode
+			uniSensorOut._float = uniTempVal2._float/(0.57e-6f*5.6e3f);
+			break;
+		case 2: // M-Gain mode
+			uniSensorOut._float = uniTempVal2._float/(0.057e-6f*5.6e3f);
+			break;
+		case 3: // L-Gain mode
+			uniSensorOut._float = uniTempVal2._float/(0.0057e-6f*5.6e3f);
+			break;
+		case 0:	// Shutdown
+		default:
+			uniSensorOut._float = 0;
+			break;
+	}
+	// Scale for 10bits value to 8bits value
+	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
+	printf("\rBH1620FVC> Ambient Light = %lu[lx]              ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Ambient_Light_Sensor_6
-	Form:			void MainOp_Ambient_Light_Sensor_6( void )
+	Form:			void MainOp_Ambient_Light_Sensor_6(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 6.
 	Sensor Platform(s): Ambient Light Sensor	
 						BH1710FVC
-						BH1715FVC
-						BH1750FVI (WSOF6I)
-						BH1751FVI (WSOF6I)
 ******************************************************************************/
-void MainOp_Ambient_Light_Sensor_6(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Ambient_Light_Sensor_6()
+{
+	// Wait to complete measurement
+	//     - Max H-Resolution Mode Measurement Time: 180ms
+	//     - Max M-Resolution Mode Measurement Time: 24ms
+	//     - Max L-Resolution Mode Measurement Time: 4.5ms
+	// NOPms(24);
+	I2C_Read(BH17xxFVC_ADDR_1, NULL, 0, uniTempVal._ucharArr, 2);
+	
+	// Calculate illuminance (lx)
+	//     Measurement Accuracy (Typ. 1.2) = Sensor out / Actual Illuminance 
+	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
+	
+	LEDOUT = uniTempVal._ucharArr[0];
+	printf("\rBH1710FVC> Ambient Light = %lu[lx]              ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Ambient_Light_Sensor_7
-	Form:			void MainOp_Ambient_Light_Sensor_7( void )
+	Form:			void MainOp_Ambient_Light_Sensor_7(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 7.
 	Sensor Platform(s): Ambient Light Sensor		
 						BH1730FVC	
 ******************************************************************************/
-void MainOp_Ambient_Light_Sensor_7(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Ambient_Light_Sensor_7()
+{
+	// Wait to complete measurement
+	//     - Max Measurement Time is 150ms @ TIMING=0xDA
+	// NOPms(150);
+	
+	// Start read data with start address is DATA0LOW
+	I2C_Read(BH17xxFVC_ADDR_2, NULL, 0, uniTempVal._ucharArr, 4);
+	
+	// Calculate illuminance (lx)
+	//     - DATA1/DATA0<0.26: Lx = ( 1.290*DATA0 - 2.733*DATA1 ) / GAIN * 100ms / TIMING
+	//     - DATA1/DATA0<0.55: Lx = ( 0.795*DATA0 - 0.859*DATA1 ) / GAIN * 100ms / TIMING
+	//     - DATA1/DATA0<1.09: Lx = ( 0.510*DATA0 - 0.345*DATA1 ) / GAIN * 100ms / TIMING
+	//     - DATA1/DATA0<2.13: Lx = ( 0.276*DATA0 - 0.130*DATA1 ) / GAIN * 100ms / TIMING
+	uniTempVal2._float = (float)uniTempVal._uintArr[1]/uniTempVal._uintArr[0];
+	if(uniTempVal2._float<0.26f)
+		uniSensorOut._float = (1.290f*uniTempVal._uintArr[0]-2.733f*uniTempVal._uintArr[1])/1*100/218;
+	else if(uniTempVal2._float<0.55f)
+		uniSensorOut._float = (0.795f*uniTempVal._uintArr[0]-0.859f*uniTempVal._uintArr[1])/1*100/218;
+	else if(uniTempVal2._float<1.09f)
+		uniSensorOut._float = (0.510f*uniTempVal._uintArr[0]-0.345f*uniTempVal._uintArr[1])/1*100/218;
+	else if(uniTempVal2._float<2.13f)
+		uniSensorOut._float = (0.276f*uniTempVal._uintArr[0]-0.130f*uniTempVal._uintArr[1])/1*100/218;
+	else
+		uniSensorOut._float = 0;
+	
+	LEDOUT = uniTempVal._ucharArr[1];
+	printf("\rBH1730FVC> Ambient Light = %lu[lx]            ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Ambient_Light_Sensor_8
-	Form:			void MainOp_Ambient_Light_Sensor_8( void )
+	Form:			void MainOp_Ambient_Light_Sensor_8(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 8.
 	Sensor Platform(s): Ambient Light Sensor
 						BH1721FVC
 ******************************************************************************/
-void MainOp_Ambient_Light_Sensor_8(){
-	/*
-	static unsigned char			ALS8_DevAddress = 0x23;
-	static unsigned char			ALS8_AutoResolution = 0x10;
-	static unsigned char			ALS8_PowerOn = 0x01;
-	*/
-	/* int c;
-	unsigned int Return;
+void MainOp_Ambient_Light_Sensor_8()
+{	
+	// Wait to complete measurement
+	//     - Max Auto/H-Resolution Mode Measurement Time: 180ms
+	//     - Max L-Resolution Mode Measurement Time: 24ms
+	// NOPms(180);
+	I2C_Read(BH17xxFVC_ADDR_1, NULL, 0, uniTempVal._ucharArr, 2);
 	
-	//----- ALS Get ALS Data Mode I2C Command ----- 
-	_flgI2CFin = 0;																	//reset I2C completed Flag
-	i2c_stop();				 													//Make sure I2C is not currently running
-	I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-	i2c_startReceive(ALS8_DevAddress, &ALS8_SensorReturn, 0, &ALS8_SensorReturn, 2, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-	while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	}
+	// Calculate illuminance (lx)
+	//     Measurement Accuracy (Typ. 1.2) = Sensor out / Actual Illuminance 
+	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
 	
-	// Format ALS Data
-	Return = (ALS8_SensorReturn[0]<<8) + ALS8_SensorReturn[1];
-	
-	Print ALS Data
-	c = sprintf(PrintContent, "ALSRaw = %u \r", Return);  
-	_flgUartFin = 0; 
-	uart_stop();
-	uart_startSend(PrintContent, c, _funcUartFin);  
-	while(_flgUartFin != 1){
-		main_clrWDT();
-	} */
+	LEDOUT = uniTempVal._ucharArr[0];
+	printf("\rBH1721FVC> Ambient Light = %lu[lx]              ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Ambient_Light_Sensor_9
-	Form:			void MainOp_Ambient_Light_Sensor_9( void )
+	Form:			void MainOp_Ambient_Light_Sensor_9(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 9.
 	Sensor Platform(s): Ambient Light Sensor	
 						BH1780GLI
 ******************************************************************************/
-void MainOp_Ambient_Light_Sensor_9(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Ambient_Light_Sensor_9()
+{
+	// Wait to complete measurement
+	//     - Max Measurement Time is 250ms
+	// NOPms(250);
+	
+	// Start read data with start address is DATALOW
+	I2C_Read(BH17xxFVC_ADDR_2, NULL, 0, uniTempVal._ucharArr, 2);
+	
+	// Calculate illuminance (lx)
+	//     Measurement Accuracy (Typ. 1) = Sensor out / Actual Illuminance
+	uniSensorOut._float = uniTempVal._uint;
+	
+	LEDOUT = uniTempVal._ucharArr[1];
+	printf("\rBH1780GLI> Ambient Light = %lu[lx]            ", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -1032,7 +1204,7 @@ void MainOp_Temperature_Sensor_23(){
 
 /*******************************************************************************
 	Routine Name:	Init_Hall_Effect_Sensors_1
-	Form:			void Init_Hall_Effect_Sensors_1( void )
+	Form:			void Init_Hall_Effect_Sensors_1(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
@@ -1059,7 +1231,7 @@ void Init_Hall_Effect_Sensors_1()
 
 /*******************************************************************************
 	Routine Name:	Init_Hall_Effect_Sensors_2
-	Form:			void Init_Hall_Effect_Sensors_2( void )
+	Form:			void Init_Hall_Effect_Sensors_2(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
@@ -1081,114 +1253,122 @@ void Init_Hall_Effect_Sensors_2()
 
 /*******************************************************************************
 	Routine Name:	Init_Ambient_Light_Sensor_5
-	Form:			void Init_Ambient_Light_Sensor_5( void )
+	Form:			void Init_Ambient_Light_Sensor_5(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 5 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 5.
 	Sensor Platform(s): Ambient Light Sensor
 						BH1620FVC
 ******************************************************************************/
 void Init_Ambient_Light_Sensor_5()
 {
-	// Do nothing!
-	// All settings/configurations are completed in the Initialization() function
+	// Configure pins GPIO0, GPIO1 of Sensor Interface Header 1 are input with a pull-up resistor
+	SENINTF_HDR1_GPIO0(DIR) = 1;
+	SENINTF_HDR1_GPIO1(DIR) = 1;
+	
+	SENINTF_HDR1_GPIO0(C0) = 0;
+	SENINTF_HDR1_GPIO0(C1) = 1;
+	SENINTF_HDR1_GPIO1(C0) = 0;
+	SENINTF_HDR1_GPIO1(C1) = 1;
+	
+	SENINTF_HDR1_GPIO0(MD0) = 0;
+	SENINTF_HDR1_GPIO0(MD1) = 0;
+	SENINTF_HDR1_GPIO1(MD0) = 0;
+	SENINTF_HDR1_GPIO1(MD1) = 0;
 }
 
 /*******************************************************************************
 	Routine Name:	Init_Ambient_Light_Sensor_6
-	Form:			void Init_Ambient_Light_Sensor_6( void )
+	Form:			void Init_Ambient_Light_Sensor_6(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 6.
 	Sensor Platform(s): Ambient Light Sensor	
 						BH1710FVC
-						BH1715FVC
-						BH1750FVI (WSOF6I)
-						BH1751FVI (WSOF6I)
 ******************************************************************************/
-void Init_Ambient_Light_Sensor_6(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_Ambient_Light_Sensor_6()
+{
+	// Power on sensor
+	I2C_Write(BH17xxFVC_ADDR_1, NULL, 0, &BH17xxFVC_PWR_ON, 1);
+	// Set Continuously M-Resolution Mode
+	I2C_Write(BH17xxFVC_ADDR_1, NULL, 0, &BH1710FVC_CONT_M_RES_MOD, 1);
+	// Wait to complete measurement
+	//     - Max H-Resolution Mode Measurement Time: 180ms
+	//     - Max M-Resolution Mode Measurement Time: 24ms
+	//     - Max L-Resolution Mode Measurement Time: 4.5ms
+	NOPms(24);
 }
 
 /*******************************************************************************
 	Routine Name:	Init_Ambient_Light_Sensor_7
-	Form:			void Init_Ambient_Light_Sensor_7( void )
+	Form:			void Init_Ambient_Light_Sensor_7(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 7.
 	Sensor Platform(s): Ambient Light Sensor		
 						BH1730FVC	
 ******************************************************************************/
-void Init_Ambient_Light_Sensor_7(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_Ambient_Light_Sensor_7()
+{
+	unsigned char cTmp = 0x0;
+	
+	// Disable interrupt function
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1730FVC_REG_INTERRUPT, 1, &cTmp, 1);
+	// Set GAIN mode is X1
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1730FVC_REG_GAIN, 1, &cTmp, 1);
+	// Set measurement time is 0xDA (102.6ms)
+	cTmp = 0xdau;
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1730FVC_REG_TIMING, 1, &cTmp, 1);
+	// Configure ADC measurement is continuous, Type0 and Type1 and start measurement
+	cTmp = 0x3;
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1730FVC_REG_CONTROL, 1, &cTmp, 1);
+	// Update value of Command register to read measurement value
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1730FVC_REG_DATA0LOW, 1, NULL, 0);
 }
 
 /*******************************************************************************
 	Routine Name:	Init_Ambient_Light_Sensor_8
-	Form:			void Init_Ambient_Light_Sensor_8( void )
+	Form:			void Init_Ambient_Light_Sensor_8(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 8.
 	Sensor Platform(s): Ambient Light Sensor
 						BH1721FVC
 ******************************************************************************/
-void Init_Ambient_Light_Sensor_8(){
-/* //----- ALS Start I2C Command ----- 
-	_flgI2CFin = 0;																	//reset I2C completed Flag
-	i2c_stop();																		//Make sure I2C is not currently running
-	I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-	i2c_startSend(ALS8_DevAddress, &ALS8_PowerOn, 0, &ALS8_PowerOn, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-	while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	}  
-	
-	//----- ALS Auto-Resolution Mode I2C Command ----- 
-	_flgI2CFin = 0;																	//reset I2C completed Flag
-	i2c_stop();				 													//Make sure I2C is not currently running
-	I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-	i2c_startSend(ALS8_DevAddress, &ALS8_AutoResolution, 0, &ALS8_AutoResolution, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-	while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} */ 
-	
+void Init_Ambient_Light_Sensor_8()
+{	
+	// Power on sensor
+	I2C_Write(BH17xxFVC_ADDR_1, NULL, 0, &BH17xxFVC_PWR_ON, 1);
+	// Set Continuously M-Resolution Mode
+	I2C_Write(BH17xxFVC_ADDR_1, NULL, 0, &BH1721FVC_CONT_A_RES_MOD, 1);
+	// Wait to complete measurement
+	//     - Max Auto/H-Resolution Mode Measurement Time: 180ms
+	//     - Max L-Resolution Mode Measurement Time: 24ms
+	NOPms(180);	
 }
 
 /*******************************************************************************
 	Routine Name:	Init_Ambient_Light_Sensor_9
-	Form:			void Init_Ambient_Light_Sensor_9( void )
+	Form:			void Init_Ambient_Light_Sensor_9(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 9.
 	Sensor Platform(s): Ambient Light Sensor	
 						BH1780GLI
 ******************************************************************************/
-void Init_Ambient_Light_Sensor_9(){
-
-
+void Init_Ambient_Light_Sensor_9()
+{
+	unsigned char cTmp = 0x3;
+	
+	// Power on sensor
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1780GLI_REG_CONTROL, 1, &cTmp, 1);
+	// Update value of Command register to read measurement value
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1780GLI_REG_DATALOW, 1, NULL, 0);
 }
 
 /*******************************************************************************
