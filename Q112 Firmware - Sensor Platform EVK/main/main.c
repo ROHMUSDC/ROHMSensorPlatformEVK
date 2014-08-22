@@ -20,53 +20,6 @@
 //		LEDs = C0 to C7
 //	Sensor Control Section:
 //		DIP Switch = D0 to D3
-// ============================= IOT Board Specs ============================== 
-
-//*****************************************************************************
-// Microcontroller's connections on the LaPi Development Board to the 
-//  Plug 'n Play, Raspberry Pi Compatible, Universal Connectors:
-//
-// ================================ ML610Q112 ================================= 
-//
-// Pin-01 => 3.3V Power					Pin-02 => 5.0V Power (VBUS)
-// Pin-03 => I2C-SDA  (Q112 I/O B.6)	Pin-04 => no connection
-// Pin-05 => I2C-SCL  (Q112 I/O B.5)*	Pin-06 => GROUND
-// Pin-07 => GPIO #04 (Q112 I/O B.2)	Pin-08 => UART-TX  (Q112 I/O B.1)
-// Pin-09 => no connection				Pin-10 => UART-RX  (Q112 I/O B.0) 
-// Pin-11 => GPIO #17 (Q112 I/O C.0)	Pin-12 => GPIO #18 (Q112 I/O B.7)
-// Pin-13 => GPIO #21 (Q112 I/O C.1)	Pin-14 => no connection
-// Pin-15 => GPIO #22 (Q112 I/O C.2)	Pin-16 => GPIO #23 (Q112 I/O D.1)
-// Pin-17 => no connection				Pin-18 => GPIO #24 (Q112 I/O D.2)
-// Pin-19 => SPI-MOSI (Q112 I/O B.4)	Pin-20 => no connection
-// Pin-21 => SPI-MISO (Q112 I/O B.3)	Pin-22 => GPIO #25 (Q112 I/O D.3)
-// Pin-23 => SPI-SCLK (Q112 I/O B.5)*	Pin-24 => SPI-CS0  (Q112 I/O D.4)
-// Pin-25 => no connection				Pin-26 => SPI-CS1  (Q112 I/O D.5)
-//
-//=============================================================================
-//*****************************************************************************
-
-//*****************************************************************************
-// Q112 Microcontroller's I/O Pins at J4 on the LaPi Development Board to the
-// LaPi Development Board 
-//
-// ================================ ML610Q112 ================================= 
-//
-// Pin-01 => A.0				Pin-02 => A.1
-// Pin-03 => A.2				Pin-04 => B.0
-// Pin-05 => B.1				Pin-06 => B.2
-// Pin-07 => B.3				Pin-08 => B.4
-// Pin-09 => B.5				Pin-10 => B.6 
-// Pin-11 => B.7				Pin-12 => C.0
-// Pin-13 => C.1				Pin-14 => C.2
-// Pin-15 => C.3				Pin-16 => C.4
-// Pin-17 => C.5				Pin-18 => C.6
-// Pin-19 => C.7				Pin-20 => D.0
-// Pin-21 => D.1				Pin-22 => D.2
-// Pin-23 => D.3				Pin-24 => D.4
-// Pin-25 => D.5				Pin-26 => GROUND
-//
-//=============================================================================
-//*****************************************************************************
 
 //***** PREPROCESSOR DIRECTIVES ***********************************************
 // INCLUDED FILES...
@@ -98,28 +51,6 @@
 	//#include	<yfuns.h>		// 
 	//#include	<yvals.h>		// Called for by most Header Files
 
-//*****************************************************************************
- // I/O PIN DATA ALIASES...
-// Connections for Q112 Universal Socket
-	#define RX 			PB0D 
-	#define TX 			PB1D 
-	#define I2C_SDA 	PB6D 
-	#define I2C_SCL 	PB5D 
-	#define GPIO_04		PB2D 
-	#define GPIO_17		PC0D
-	#define GPIO_21		PC1D
-	#define GPIO_22		PC2D
-	#define GPIO_18		PB7D
-	#define GPIO_23		PD1D
-	#define GPIO_24		PD2D
-	#define GPIO_25		PD3D
-	#define SPI_MOSI	PB4D
-	#define SPI_MISO	PB3D
-	#define SPI_SCL 	PB5D
-	#define SPI_CS0		PD4D
-	#define SPI_CS1 	PD5D
-
-//*****************************************************************************
 //===========================================================================
 //   MACROS: 
 //===========================================================================
@@ -160,13 +91,9 @@
  */
 #define LEDOUT						PCD
 
-//*****************************************************************************
-
-//*****************************************************************************
 //===========================================================================
 //   STRUCTURES:    
 //===========================================================================
-
 static const tUartSetParam  _uartSetParam = {		// UART Parameters
 	UART_BAUDRATE,								// Members of Structure...
 	UART_DATA_LENGTH,							// Members of Structure...
@@ -176,10 +103,6 @@ static const tUartSetParam  _uartSetParam = {		// UART Parameters
 	UART_DIRECTION								// Members of Structure...
 };
 
-//*****************************************************************************
-
-
-//*****************************************************************************
 //===========================================================================
 //   FUNCTION PROTOTYPES: 
 //	Establishes the name and return type of a function and may specify the 
@@ -211,7 +134,7 @@ void NOPms( unsigned int ms );
 
 void DeviceSelection(void); // Initializes port D for registering Sensor Control States
 void SensorInitialization(void); 
- 
+  
 void MainOp_Hall_Effect_Sensors_2();
 void MainOp_Hall_Effect_Sensors_1();
 void MainOp_Ambient_Light_Sensor_5();
@@ -242,10 +165,8 @@ void Init_Temperature_Sensor_21();
 void Init_Temperature_Sensor_22();
 void Init_Temperature_Sensor_23();
 
-//void testPrint(char * CS);
-
 //*****************************************************************************
-//GLOBALS...
+// GLOBALS...
 // ADC, UART and I2C Variables
 unsigned char	_flgUartFin;
 unsigned char 	_flgI2CFin;
@@ -261,7 +182,7 @@ union {
 } uniSensorOut, uniTempVal, uniTempVal2;
 
 /**
- * Ambient Light Sensors Variables
+ * Ambient Light Sensors
  */ 
 // I2C device address of: BH1710FVC, BH1721FVC
 const unsigned char BH17xxFVC_ADDR_1			= 0x23u;
@@ -317,18 +238,17 @@ const unsigned char BH1780GLI_REG_DATAHIGH		= 0x8du;
 
 /**
  * ML8511 (UV Sensor)
+ *		Vout 		: 2.2[V] @ 10[mW/cm2]
+ *		Sensitivity	: 0.129[Vcm2/mW]
  */
-#define	ML8511_V1		0.99f
-#define	ML8511_UV1		0.0f
-#define	ML8511_V2		2.9f
-#define	ML8511_UV2		15.0f
-#define	ML8511_Voltage2UVIntensity(v)	(v-ML8511_V1)*(ML8511_UV2-ML8511_UV1)/(ML8511_V2-ML8511_V1)+ML8511_UV1
+#define	Voltage2UVIntensity(v)	(v-2.2f)/0.129f+10
 
-/* //Sensor Variables - BH1721 (ALS8)
-static unsigned char			ALS8_DevAddress = 0x23;
-static unsigned char			ALS8_AutoResolution = 0x10;
-static unsigned char			ALS8_PowerOn = 0x01;
-static unsigned char			ALS8_SensorReturn[2]; */
+/**
+ * Temperature Sensors
+ *		Vout		: v0[V] @ t0[°C]
+ *		Sensitivity	: s[V/°C]
+ */
+#define Voltage2Temperature(v, v0, t0, s)	(v-(v0))/(s)+(t0)
 
 /* //Sensor Variables
 static unsigned char			SAD_KMX61 = 0x0E;
@@ -369,32 +289,9 @@ static unsigned char			KMX61_MZH = 0x17;
 static unsigned char			KMX61_TL = 0x10;
 static unsigned char			KMX61_TH = 0x11; */
 
-//General Variables
-//static unsigned char			HelloWorld[17] = 	{"UV Sensor Demo"};
-//static unsigned char   		UV_DETECTED[16] = {"  UV DETECTED! "};
-//static unsigned int			Test = 0;
-//static unsigned int			UVReturn = 0;
-//static unsigned int			UV_Offset;
-//static float					UVIndex;
-//static unsigned int			ScaledUVReturn = 0;
-//static unsigned char			SensorReturn[50]; 
-//static unsigned char			PrintContent[50];
-
-/* unsigned int ret;
-unsigned int testI2C; */
-
 static unsigned char SensorPlatformSelection;
-//static unsigned char SensorPlatformSelection_Temp;
 static unsigned char SensorIntializationFlag = 1;
-//static unsigned int SensorOutput;
 
-
-/* static int i,j, tmp, tmp1,tempVal;
-unsigned char KMX61_VALUE[2];  */
-/*############################################################################*/
-/*#                                  APIs                                    #*/
-/*############################################################################*/
-//*****************************************************************************
 //===========================================================================
 //  	Start of MAIN FUNCTION
 //===========================================================================
@@ -406,7 +303,7 @@ int main(void)
 	
 #ifdef DebugSensor //Debug Initialization For devices
 	SensorIntializationFlag = 1;
-	SensorPlatformSelection = 10;
+	SensorPlatformSelection = 21;
 #endif
 	
 MainLoop:
@@ -423,63 +320,49 @@ MainLoop:
 	
 	switch(SensorPlatformSelection){
 		case 1:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Hall_Effect_Sensors_1(); // Refer to function description for list of sensors
 			break;
 		case 2:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Hall_Effect_Sensors_2(); // Refer to function description for list of sensors 
 			break;
 		case 5: 
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Ambient_Light_Sensor_5(); // Refer to function description for list of sensors
 			break;
 		case 6:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Ambient_Light_Sensor_6(); // Refer to function description for list of sensors 
 			break;
 		case 7:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Ambient_Light_Sensor_7(); // Refer to function description for list of sensors 
 			break;
 		case 8:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Ambient_Light_Sensor_8(); // Refer to function description for list of sensors 
 			break;
 		case 9:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Ambient_Light_Sensor_9(); // Refer to function description for list of sensors 
 			break;
 		case 10:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_UV_Sensor_10(); // Refer to function description for list of sensors 
 			break;
 		case 15:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_KX022(); // Refer to function description for list of sensors 
 			break;
 		case 16:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_KMX061(); // Refer to function description for list of sensors 
 			break;
 		case 20:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Temperature_Sensor_20(); // Refer to function description for list of sensors 
 			break;
 		case 21:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Temperature_Sensor_21(); // Refer to function description for list of sensors
 			break;
 		case 22:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Temperature_Sensor_22(); // Refer to function description for list of sensors 
 			break;
 		case 23:
-			//testPrint(&SensorPlatformSelection);
 			MainOp_Temperature_Sensor_23(); // Refer to function description for list of sensors
 			break; 
 		default:
-			PRINTF("\rNo device connected.                                 ");
+			PRINTF("\033[2K\rNo device connected.");
 			LEDOUT = 0x0;
 			break;
 	}
@@ -780,19 +663,6 @@ void SensorInitialization(void)
 	} 	 
 }
 
-/* void testPrint(char * CS)
-{
-		int c = sprintf(PrintContent, "Selected %d\r", *CS);  
-		
-		_flgUartFin = 0; 
-		uart_stop();
-		uart_startSend(PrintContent, c, _funcUartFin);  
-		while(_flgUartFin != 1){
-			main_clrWDT();
-		}  
-} */
-
-
 /*******************************************************************************
 	Routine Name:	MainOp_Hall_Effect_Sensors_1
 	Form:			void MainOp_Hall_Effect_Sensors_1(void)
@@ -808,22 +678,22 @@ void MainOp_Hall_Effect_Sensors_1()
 	if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==1)
 	{
 		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\rBU52004GUL> Hall – No Mag Fields Detected.                    ");
+		PRINTF("\033[2K\rBU52004GUL> Hall – No Mag Fields Detected.");
 	}
 	else if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==0)
 	{
 		LEDOUT = 0x02;	// Turn on LED1
-		PRINTF("\rBU52004GUL> Hall – North Mag Field Detected.                  ");
+		PRINTF("\033[2K\rBU52004GUL> Hall – North Mag Field Detected.");
 	}
 	else if(SENINTF_HDR1_GPIO0(D)==0 && SENINTF_HDR1_GPIO1(D)==1)
 	{
 		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\rBU52004GUL> Hall – South Mag Field Detected.                  ");
+		PRINTF("\033[2K\rBU52004GUL> Hall – South Mag Field Detected.");
 	}
 	else
 	{
 		LEDOUT = 0x82;	// Turn on LED7 and LED1
-		PRINTF("\rBU52004GUL> Hall – Both Mag Fields Detected.                  ");
+		PRINTF("\033[2K\rBU52004GUL> Hall – Both Mag Fields Detected.");
 	}
 }
 
@@ -842,12 +712,12 @@ void MainOp_Hall_Effect_Sensors_2()
 	if(SENINTF_HDR1_GPIO0(D)==0)
 	{
 		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\rBU52011HFV> Hall – Mag Field Detected.                        ");
+		PRINTF("\033[2K\rBU52011HFV> Hall – Mag Field Detected.");
 	}
 	else
 	{
 		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\rBU52011HFV> Hall – No Mag Fields Detected.                    ");
+		PRINTF("\033[2K\rBU52011HFV> Hall – No Mag Fields Detected.");
 	}
 }
 
@@ -888,7 +758,7 @@ void MainOp_Ambient_Light_Sensor_5()
 	}
 	// Scale for 10bits value to 8bits value
 	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
-	printf("\rBH1620FVC> Ambient Light = %lu[lx]                            ", (unsigned long)uniSensorOut._float);
+	printf("\033[2K\rBH1620FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -915,7 +785,7 @@ void MainOp_Ambient_Light_Sensor_6()
 	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
 	
 	LEDOUT = uniTempVal._ucharArr[0];
-	printf("\rBH1710FVC> Ambient Light = %lu[lx]                            ", (unsigned long)uniSensorOut._float);
+	printf("\033[2K\rBH1710FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -955,7 +825,7 @@ void MainOp_Ambient_Light_Sensor_7()
 		uniSensorOut._float = 0;
 	
 	LEDOUT = uniTempVal._ucharArr[1];
-	printf("\rBH1730FVC> Ambient Light = %lu[lx]                          ", (unsigned long)uniSensorOut._float);
+	printf("\033[2K\rBH1730FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -981,7 +851,7 @@ void MainOp_Ambient_Light_Sensor_8()
 	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
 	
 	LEDOUT = uniTempVal._ucharArr[0];
-	printf("\rBH1721FVC> Ambient Light = %lu[lx]                            ", (unsigned long)uniSensorOut._float);
+	printf("\033[2K\rBH1721FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -1008,7 +878,7 @@ void MainOp_Ambient_Light_Sensor_9()
 	uniSensorOut._float = uniTempVal._uint;
 	
 	LEDOUT = uniTempVal._ucharArr[1];
-	printf("\rBH1780GLI> Ambient Light = %lu[lx]                          ", (unsigned long)uniSensorOut._float);
+	printf("\033[2K\rBH1780GLI> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
 }
 
 /*******************************************************************************
@@ -1027,32 +897,25 @@ void MainOp_UV_Sensor_10()
 	// Vsenout = ADCVal x Vref / (2^10-1)
 	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
 	// Calculate UV Intensity (mW/cm2)
-	uniSensorOut._float = ML8511_Voltage2UVIntensity(uniTempVal2._float);
+	uniSensorOut._float = Voltage2UVIntensity(uniTempVal2._float);
 	// Scale for 10bits value to 8bits value
 	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
-	printf("\rML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]      ", uniSensorOut._float, uniTempVal2._float);
+	printf("\033[2K\rML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_KX022
-	Form:			void MainOp_KX022( void )
+	Form:			void MainOp_KX022(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 15.
 	Sensor Platform(s): 3-axis accelerometer	
 						KX022
 ******************************************************************************/
-void MainOp_KX022(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_KX022()
+{
+
 }
 
 /*******************************************************************************
@@ -1107,104 +970,102 @@ void MainOp_KMX061(){
 
 /*******************************************************************************
 	Routine Name:	MainOp_Temperature_Sensor_20
-	Form:			void MainOp_Temperature_Sensor_20( void )
+	Form:			void MainOp_Temperature_Sensor_20(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 20.
 	Sensor Platform(s): Temperature Sensors	
 						BD1020HFV
 ******************************************************************************/
-void MainOp_Temperature_Sensor_20(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Temperature_Sensor_20()
+{
+	uniTempVal._uint = ADC_Read(0);
+	// Vsenout = ADCVal x Vref / (2^10-1)
+	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	// Calculate Temperature (°C)
+	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.3f, 30.0f, -0.0082f);
+	// Scale for 10bits value to 8bits value
+	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
+	printf("\033[2K\rBD1020HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Temperature_Sensor_21
-	Form:			void MainOp_Temperature_Sensor_21( void )
+	Form:			void MainOp_Temperature_Sensor_21(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 21.
 	Sensor Platform(s): Temperature Sensors
-						BDJ0601HFV
-						BDJ0701HFV
-						BDJ0751HFV
-						BDJ0801HFV
-						BDJ0851HFV
-						BDJ0901HFV						
+						BDJ0601HFV					
 ******************************************************************************/
-void MainOp_Temperature_Sensor_21(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Temperature_Sensor_21()
+{
+	uniTempVal._uint = ADC_Read(0);
+	// Vsenout = ADCVal x Vref / (2^10-1)
+	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	// Calculate Temperature (°C)
+	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.3f, 30.0f, -0.0082f);
+	// Scale for 10bits value to 7bits value
+	LEDOUT = (unsigned char)(uniTempVal._uint>>3);
+	printf("\033[1F\033[2K\rBDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	if(SENINTF_HDR1_GPIO0(D)==1)
+		PRINTF("\n\033[2K\rBDJ0601HFV> Temperature Threshold Reached.");
+	else
+		PRINTF("\n\033[2K\rBDJ0601HFV> Temperature Threshold Not Reached.");
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Temperature_Sensor_22
-	Form:			void MainOp_Temperature_Sensor_22( void )
+	Form:			void MainOp_Temperature_Sensor_22(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 22.
 	Sensor Platform(s): Temperature Sensors
-						BDE0600G
-						BDE0700G
-						BDE0800G
-						BDE0900G
-						BDE1000G
-						BDE1100G	
+						BDE0600G	
 ******************************************************************************/
-void MainOp_Temperature_Sensor_22(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Temperature_Sensor_22()
+{
+	uniTempVal._uint = ADC_Read(0);
+	// Vsenout = ADCVal x Vref / (2^10-1)
+	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	// Calculate Temperature (°C)
+	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.753f, 30.0f, -0.01068f);
+	// Scale for 10bits value to 7bits value
+	LEDOUT = (unsigned char)(uniTempVal._uint>>3);
+	printf("\033[1F\033[2K\rBDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	if(SENINTF_HDR1_GPIO0(D)==0)
+		PRINTF("\n\033[2K\rBDE0600G> Temperature Threshold Reached.");
+	else
+		PRINTF("\n\033[2K\rBDE0600G> Temperature Threshold Not Reached.");
 }
 
 /*******************************************************************************
 	Routine Name:	MainOp_Temperature_Sensor_23
-	Form:			void MainOp_Temperature_Sensor_23( void )
+	Form:			void MainOp_Temperature_Sensor_23(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 23.
 	Sensor Platform(s): Temperature Sensors
 						BDJ0550HFV
-						BDJ0600HFV
-						BDJ0650HFV
-						BDJ0700HFV
-						BDJ0800HFV
 ******************************************************************************/
-void MainOp_Temperature_Sensor_23(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void MainOp_Temperature_Sensor_23()
+{
+	uniTempVal._uint = ADC_Read(0);
+	// Vsenout = ADCVal x Vref / (2^10-1)
+	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	// Calculate Temperature (°C)
+	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.3f, 30.0f, -0.0082f);
+	// Scale for 10bits value to 7bits value
+	LEDOUT = (unsigned char)(uniTempVal._uint>>3);
+	printf("\033[1F\033[2K\rBDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	if(SENINTF_HDR1_GPIO0(D)==0)
+		PRINTF("\n\033[2K\rBDJ0550HFV> Temperature Threshold Reached.");
+	else
+		PRINTF("\n\033[2K\rBDJ0550HFV> Temperature Threshold Not Reached.");
 }
 
 /*******************************************************************************
@@ -1394,24 +1255,17 @@ void Init_UV_Sensor_10()
 
 /*******************************************************************************
 	Routine Name:	Init_KX022
-	Form:			void Init_KX022( void )
+	Form:			void Init_KX022(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 15.
 	Sensor Platform(s): 3-axis accelerometer	
 						KX022
 ******************************************************************************/
-void Init_KX022(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_KX022()
+{
+
 }
 
 /*******************************************************************************
@@ -1484,104 +1338,84 @@ void Init_KMX061(){
 
 /*******************************************************************************
 	Routine Name:	Temperature_Sensor_20
-	Form:			void Temperature_Sensor_20( void )
+	Form:			void Temperature_Sensor_20(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 20.
 	Sensor Platform(s): Temperature Sensors	
 						BD1020HFV
 ******************************************************************************/
-void Init_Temperature_Sensor_20(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_Temperature_Sensor_20()
+{
+	// Do nothing!
+	// All configures (ADC0) are completed in Initialization() function.
 }
 
 /*******************************************************************************
-	Routine Name:	Temperature_Sensor_21
-	Form:			void Temperature_Sensor_21( void )
+	Routine Name:	Init_Temperature_Sensor_21
+	Form:			void Init_Temperature_Sensor_21(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 21.
 	Sensor Platform(s): Temperature Sensors
-						BDJ0601HFV
-						BDJ0701HFV
-						BDJ0751HFV
-						BDJ0801HFV
-						BDJ0851HFV
-						BDJ0901HFV						
+						BDJ0601HFV						
 ******************************************************************************/
-void Init_Temperature_Sensor_21(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_Temperature_Sensor_21()
+{
+	// Configure pins GPIO0 of Sensor Interface Header 1 is input with a pull-up resistor
+	SENINTF_HDR1_GPIO0(DIR) = 1;
+	
+	SENINTF_HDR1_GPIO0(C0) = 0;
+	SENINTF_HDR1_GPIO0(C1) = 1;
+	
+	SENINTF_HDR1_GPIO0(MD0) = 0;
+	SENINTF_HDR1_GPIO0(MD1) = 0;
 }
 
 /*******************************************************************************
-	Routine Name:	Temperature_Sensor_22
-	Form:			void Temperature_Sensor_22( void )
+	Routine Name:	Init_Temperature_Sensor_22
+	Form:			void Init_Temperature_Sensor_22(void)
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 22.
 	Sensor Platform(s): Temperature Sensors
-						BDE0600G
-						BDE0700G
-						BDE0800G
-						BDE0900G
-						BDE1000G
-						BDE1100G	
+						BDE0600G	
 ******************************************************************************/
-void Init_Temperature_Sensor_22(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_Temperature_Sensor_22()
+{
+	// Configure pins GPIO0 of Sensor Interface Header 1 is input with a pull-up resistor
+	SENINTF_HDR1_GPIO0(DIR) = 1;
+	
+	SENINTF_HDR1_GPIO0(C0) = 0;
+	SENINTF_HDR1_GPIO0(C1) = 1;
+	
+	SENINTF_HDR1_GPIO0(MD0) = 0;
+	SENINTF_HDR1_GPIO0(MD1) = 0;
 }
 
 /*******************************************************************************
-	Routine Name:	Temperature_Sensor_23
-	Form:			void Temperature_Sensor_23( void )
+	Routine Name:	Init_Temperature_Sensor_23
+	Form:			void Init_Temperature_Sensor_23( void )
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 23.
 	Sensor Platform(s): Temperature Sensors
 						BDJ0550HFV
-						BDJ0600HFV
-						BDJ0650HFV
-						BDJ0700HFV
-						BDJ0800HFV
 ******************************************************************************/
-void Init_Temperature_Sensor_23(){
-/*
-	char Flag = 0xff;
-	while(Flag)
-	{	
-		// Update SensorOutput
-		// SensorOutput = ;
-	}
-*/
+void Init_Temperature_Sensor_23()
+{
+	// Configure pins GPIO0 of Sensor Interface Header 1 is input with a pull-up resistor
+	SENINTF_HDR1_GPIO0(DIR) = 1;
+	
+	SENINTF_HDR1_GPIO0(C0) = 0;
+	SENINTF_HDR1_GPIO0(C1) = 1;
+	
+	SENINTF_HDR1_GPIO0(MD0) = 0;
+	SENINTF_HDR1_GPIO0(MD1) = 0;
 }
 
 /*******************************************************************************
