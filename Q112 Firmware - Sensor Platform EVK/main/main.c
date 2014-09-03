@@ -6,7 +6,7 @@
 // Purpose:	 Firmware for Q112 for Sensor Platform Board 
 // Updated:	 July 8th, 2014
 //*****************************************************************************
-#define DebugSensor	1
+#define DebugSensor	16
 
 // ============================= Sensor Platform Board Specs ============================== 
 //	UART to USB/PC:
@@ -70,7 +70,7 @@
 #define FLG_SET		( 0x01u )
 
 // SET DESIRED UART SETTINGS HERE! (Options in UART.h)
-#define UART_BAUDRATE		( UART_BR_9600BPS) 	// Data Bits Per Second - Tested at rates from 2400bps to 512000bps!
+#define UART_BAUDRATE		( UART_BR_115200BPS) 	// Data Bits Per Second - Tested at rates from 2400bps to 512000bps!
 #define UART_DATA_LENGTH	( UART_LG_8BIT )		// x-Bit Data
 #define UART_PARITY_BIT		( UART_PT_NON )		// Parity
 #define UART_STOP_BIT		( UART_STP_1BIT )		// x Stop-Bits
@@ -144,7 +144,7 @@ void MainOp_Ambient_Light_Sensor_8();
 void MainOp_Ambient_Light_Sensor_9();
 void MainOp_UV_Sensor_10();
 void MainOp_KX022();
-void MainOp_KMX061();
+void MainOp_KMX61();
 void MainOp_Temperature_Sensor_20();
 void MainOp_Temperature_Sensor_21();
 void MainOp_Temperature_Sensor_22();
@@ -159,7 +159,7 @@ void Init_Ambient_Light_Sensor_8();
 void Init_Ambient_Light_Sensor_9();
 void Init_UV_Sensor_10();
 void Init_KX022();
-void Init_KMX061();
+void Init_KMX61();
 void Init_Temperature_Sensor_20();
 void Init_Temperature_Sensor_21();
 void Init_Temperature_Sensor_22();
@@ -175,11 +175,14 @@ unsigned char	_reqNotHalt;
 
 union {
 	unsigned char	_uchar;
-	unsigned char	_ucharArr[4];
+	unsigned char	_ucharArr[6];
 	unsigned int	_uint;
-	unsigned int	_uintArr[2];
+	unsigned int	_uintArr[3];
+	int				_intArr[3];
 	float			_float;
-} uniSensorOut, uniTempVal, uniTempVal2;
+} uniRawSensorOut;
+
+float flSensorOut[3];
 
 /**
  * Ambient Light Sensors
@@ -194,6 +197,7 @@ const unsigned char BH17xxFVC_PWR_ON			= 0x01u;
 /**
  * BH1710FVC
  */		
+// Register addresses of BH1710FVC
 const unsigned char BH1710FVC_RESET				= 0x07u;
 const unsigned char BH1710FVC_CONT_H_RES_MOD	= 0x10u;
 const unsigned char BH1710FVC_CONT_M_RES_MOD	= 0x13u;
@@ -204,12 +208,14 @@ const unsigned char BH1710FVC_ONET_L_RES_MOD	= 0x26u;
 /**
  * BH1721FVC
  */
+// Register addresses of BH1721FVC
 const unsigned char BH1721FVC_CONT_A_RES_MOD	= 0x10u;	// or 0x20u
 const unsigned char BH1721FVC_CONT_H_RES_MOD	= 0x12u;	// or 0x22u
 const unsigned char BH1721FVC_CONT_L_RES_MOD	= 0x13u;	// or 0x16u or 0x23u or 0x26u
 /**
  * BH1730FVC
  */
+// Register addresses of BH1730FVC
 const unsigned char BH1730FVC_REG_CONTROL		= 0x80u;
 const unsigned char BH1730FVC_REG_TIMING		= 0x81u;
 const unsigned char BH1730FVC_REG_INTERRUPT		= 0x82u;
@@ -230,6 +236,7 @@ const unsigned char BH1730FVC_CMD_SW_RESET		= 0xe4u;
 /**
  * BH1780GLI
  */
+// Register addresses of BH1780GLI
 const unsigned char BH1780GLI_REG_CONTROL		= 0x80u;
 const unsigned char BH1780GLI_REG_PART_ID		= 0x8au;
 const unsigned char BH1780GLI_REG_MFG_ID		= 0x8bu;
@@ -249,6 +256,125 @@ const unsigned char BH1780GLI_REG_DATAHIGH		= 0x8du;
  *		Sensitivity	: s[V/°C]
  */
 #define Voltage2Temperature(v, v0, t0, s)	(v-(v0))/(s)+(t0)
+
+/**
+ * KX022 (± 2g/4g/8g Tri-axis Digital Accelerometer)
+ */
+// I2C device address of KX022
+const unsigned char KX022_I2C_ADDR		= 0x1eu;
+// Register addresses of KX022
+const unsigned char KX022_XHPL			= 0x00u;
+const unsigned char KX022_XHPH			= 0x01u;
+const unsigned char KX022_YHPL			= 0x02u;
+const unsigned char KX022_YHPH			= 0x03u;
+const unsigned char KX022_ZHPL			= 0x04u;
+const unsigned char KX022_ZHPH			= 0x05u;
+const unsigned char KX022_XOUTL			= 0x06u;
+const unsigned char KX022_XOUTH			= 0x07u;
+const unsigned char KX022_YOUTL			= 0x08u;
+const unsigned char KX022_YOUTH			= 0x09u;
+const unsigned char KX022_ZOUTL			= 0x0au;
+const unsigned char KX022_ZOUTH			= 0x0bu;
+const unsigned char KX022_COTR			= 0x0cu;
+const unsigned char KX022_WHO_AM_I		= 0x0fu;
+const unsigned char KX022_TSCP			= 0x10u;
+const unsigned char KX022_TSPP			= 0x11u;
+const unsigned char KX022_INS1			= 0x12u;
+const unsigned char KX022_INS2			= 0x13u;
+const unsigned char KX022_INS3			= 0x14u;
+const unsigned char KX022_STAT			= 0x15u;
+const unsigned char KX022_INT_REL		= 0x17u;
+const unsigned char KX022_CNTL1			= 0x18u;
+const unsigned char KX022_CNTL2			= 0x19u;
+const unsigned char KX022_CNTL3			= 0x1au;
+const unsigned char KX022_ODCNTL		= 0x1bu;
+const unsigned char KX022_INC1			= 0x1cu;
+const unsigned char KX022_INC2			= 0x1du;
+const unsigned char KX022_INC3			= 0x1eu;
+const unsigned char KX022_INC4			= 0x1fu;
+const unsigned char KX022_INC5			= 0x20u;
+const unsigned char KX022_INC6			= 0x21u;
+const unsigned char KX022_TILT_TIMER	= 0x22u;
+const unsigned char KX022_WUFC			= 0x23u;
+const unsigned char KX022_TDTRC			= 0x24u;
+const unsigned char KX022_TDTC			= 0x25u;
+const unsigned char KX022_TTH			= 0x26u;
+const unsigned char KX022_TTL			= 0x27u;
+const unsigned char KX022_FTD			= 0x28u;
+const unsigned char KX022_STD			= 0x29u;
+const unsigned char KX022_TLT			= 0x2au;
+const unsigned char KX022_TWS			= 0x2bu;
+const unsigned char KX022_ATH			= 0x30u;
+const unsigned char KX022_TILT_ANGLE_LL	= 0x32u;
+const unsigned char KX022_TILT_ANGLE_HL	= 0x33u;
+const unsigned char KX022_HYST_SET		= 0x34u;
+const unsigned char KX022_LP_CNTL		= 0x35u;
+const unsigned char KX022_BUF_CNTL1		= 0x3au;
+const unsigned char KX022_BUF_CNTL2		= 0x3bu;
+const unsigned char KX022_BUF_STATUS_1	= 0x3cu;
+const unsigned char KX022_BUF_STATUS_2	= 0x3du;
+const unsigned char KX022_BUF_CLEAR		= 0x3eu;
+const unsigned char KX022_BUF_READ		= 0x3fu;
+const unsigned char KX022_SELF_TEST		= 0x60u;
+
+/**
+ * KMX61 (Digital Tri-axis Magnetometer/Tri-axis Accelerometer)
+ */
+// I2C device address of KMX61
+const unsigned char KMX61_I2C_ADDR			= 0x0eu;
+// Register addresses of KMX61
+const unsigned char KMX61_WHO_AM_I			= 0x00u;
+const unsigned char KMX61_INS1				= 0x01u;
+const unsigned char KMX61_INS2				= 0x02u;
+const unsigned char KMX61_STATUS_REG		= 0x03u;
+const unsigned char KMX61_ACCEL_XOUT_L		= 0x0au;
+const unsigned char KMX61_ACCEL_XOUT_H		= 0x0bu;
+const unsigned char KMX61_ACCEL_YOUT_L		= 0x0cu;
+const unsigned char KMX61_ACCEL_YOUT_H		= 0x0du;
+const unsigned char KMX61_ACCEL_ZOUT_L		= 0x0eu;
+const unsigned char KMX61_ACCEL_ZOUT_H		= 0x0fu;
+const unsigned char KMX61_TEMP_OUT_L		= 0x10u;
+const unsigned char KMX61_TEMP_OUT_H		= 0x11u;
+const unsigned char KMX61_MAG_XOUT_L		= 0x12u;
+const unsigned char KMX61_MAG_XOUT_H		= 0x13u;
+const unsigned char KMX61_MAG_YOUT_L		= 0x14u;
+const unsigned char KMX61_MAG_YOUT_H		= 0x15u;
+const unsigned char KMX61_MAG_ZOUT_L		= 0x16u;
+const unsigned char KMX61_MAG_ZOUT_H		= 0x17u;
+const unsigned char KMX61_XOUT_HPF_L		= 0x18u;
+const unsigned char KMX61_XOUT_HPF_H		= 0x19u;
+const unsigned char KMX61_YOUT_HPF_L		= 0x1au;
+const unsigned char KMX61_YOUT_HPF_H		= 0x1bu;
+const unsigned char KMX61_ZOUT_HPF_L		= 0x1cu;
+const unsigned char KMX61_ZOUT_HPF_H		= 0x1du;
+const unsigned char KMX61_SN_1				= 0x24u;
+const unsigned char KMX61_SN_2				= 0x25u;
+const unsigned char KMX61_SN_3				= 0x26u;
+const unsigned char KMX61_SN_4				= 0x27u;
+const unsigned char KMX61_INL				= 0x28u;
+const unsigned char KMX61_STBY_REG			= 0x29u;
+const unsigned char KMX61_CNTL1				= 0x2au;
+const unsigned char KMX61_CNTL2				= 0x2bu;
+const unsigned char KMX61_ODCNTL			= 0x2cu;
+const unsigned char KMX61_INC1				= 0x2du;
+const unsigned char KMX61_INC2				= 0x2eu;
+const unsigned char KMX61_INC3				= 0x2fu;
+const unsigned char KMX61_COTR				= 0x3cu;
+const unsigned char KMX61_WUFTH				= 0x3du;
+const unsigned char KMX61_WUFC				= 0x3eu;
+const unsigned char KMX61_BTH				= 0x3fu;
+const unsigned char KMX61_BTSC				= 0x40u;
+const unsigned char KMX61_TEMP_EN_CNTL		= 0x4cu;
+const unsigned char KMX61_SELF_TEST			= 0x60u;
+const unsigned char KMX61_BUF_THRESH_H		= 0x76u;
+const unsigned char KMX61_BUF_THRESH_L		= 0x77u;
+const unsigned char KMX61_BUF_CTRL1			= 0x78u;
+const unsigned char KMX61_BUF_CTRL2			= 0x79u;
+const unsigned char KMX61_BUF_CLEAR			= 0x7au;
+const unsigned char KMX61_BUF_STATUS_REG	= 0x7bu;
+const unsigned char KMX61_BUF_STATUS_H		= 0x7cu;
+const unsigned char KMX61_BUF_STATUS_L		= 0x7du;
+const unsigned char KMX61_BUF_READ			= 0x7eu;
 
 /* //Sensor Variables
 static unsigned char			SAD_KMX61 = 0x0E;
@@ -296,14 +422,14 @@ static unsigned char SensorIntializationFlag = 1;
 //  	Start of MAIN FUNCTION
 //===========================================================================
 int main(void) 
-{ 
+{ 	
 	Initialization(); //Ports, UART, Timers, Oscillator, Comparators, etc.
 
 	PRINTF(WelcomeString);
 	
-#ifdef DebugSensor //Debug Initialization For devices
+#ifdef DebugSensor // Debug Initialization For devices
 	SensorIntializationFlag = 1;
-	SensorPlatformSelection = 21;
+	SensorPlatformSelection = DebugSensor;
 #endif
 	
 MainLoop:
@@ -347,7 +473,7 @@ MainLoop:
 			MainOp_KX022(); // Refer to function description for list of sensors 
 			break;
 		case 16:
-			MainOp_KMX061(); // Refer to function description for list of sensors 
+			MainOp_KMX61(); // Refer to function description for list of sensors 
 			break;
 		case 20:
 			MainOp_Temperature_Sensor_20(); // Refer to function description for list of sensors 
@@ -644,7 +770,7 @@ void SensorInitialization(void)
 			Init_KX022(); // Refer to function description for list of sensors 
 			break;
 		case 16:
-			Init_KMX061(); // Refer to function description for list of sensors 
+			Init_KMX61(); // Refer to function description for list of sensors 
 			break;
 		case 20:
 			Init_Temperature_Sensor_20(); // Refer to function description for list of sensors 
@@ -733,9 +859,9 @@ void MainOp_Hall_Effect_Sensors_2()
 ******************************************************************************/
 void MainOp_Ambient_Light_Sensor_5()
 {	
-	uniTempVal._uint = ADC_Read(0);
+	uniRawSensorOut._uint = ADC_Read(0);
 	// Viout = ADCVal x Vref / (2^10-1)
-	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	flSensorOut[0] = uniRawSensorOut._uint*3.3f/1023;
 	// Calculate illuminance (lx)
 	//     - H-Gain mode(GC[2-1]=01): Viout = 0.57 x 10-6 x Ev x R1, Ev-max = 1000
 	//     - M-Gain mode(GC[2-1]=10): Viout = 0.057 x 10-6 x Ev x R1, Ev-max = 10000
@@ -743,22 +869,22 @@ void MainOp_Ambient_Light_Sensor_5()
 	switch(SENINTF_HDR1_GPIO1(D)<<1|SENINTF_HDR1_GPIO0(D))
 	{
 		case 1: // H-Gain mode
-			uniSensorOut._float = uniTempVal2._float/(0.57e-6f*5.6e3f);
+			flSensorOut[0] = flSensorOut[0]/(0.57e-6f*5.6e3f);
 			break;
 		case 2: // M-Gain mode
-			uniSensorOut._float = uniTempVal2._float/(0.057e-6f*5.6e3f);
+			flSensorOut[0] = flSensorOut[0]/(0.057e-6f*5.6e3f);
 			break;
 		case 3: // L-Gain mode
-			uniSensorOut._float = uniTempVal2._float/(0.0057e-6f*5.6e3f);
+			flSensorOut[0] = flSensorOut[0]/(0.0057e-6f*5.6e3f);
 			break;
 		case 0:	// Shutdown
 		default:
-			uniSensorOut._float = 0;
+			flSensorOut[0] = 0;
 			break;
 	}
 	// Scale for 10bits value to 8bits value
-	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
-	printf("\033[2K\rBH1620FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
+	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>2);
+	printf("\033[2K\rBH1620FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -778,14 +904,14 @@ void MainOp_Ambient_Light_Sensor_6()
 	//     - Max M-Resolution Mode Measurement Time: 24ms
 	//     - Max L-Resolution Mode Measurement Time: 4.5ms
 	// NOPms(24);
-	I2C_Read(BH17xxFVC_ADDR_1, NULL, 0, uniTempVal._ucharArr, 2);
+	I2C_Read(BH17xxFVC_ADDR_1, NULL, 0, uniRawSensorOut._ucharArr, 2);
 	
 	// Calculate illuminance (lx)
 	//     Measurement Accuracy (Typ. 1.2) = Sensor out / Actual Illuminance 
-	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
+	flSensorOut[0] = (uniRawSensorOut._ucharArr[0]<<8|uniRawSensorOut._ucharArr[1])/1.2f;
 	
-	LEDOUT = uniTempVal._ucharArr[0];
-	printf("\033[2K\rBH1710FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
+	LEDOUT = uniRawSensorOut._ucharArr[0];
+	printf("\033[2K\rBH1710FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -805,27 +931,27 @@ void MainOp_Ambient_Light_Sensor_7()
 	// NOPms(150);
 	
 	// Start read data with start address is DATA0LOW
-	I2C_Read(BH17xxFVC_ADDR_2, NULL, 0, uniTempVal._ucharArr, 4);
+	I2C_Read(BH17xxFVC_ADDR_2, NULL, 0, uniRawSensorOut._ucharArr, 4);
 	
 	// Calculate illuminance (lx)
 	//     - DATA1/DATA0<0.26: Lx = ( 1.290*DATA0 - 2.733*DATA1 ) / GAIN * 100ms / TIMING
 	//     - DATA1/DATA0<0.55: Lx = ( 0.795*DATA0 - 0.859*DATA1 ) / GAIN * 100ms / TIMING
 	//     - DATA1/DATA0<1.09: Lx = ( 0.510*DATA0 - 0.345*DATA1 ) / GAIN * 100ms / TIMING
 	//     - DATA1/DATA0<2.13: Lx = ( 0.276*DATA0 - 0.130*DATA1 ) / GAIN * 100ms / TIMING
-	uniTempVal2._float = (float)uniTempVal._uintArr[1]/uniTempVal._uintArr[0];
-	if(uniTempVal2._float<0.26f)
-		uniSensorOut._float = (1.290f*uniTempVal._uintArr[0]-2.733f*uniTempVal._uintArr[1])/1*100/218;
-	else if(uniTempVal2._float<0.55f)
-		uniSensorOut._float = (0.795f*uniTempVal._uintArr[0]-0.859f*uniTempVal._uintArr[1])/1*100/218;
-	else if(uniTempVal2._float<1.09f)
-		uniSensorOut._float = (0.510f*uniTempVal._uintArr[0]-0.345f*uniTempVal._uintArr[1])/1*100/218;
-	else if(uniTempVal2._float<2.13f)
-		uniSensorOut._float = (0.276f*uniTempVal._uintArr[0]-0.130f*uniTempVal._uintArr[1])/1*100/218;
+	flSensorOut[0] = (float)uniRawSensorOut._uintArr[1]/uniRawSensorOut._uintArr[0];
+	if(flSensorOut[0]<0.26f)
+		flSensorOut[0] = (1.290f*uniRawSensorOut._uintArr[0]-2.733f*uniRawSensorOut._uintArr[1])/1*100/218;
+	else if(flSensorOut[0]<0.55f)
+		flSensorOut[0] = (0.795f*uniRawSensorOut._uintArr[0]-0.859f*uniRawSensorOut._uintArr[1])/1*100/218;
+	else if(flSensorOut[0]<1.09f)
+		flSensorOut[0] = (0.510f*uniRawSensorOut._uintArr[0]-0.345f*uniRawSensorOut._uintArr[1])/1*100/218;
+	else if(flSensorOut[0]<2.13f)
+		flSensorOut[0] = (0.276f*uniRawSensorOut._uintArr[0]-0.130f*uniRawSensorOut._uintArr[1])/1*100/218;
 	else
-		uniSensorOut._float = 0;
+		flSensorOut[0] = 0;
 	
-	LEDOUT = uniTempVal._ucharArr[1];
-	printf("\033[2K\rBH1730FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
+	LEDOUT = uniRawSensorOut._ucharArr[1];
+	printf("\033[2K\rBH1730FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -844,14 +970,14 @@ void MainOp_Ambient_Light_Sensor_8()
 	//     - Max Auto/H-Resolution Mode Measurement Time: 180ms
 	//     - Max L-Resolution Mode Measurement Time: 24ms
 	// NOPms(180);
-	I2C_Read(BH17xxFVC_ADDR_1, NULL, 0, uniTempVal._ucharArr, 2);
+	I2C_Read(BH17xxFVC_ADDR_1, NULL, 0, uniRawSensorOut._ucharArr, 2);
 	
 	// Calculate illuminance (lx)
 	//     Measurement Accuracy (Typ. 1.2) = Sensor out / Actual Illuminance 
-	uniSensorOut._float = (uniTempVal._ucharArr[0]<<8|uniTempVal._ucharArr[1])/1.2f;
+	flSensorOut[0] = (uniRawSensorOut._ucharArr[0]<<8|uniRawSensorOut._ucharArr[1])/1.2f;
 	
-	LEDOUT = uniTempVal._ucharArr[0];
-	printf("\033[2K\rBH1721FVC> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
+	LEDOUT = uniRawSensorOut._ucharArr[0];
+	printf("\033[2K\rBH1721FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -871,14 +997,14 @@ void MainOp_Ambient_Light_Sensor_9()
 	// NOPms(250);
 	
 	// Start read data with start address is DATALOW
-	I2C_Read(BH17xxFVC_ADDR_2, NULL, 0, uniTempVal._ucharArr, 2);
+	I2C_Read(BH17xxFVC_ADDR_2, NULL, 0, uniRawSensorOut._ucharArr, 2);
 	
 	// Calculate illuminance (lx)
 	//     Measurement Accuracy (Typ. 1) = Sensor out / Actual Illuminance
-	uniSensorOut._float = uniTempVal._uint;
+	flSensorOut[0] = uniRawSensorOut._uint;
 	
-	LEDOUT = uniTempVal._ucharArr[1];
-	printf("\033[2K\rBH1780GLI> Ambient Light = %lu[lx]", (unsigned long)uniSensorOut._float);
+	LEDOUT = uniRawSensorOut._ucharArr[1];
+	printf("\033[2K\rBH1780GLI> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -893,14 +1019,14 @@ void MainOp_Ambient_Light_Sensor_9()
 ******************************************************************************/
 void MainOp_UV_Sensor_10()
 {
-	uniTempVal._uint = ADC_Read(0);
+	uniRawSensorOut._uint = ADC_Read(0);
 	// Vsenout = ADCVal x Vref / (2^10-1)
-	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	flSensorOut[0] = uniRawSensorOut._uint*3.3f/1023;
 	// Calculate UV Intensity (mW/cm2)
-	uniSensorOut._float = Voltage2UVIntensity(uniTempVal2._float);
+	flSensorOut[1] = Voltage2UVIntensity(flSensorOut[0]);
 	// Scale for 10bits value to 8bits value
-	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
-	printf("\033[2K\rML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>2);
+	printf("\033[2K\rML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -915,57 +1041,51 @@ void MainOp_UV_Sensor_10()
 ******************************************************************************/
 void MainOp_KX022()
 {
-
+	// Wait 20ms(50Hz) to data updated
+	// NOPms(20);
+	
+	// Start read data with start address is XOUT_L
+	I2C_Read(KX022_I2C_ADDR, KX022_XOUTL, 1, uniRawSensorOut._ucharArr, 6);
+	
+	// Calculate acceleration
+	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/16384.0f;	// X
+	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/16384.0f;	// Y
+	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/16384.0f;	// Y
+	
+	printf("\033[2K\rKX022> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]",
+		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 }
 
 /*******************************************************************************
-	Routine Name:	MainOp_KMX061
-	Form:			void MainOp_KMX061( void )
+	Routine Name:	MainOp_KMX61
+	Form:			void MainOp_KMX61( void )
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 16.
 	Sensor Platform(s): 6-Axis Accelerometer/Magnetometer
-						KMX061
+						KMX61
 ******************************************************************************/
-void MainOp_KMX061(){ 
-	/* char Flag = 0xff;
-	int c;
-	//Conn: Vio->3.3, int->p7, scl->p9, sda->10
-	while(PC7D)
-	{
-		main_clrWDT(); 
+void MainOp_KMX61()
+{ 
+	// Start read accelerometer output data with start address is ACCEL_XOUT_L
+	I2C_Read(KMX61_I2C_ADDR, KMX61_ACCEL_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
+	// Calculate acceleration
+	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/256.0f;	// X
+	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/256.0f;	// Y
+	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/256.0f;	// Y
 		
-		//EPB3 = 0;		//Turn off Accel/Gyro Interrupt.  This can probably be removed...
-		//----- Accel/Gryo Start I2C Command ----- 
-		_flgI2CFin = 0;																	//reset I2C completed Flag
-		i2c_stop();																		//Make sure I2C is not currently running
-		I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-		i2c_startReceive(SAD_KMX61, &KMX61_AXL, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-		while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-			main_clrWDT();
-		}  
-		tmp = (KMX61_VALUE[0]);
-		_flgI2CFin = 0;																	//reset I2C completed Flag
-		i2c_stop();				 													//Make sure I2C is not currently running
-		I20MD = 0;		//Switch to I2C Fast Operation (400kbps)
-		i2c_startReceive(SAD_KMX61, &KMX61_AXH, 1, &KMX61_VALUE, 1, (cbfI2c)_funcI2CFin);	//Begin I2C Receive Command
-		while(_flgI2CFin != 1){															//Wait for I2C commands to finish transfer
-			main_clrWDT();
-		} 
-		tmp1 = (KMX61_VALUE[0])<<8; 
-		tempVal = (tmp|tmp1)>>2;
-		//Better UART Send w/ String Formatting
-		// c = sprintf(PrintContent, "ax( %d )\r", tempVal);  
-		// _flgUartFin = 0; 
-		// uart_stop();
-		// uart_startSend(PrintContent, c, _funcUartFin);  
-		// while(_flgUartFin != 1){
-			// main_clrWDT();
-		// }  
-		//EPB3 = 1;		//Turns Accel/Gyro Interrupt back on... again, this may not be necessary 
-	}  */
+	printf("\033[0J\rKMX61> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]\n\r",
+		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
+	
+	// Start read magnetometer output data with start address is MAG_XOUT_L
+	I2C_Read(KMX61_I2C_ADDR, KMX61_MAG_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
+	// Calculate magnetic
+	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]*0.146f;	// X
+	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]*0.146f;	// Y
+	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]*0.146f;	// Y
+	printf("KMX61> MagX_raw = %d, MagX_scaled = %.05f[uT], MagY_raw = %d, MagY_scaled = %.05f[uT], MagZ_raw = %d, MagZ_scaled = %.05f[uT]\033[1F",
+		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 }
 
 /*******************************************************************************
@@ -980,14 +1100,14 @@ void MainOp_KMX061(){
 ******************************************************************************/
 void MainOp_Temperature_Sensor_20()
 {
-	uniTempVal._uint = ADC_Read(0);
+	uniRawSensorOut._uint = ADC_Read(0);
 	// Vsenout = ADCVal x Vref / (2^10-1)
-	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	flSensorOut[0] = uniRawSensorOut._uint*3.3f/1023;
 	// Calculate Temperature (°C)
-	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.3f, 30.0f, -0.0082f);
+	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 8bits value
-	LEDOUT = (unsigned char)(uniTempVal._uint>>2);
-	printf("\033[2K\rBD1020HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>2);
+	printf("\033[2K\rBD1020HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -1002,14 +1122,14 @@ void MainOp_Temperature_Sensor_20()
 ******************************************************************************/
 void MainOp_Temperature_Sensor_21()
 {
-	uniTempVal._uint = ADC_Read(0);
+	uniRawSensorOut._uint = ADC_Read(0);
 	// Vsenout = ADCVal x Vref / (2^10-1)
-	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	flSensorOut[0] = uniRawSensorOut._uint*3.3f/1023;
 	// Calculate Temperature (°C)
-	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.3f, 30.0f, -0.0082f);
+	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 7bits value
-	LEDOUT = (unsigned char)(uniTempVal._uint>>3);
-	printf("\033[1F\033[2K\rBDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
+	printf("\033[1F\033[2K\rBDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==1)
 		PRINTF("\n\033[2K\rBDJ0601HFV> Temperature Threshold Reached.");
 	else
@@ -1028,14 +1148,14 @@ void MainOp_Temperature_Sensor_21()
 ******************************************************************************/
 void MainOp_Temperature_Sensor_22()
 {
-	uniTempVal._uint = ADC_Read(0);
+	uniRawSensorOut._uint = ADC_Read(0);
 	// Vsenout = ADCVal x Vref / (2^10-1)
-	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	flSensorOut[0] = uniRawSensorOut._uint*3.3f/1023;
 	// Calculate Temperature (°C)
-	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.753f, 30.0f, -0.01068f);
+	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.753f, 30.0f, -0.01068f);
 	// Scale for 10bits value to 7bits value
-	LEDOUT = (unsigned char)(uniTempVal._uint>>3);
-	printf("\033[1F\033[2K\rBDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
+	printf("\033[1F\033[2K\rBDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==0)
 		PRINTF("\n\033[2K\rBDE0600G> Temperature Threshold Reached.");
 	else
@@ -1054,14 +1174,14 @@ void MainOp_Temperature_Sensor_22()
 ******************************************************************************/
 void MainOp_Temperature_Sensor_23()
 {
-	uniTempVal._uint = ADC_Read(0);
+	uniRawSensorOut._uint = ADC_Read(0);
 	// Vsenout = ADCVal x Vref / (2^10-1)
-	uniTempVal2._float = uniTempVal._uint*3.3f/1023;
+	flSensorOut[0] = uniRawSensorOut._uint*3.3f/1023;
 	// Calculate Temperature (°C)
-	uniSensorOut._float = Voltage2Temperature(uniTempVal2._float, 1.3f, 30.0f, -0.0082f);
+	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 7bits value
-	LEDOUT = (unsigned char)(uniTempVal._uint>>3);
-	printf("\033[1F\033[2K\rBDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", uniSensorOut._float, uniTempVal2._float);
+	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
+	printf("\033[1F\033[2K\rBDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==0)
 		PRINTF("\n\033[2K\rBDJ0550HFV> Temperature Threshold Reached.");
 	else
@@ -1229,10 +1349,9 @@ void Init_Ambient_Light_Sensor_8()
 ******************************************************************************/
 void Init_Ambient_Light_Sensor_9()
 {
-	unsigned char cTmp = 0x3;
-	
+	uniRawSensorOut._uchar = 0x3;
 	// Power on sensor
-	I2C_Write(BH17xxFVC_ADDR_2, &BH1780GLI_REG_CONTROL, 1, &cTmp, 1);
+	I2C_Write(BH17xxFVC_ADDR_2, &BH1780GLI_REG_CONTROL, 1, &uniRawSensorOut._uchar, 1);
 	// Update value of Command register to read measurement value
 	I2C_Write(BH17xxFVC_ADDR_2, &BH1780GLI_REG_DATALOW, 1, NULL, 0);
 }
@@ -1265,75 +1384,55 @@ void Init_UV_Sensor_10()
 ******************************************************************************/
 void Init_KX022()
 {
-
+	// Set accelerometer to stand-by mode(PC1=0), +/-2g, 16bits
+	uniRawSensorOut._uchar = 0x40u;
+	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL1, 1, &uniRawSensorOut._uchar, 1);
+	// Set Output Data Rate(ODR) of accelerometer to 50Hz
+	uniRawSensorOut._uchar = 0x02u;
+	I2C_Write(KX022_I2C_ADDR, &KX022_ODCNTL, 1, &uniRawSensorOut._uchar, 1);
+	// Set accelerometer to operating mode(PC1=1)
+	uniRawSensorOut._uchar = 0xc0u;
+	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL1, 1, &uniRawSensorOut._uchar, 1);
 }
 
 /*******************************************************************************
-	Routine Name:	Init_KMX061
-	Form:			void Init_KMX061( void )
+	Routine Name:	Init_KMX61
+	Form:			void Init_KMX61( void )
 	Parameters:		void
 	Return value:	void
 	Initialization: None.
-	Description:	Gets the output of Sensor of Sensor Control 0 and stores the
-					output to a var SensorOutput.
+	Description:	Gets the output of Sensor of Sensor Control 16.
 	Sensor Platform(s): 6-Axis Accelerometer/Magnetometer
-						KMX061
+						KMX61
 ******************************************************************************/
-void Init_KMX061(){ 
-	/* _flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &STBY_REG , 1,&STBY_REG_OFF_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} 
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &SELF_TEST , 1,&SELF_TEST_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} 
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &CNTL1 , 1,&CNTL1_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} 
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &CNTL2 , 1,&CNTL2_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} 
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &ODCNTL , 1,&ODCNTL_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	}  
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &TEMP_EN_CNTL , 1,&TEMP_EN_CNTL_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	}
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &BUF_CTRL1 , 1,&BUF_CTRL1_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} 
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &BUF_CTRL2 , 1,&BUF_CTRL2_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	} 
-	_flgI2CFin = 0;														//reset I2C completed flag
-	i2c_stop();															//Make sure I2C is not currently running
-	i2c_startSend(SAD_KMX61, &STBY_REG , 1,&STBY_REG_DATA , 1, (cbfI2c)_funcI2CFin);		//Begin I2C Receive Command
-	while(_flgI2CFin != 1){												//Wait for I2C commands to finish transfer
-		main_clrWDT();
-	}  */
+void Init_KMX61()
+{ 
+	// Set accelerometer and magnetometer to stand-by mode
+	uniRawSensorOut._uchar = 0x03u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_STBY_REG, 1, &uniRawSensorOut._uchar, 1);
+	// Disable self-test function
+	uniRawSensorOut._uchar = 0x0u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_SELF_TEST, 1, &uniRawSensorOut._uchar, 1);
+	// Disable Back to Sleep engine, Wake up engine and interrupt pin.
+	// Set operating mode is higher power mode and +/-8g, 14-bit
+	uniRawSensorOut._uchar = 0x13u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_CNTL1, 1, &uniRawSensorOut._uchar, 1);
+	// Set Output Data Rate at which the wake up (motion detection) is 0.781Hz
+	uniRawSensorOut._uchar = 0x0u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_CNTL2, 1, &uniRawSensorOut._uchar, 1);
+	// Set Output Data Rate of accelerometer and magnetometer are 12.5Hz
+	uniRawSensorOut._uchar = 0x0u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_ODCNTL, 1, &uniRawSensorOut._uchar, 1);
+	// Enable the Temperature output when the Magnetometer is on
+	uniRawSensorOut._uchar = 0x01u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_TEMP_EN_CNTL, 1, &uniRawSensorOut._uchar, 1);
+	// Set operating mode of the sample buffer is FIFO
+	uniRawSensorOut._uchar = 0x0u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_BUF_CTRL1, 1, &uniRawSensorOut._uchar, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_BUF_CTRL2, 1, &uniRawSensorOut._uchar, 1);
+	// Set accelerometer and magnetometer to operating mode
+	uniRawSensorOut._uchar = 0x0u;
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_STBY_REG, 1, &uniRawSensorOut._uchar, 1);
 }
 
 /*******************************************************************************
@@ -1831,3 +1930,4 @@ TimerRestart:
 		goto TimerRestart;
 	}
 }
+	
