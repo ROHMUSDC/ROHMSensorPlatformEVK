@@ -1,0 +1,860 @@
+RLU8 Object Linker, Ver.1.51.2 Linkage Information
+[Wed Sep 10 14:00:09 2014]
+
+
+                         ------------------
+                          Control Synopsis
+                         ------------------
+
+I/O controls:    D  SD NS NA
+Other controls: CC STACK( 0100H(256) )
+                COMB( $$content_of_init $$end_of_init )
+                COMB( $$init_info $$init_info_end )
+
+
+
+                        ------------------------
+                         Object Module Synopsis
+                        ------------------------
+                                                                Creator
+Module Name           File Name                                 CCU8     RASU8
+-----------           ---------                                 -----    -----
+i2c                   _output\_obj\i2c.obj                      3.31     1.61
+irq                   _output\_obj\irq.obj                      3.31     1.61
+main                  _output\_obj\main.obj                     3.31     1.61
+ml610112              _output\_obj\ml610112.obj                 -.--     1.61
+tbc                   _output\_obj\tbc.obj                      3.31     1.61
+timer                 _output\_obj\timer.obj                    3.31     1.61
+uart                  _output\_obj\uart.obj                     3.31     1.61
+ULDIVSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+DIV32SW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+UIDIVSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+FDIVSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FSUBSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FTOESW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ROUNSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+NORMSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+CIDIMOSW              C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+printf_n              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xfiles                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+fwrite_f              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+memchr_f              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+memcpy_nf             C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+fflush                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+EDIVSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+CMPFSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ETOFSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FADDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+EADDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+SHIFTSW               C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FCMPSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ECMPSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FILDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+LTOESW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FMULSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+EMULSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FTOLSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ETOLSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FTODSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+ETODSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+FULDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+IMULSW                C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+xprintf_nn            C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xctype                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+strchr_n              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+strcpy_nn             C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xfwprep               C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+malloc_n              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xgetmem_n             C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+free_n                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xputfld               C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xldtob                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+DNEGSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DDIVSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DSUBSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+SLDIVSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+xgenld                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+SIDIVSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+DTOESW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+strlen_f              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+ldiv                  C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xldunsca              C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+xdnorm                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+SLDIMOSW              C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+memcpy_ff             C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+memcpy_fn             C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+SIDIMOSW              C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+DADDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DCMPSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DILDSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DMULSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+DTOLSW                C:\PROGRA~2\U8Dev\Lib\doubleu8.lib        -.--     1.04
+SIMODSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+LMULSW                C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+xlitob                C:\PROGRA~2\U8Dev\Lib\LU8100sw.lib        -.--     1.04
+ULMODSW               C:\PROGRA~2\U8Dev\Lib\longu8.lib          -.--     1.04
+
+
+Number of Modules: 74
+
+Number of Symbols:
+ +---------------------------------------------------------------------------+
+ |          | CODE | DATA | BIT  |NVDATA|NVBIT |TABLE |NUMBER| TBIT || total |
+ |----------+------+------+------+------+------+------+------+------++-------|
+ | SEGMENT  |   183|     8|     0|     0|     0|   187|      |      ||    378|
+ |----------+------+------+------+------+------+------+------+------++-------|
+ | COMMUNAL |     0|     6|     0|     0|     0|     0|      |      ||      6|
+ |----------+------+------+------+------+------+------+------+------++-------|
+ | PUBLIC   |   134|     2|     0|     0|     0|   144|     0|     0||    280|
+ +---------------------------------------------------------------------------+
+
+Target:  ML610112 
+Model:   SMALL
+
+
+Memory Map - Program memory space #0:
+      Type     Start      Stop
+     -----------------------------
+      ROM      00:0000    00:7FFF
+
+Memory Map - Data memory space #0:
+      Type     Start      Stop
+     -----------------------------
+      RAM      00:E000    00:FFFF
+
+Memory Map - Memory space above #1:
+      Type     Start      Stop
+     -----------------------------
+      ROM      02:0000    02:0FFF
+      ROM      08:0000    08:7FFF
+      ROM      0A:0000    0A:0FFF
+
+                         ------------------
+                          Segment Synopsis
+                         ------------------
+
+Link Map - Program memory space #0 ( ROMWINDOW: 0000 - 7FFF )
+
+      Type     Start      Stop       Size              Name
+     -------------------------------------------------------
+      S CODE   00:0000    00:0001    0002(2)           (absolute)
+      S CODE   00:0002    00:0003    0002(2)           (absolute)
+      S CODE   00:0004    00:0005    0002(2)           (absolute)
+      S TABLE  00:0006    00:0006    0001(1)           $$TABKMX61_STBY_REG$main
+>GAP<          00:0007    00:0007    0001(1)           (ROM)
+      S CODE   00:0008    00:0009    0002(2)           (absolute)
+      S TABLE  00:000A    00:000A    0001(1)           $$TABKX022_ODCNTL$main
+>GAP<          00:000B    00:000B    0001(1)           (ROM)
+      S CODE   00:000C    00:0077    006C(108)         (absolute)
+      S TABLE  00:0078    00:00A5    002E(46)          $$NTABmain$main
+      S TABLE  00:00A6    00:00F5    0050(80)          $$XNTABxldtob
+      S TABLE  00:00F6    00:014D    0058(88)          $$XNTABxprintf_nn
+      S TABLE  00:014E    00:014E    0001(1)           $$TABBH1730FVC_REG_CONTROL$main
+>GAP<          00:014F    00:014F    0001(1)           (ROM)
+      S TABLE  00:0150    00:0150    0001(1)           $$TABBH1730FVC_REG_DATA0LOW$main
+>GAP<          00:0151    00:0151    0001(1)           (ROM)
+      S TABLE  00:0152    00:024F    00FE(254)         $$TAB$$S30$main
+      S TABLE  00:0250    00:02CF    0080(128)         $$TABLE_SEGMENT
+      S TABLE  00:02D0    00:0301    0032(50)          $$TAB$$S123$main
+      S TABLE  00:0302    00:0335    0034(52)          $$TAB$$S132$main
+      S TABLE  00:0336    00:0369    0034(52)          $$TAB$$S141$main
+      S TABLE  00:036A    00:0397    002E(46)          $$TAB$$S147$main
+      S TABLE  00:0398    00:03C9    0032(50)          $$TAB$$S149$main
+      S TABLE  00:03CA    00:03F1    0028(40)          $$TAB$$S160$main
+      S TABLE  00:03F2    00:0419    0028(40)          $$TAB$$S162$main
+      S TABLE  00:041A    00:0448    002F(47)          $$TAB$$S201$main
+>GAP<          00:0449    00:0449    0001(1)           (ROM)
+      S TABLE  00:044A    00:048B    0042(66)          $$TAB$$S205$main
+      S TABLE  00:048C    00:04BC    0031(49)          $$TAB$$S208$main
+>GAP<          00:04BD    00:04BD    0001(1)           (ROM)
+      S TABLE  00:04BE    00:04F2    0035(53)          $$TAB$$S210$main
+>GAP<          00:04F3    00:04F3    0001(1)           (ROM)
+      S TABLE  00:04F4    00:0527    0034(52)          $$TAB$$S143$main
+      S TABLE  00:0528    00:054F    0028(40)          $$TAB$$S176$main
+      S TABLE  00:0550    00:0577    0028(40)          $$TAB$$S178$main
+      S TABLE  00:0578    00:059F    0028(40)          $$TAB$$S180$main
+      S TABLE  00:05A0    00:05DD    003E(62)          $$TAB$$S182$main
+      S TABLE  00:05DE    00:0669    008C(140)         $$TAB$$S184$main
+      S TABLE  00:066A    00:06F7    008E(142)         $$TAB$$S186$main
+      S TABLE  00:06F8    00:0779    0082(130)         $$TAB$$S187$main
+      S TABLE  00:077A    00:07B6    003D(61)          $$TAB$$S189$main
+>GAP<          00:07B7    00:07B7    0001(1)           (ROM)
+      S TABLE  00:07B8    00:07F9    0042(66)          $$TAB$$S191$main
+      S TABLE  00:07FA    00:082A    0031(49)          $$TAB$$S194$main
+>GAP<          00:082B    00:082B    0001(1)           (ROM)
+      S TABLE  00:082C    00:0860    0035(53)          $$TAB$$S196$main
+>GAP<          00:0861    00:0861    0001(1)           (ROM)
+      S TABLE  00:0862    00:08A1    0040(64)          $$TAB$$S198$main
+      S TABLE  00:08A2    00:08D4    0033(51)          $$TAB$$S203$main
+>GAP<          00:08D5    00:08D5    0001(1)           (ROM)
+      S TABLE  00:08D6    00:08D6    0001(1)           $$TABBH1710FVC_CONT_M_RES_MOD$main
+>GAP<          00:08D7    00:08D7    0001(1)           (ROM)
+      S TABLE  00:08D8    00:08D8    0001(1)           $$TABKMX61_TEMP_EN_CNTL$main
+>GAP<          00:08D9    00:08D9    0001(1)           (ROM)
+      S TABLE  00:08DA    00:094B    0072(114)         $$NINITTAB
+      S TABLE  00:094C    00:094D    0002(2)           _$$init_malloc_near
+      S TABLE  00:094E    00:094E    0001(1)           $$TABKMX61_SELF_TEST$main
+>GAP<          00:094F    00:094F    0001(1)           (ROM)
+      S TABLE  00:0950    00:0971    0022(34)          $$XNTABxlitob
+      S TABLE  00:0972    00:0979    0008(8)           $$init_info
+      S TABLE  00:097A    00:097B    0002(2)           $$init_info_end
+      S TABLE  00:097C    00:097C    0001(1)           $$TABBH17xxFVC_PWR_ON$main
+>GAP<          00:097D    00:097D    0001(1)           (ROM)
+      S TABLE  00:097E    00:097E    0001(1)           $$TABBH1780GLI_REG_CONTROL$main
+>GAP<          00:097F    00:097F    0001(1)           (ROM)
+      S TABLE  00:0980    00:0980    0001(1)           $$TABBH1730FVC_REG_TIMING$main
+>GAP<          00:0981    00:0981    0001(1)           (ROM)
+      S TABLE  00:0982    00:0982    0001(1)           $$TABBH1730FVC_REG_GAIN$main
+>GAP<          00:0983    00:0983    0001(1)           (ROM)
+      S TABLE  00:0984    00:0984    0001(1)           $$TABKMX61_ODCNTL$main
+>GAP<          00:0985    00:0985    0001(1)           (ROM)
+      S TABLE  00:0986    00:0986    0001(1)           $$TABBH1730FVC_REG_INTERRUPT$main
+>GAP<          00:0987    00:0987    0001(1)           (ROM)
+      S TABLE  00:0988    00:0997    0010(16)          $$NTABADC_Read$main
+      S TABLE  00:0998    00:0998    0001(1)           $$TABKX022_CNTL1$main
+>GAP<          00:0999    00:0999    0001(1)           (ROM)
+      S TABLE  00:099A    00:09A3    000A(10)          $$TAB_uartSetParam$main
+      S TABLE  00:09A4    00:09D1    002E(46)          $$NTABSensorInitialization$main
+      S TABLE  00:09D2    00:09D2    0001(1)           $$TABKMX61_CNTL1$main
+>GAP<          00:09D3    00:09D3    0001(1)           (ROM)
+      S TABLE  00:09D4    00:09D4    0001(1)           $$TABKMX61_CNTL2$main
+>GAP<          00:09D5    00:09D5    0001(1)           (ROM)
+      S TABLE  00:09D6    00:09D6    0001(1)           $$TABKMX61_BUF_CTRL1$main
+>GAP<          00:09D7    00:09D7    0001(1)           (ROM)
+      S TABLE  00:09D8    00:09D8    0001(1)           $$TABKMX61_BUF_CTRL2$main
+>GAP<          00:09D9    00:09D9    0001(1)           (ROM)
+      S TABLE  00:09DA    00:09DA    0001(1)           $$TABBH1780GLI_REG_DATALOW$main
+>GAP<          00:09DB    00:09DB    0001(1)           (ROM)
+      S TABLE  00:09DC    00:09F5    001A(26)          $$TAB$$S53$main
+      S TABLE  00:09F6    00:09F6    0001(1)           $$TABBH1721FVC_CONT_A_RES_MOD$main
+>GAP<          00:09F7    00:09F7    0001(1)           (ROM)
+      S CODE   00:09F8    00:0A21    002A(42)          $$uart_PortSet$uart
+      S CODE   00:0A22    00:0A3D    001C(28)          $$_intT16HINT$irq
+      S CODE   00:0A3E    00:0A59    001C(28)          $$_intPB0INT$irq
+      S CODE   00:0A5A    00:0A75    001C(28)          $$_intPB1INT$irq
+      S CODE   00:0A76    00:0ABF    004A(74)          $$XNCODmemcpy_ff
+      S CODE   00:0AC0    00:0BB7    00F8(248)         $$uart_continue$uart
+      S CODE   00:0BB8    00:0BD3    001C(28)          $$_intPA0INT$irq
+      S CODE   00:0BD4    00:0C17    0044(68)          $$XNCODmemcpy_fn
+      S CODE   00:0C18    00:0C33    001C(28)          $$_intPA1INT$irq
+      S CODE   00:0C34    00:0C4F    001C(28)          $$_intCMP1INT$irq
+      S CODE   00:0C50    00:0C57    0008(8)           $$main_reqNotHalt$main
+      S CODE   00:0C58    00:0C73    001C(28)          $$_intCMP0INT$irq
+      S CODE   00:0C74    00:0C77    0004(4)           $$_intUart$main
+      S CODE   00:0C78    00:0CB3    003C(60)          $$write$main
+      S CODE   00:0CB4    00:0CB5    0002(2)           $$_intUndefHdr$irq
+      S CODE   00:0CB6    00:0CB6    0000(0)           $$content_of_init
+      S CODE   00:0CB6    00:0CB7    0002(2)           $$end_of_init
+      S CODE   00:0CB8    00:0CC5    000E(14)          $$uart_ErrSet$uart
+      S CODE   00:0CC6    00:0CE1    001C(28)          $$_intTM8INT$irq
+      S CODE   00:0CE2    00:0CFD    001C(28)          $$_intTM9INT$irq
+      S CODE   00:0CFE    00:0D1D    0020(32)          $$normu8sw
+      S CODE   00:0D1E    00:0D39    001C(28)          $$_intTMEINT$irq
+      S CODE   00:0D3A    00:0D59    0020(32)          $$ulmodu8sw
+      S CODE   00:0D5A    00:0D75    001C(28)          $$_intTMAINT$irq
+      S CODE   00:0D76    00:0DD9    0064(100)         $$PortD_Low$main
+      S CODE   00:0DDA    00:0E89    00B0(176)         $$MainOp_Temperature_Sensor_20$main
+      S CODE   00:0E8A    00:0F5F    00D6(214)         $$MainOp_Temperature_Sensor_21$main
+      S CODE   00:0F60    00:1035    00D6(214)         $$MainOp_Temperature_Sensor_22$main
+      S CODE   00:1036    00:110B    00D6(214)         $$MainOp_Temperature_Sensor_23$main
+      S CODE   00:110C    00:12F1    01E6(486)         $$XNCODxlitob
+      S CODE   00:12F2    00:1313    0022(34)          $$shiftu8sw
+      S CODE   00:1314    00:132F    001C(28)          $$_intUA0INT$irq
+      S CODE   00:1330    00:134B    001C(28)          $$_intUA1INT$irq
+      S CODE   00:134C    00:135B    0010(16)          $$simodu8sw
+      S CODE   00:135C    00:1379    001E(30)          $$XNCODstrcpy_nn
+      S CODE   00:137A    00:1403    008A(138)         $$XNCODxldunsca
+      S CODE   00:1404    00:1487    0084(132)         $$i2c_startReceive$i2c
+      S CODE   00:1488    00:1493    000C(12)          $$roundu8sw
+      S CODE   00:1494    00:14C9    0036(54)          $$ndmulu8sw
+      S CODE   00:14CA    00:15A3    00DA(218)         $$MainOp_KX022$main
+      S CODE   00:15A4    00:15B7    0014(20)          $$main_clrWDT$main
+      S CODE   00:15B8    00:15E3    002C(44)          $$nfildu8sw
+      S CODE   00:15E4    00:160D    002A(42)          $$ndtolu8sw
+      S CODE   00:160E    00:1647    003A(58)          $$nfmulu8sw
+      S CODE   00:1648    00:1671    002A(42)          $$nftolu8sw
+      S CODE   00:1672    00:1697    0026(38)          $$nftodu8sw
+      S CODE   00:1698    00:16C3    002C(44)          $$nfuldu8sw
+      S CODE   00:16C4    00:1B29    0466(1126)        $$XNCODxldtob
+      S CODE   00:1B2A    00:1B5B    0032(50)          $$irq_setHdr$irq
+      S CODE   00:1B5C    00:1B95    003A(58)          $$Init_Ambient_Light_Sensor_6$main
+      S CODE   00:1B96    00:1C41    00AC(172)         $$NOPms$main
+      S CODE   00:1C42    00:1CF3    00B2(178)         $$XNCODfflush
+      S CODE   00:1CF4    00:1D49    0056(86)          $$uart_startSend$uart
+      S CODE   00:1D4A    00:1EFF    01B6(438)         $$MainOp_KMX61$main
+      S CODE   00:1F00    00:1F03    0004(4)           $$irq_di$irq
+      S CODE   00:1F04    00:1F07    0004(4)           $$irq_ei$irq
+      S CODE   00:1F08    00:1F23    001C(28)          $$_intT2HINT$irq
+      S CODE   00:1F24    00:1F59    0036(54)          $$ndaddu8sw
+      S CODE   00:1F5A    00:1F89    0030(48)          $$ndcmpu8sw
+      S CODE   00:1F8A    00:1FC3    003A(58)          $$nfaddu8sw
+      S CODE   00:1FC4    00:1FF3    0030(48)          $$nfcmpu8sw
+      S CODE   00:1FF4    00:201D    002A(42)          $$lloadu8sw
+      S CODE   00:201E    00:205F    0042(66)          $$lmulu8sw
+      S CODE   00:2060    00:2061    0002(2)           $$Init_UV_Sensor_10$main
+      S CODE   00:2062    00:2063    0002(2)           $$_intNullHdr$irq
+      S CODE   00:2064    00:2073    0010(16)          $$XNCODxgetmem_n
+      S CODE   00:2074    00:218F    011C(284)         $$MainOp_Ambient_Light_Sensor_5$main
+      S CODE   00:2190    00:2201    0072(114)         $$MainOp_Ambient_Light_Sensor_6$main
+      S CODE   00:2202    00:249F    029E(670)         $$MainOp_Ambient_Light_Sensor_7$main
+      S CODE   00:24A0    00:2511    0072(114)         $$MainOp_Ambient_Light_Sensor_8$main
+      S CODE   00:2512    00:2565    0054(84)          $$MainOp_Ambient_Light_Sensor_9$main
+      S CODE   00:2566    00:2577    0012(18)          $$_funcI2CFin$main
+      S CODE   00:2578    00:25CB    0054(84)          $$floadu8sw
+      S CODE   00:25CC    00:2711    0146(326)         $$uart_init$uart
+      S CODE   00:2712    00:273B    002A(42)          $$uart_PortClear$uart
+      S CODE   00:273C    00:2835    00FA(250)         $$daddu8sw
+      S CODE   00:2836    00:288F    005A(90)          $$dcmpu8sw
+      S CODE   00:2890    00:28B7    0028(40)          $$dildu8sw
+      S CODE   00:28B8    00:28E1    002A(42)          $$Init_Ambient_Light_Sensor_5$main
+      S CODE   00:28E2    00:297B    009A(154)         $$Init_Ambient_Light_Sensor_7$main
+      S CODE   00:297C    00:29B7    003C(60)          $$Init_Ambient_Light_Sensor_8$main
+      S CODE   00:29B8    00:29F3    003C(60)          $$Init_Ambient_Light_Sensor_9$main
+      S CODE   00:29F4    00:2B2D    013A(314)         $$dmulu8sw
+      S CODE   00:2B2E    00:2B57    002A(42)          $$imulu8sw
+      S CODE   00:2B58    00:2BC9    0072(114)         $$dloadu8sw
+      S CODE   00:2BCA    00:2CE3    011A(282)         $$XNCODfwrite_f
+      S CODE   00:2CE4    00:2D63    0080(128)         $$MainOp_Hall_Effect_Sensors_1$main
+      S CODE   00:2D64    00:2D99    0036(54)          $$MainOp_Hall_Effect_Sensors_2$main
+      S CODE   00:2D9A    00:2E5D    00C4(196)         $$PortB_Low$main
+      S CODE   00:2E5E    00:2F83    0126(294)         $$i2c_init$i2c
+      S CODE   00:2F84    00:2F9F    001C(28)          $$_intPWDINT$irq
+      S CODE   00:2FA0    00:2FBB    001C(28)          $$_intPWEINT$irq
+      S CODE   00:2FBC    00:3499    04DE(1246)        $$XNCODxprintf_nn
+      S CODE   00:349A    00:34B5    001C(28)          $$_intPWFINT$irq
+      S CODE   00:34B6    00:34F7    0042(66)          $$XNCODmemchr_f
+      S CODE   00:34F8    00:3543    004C(76)          $$PortA_Low$main
+      S CODE   00:3544    00:355F    001C(28)          $$_intPWCINT$irq
+      S CODE   00:3560    00:3597    0038(56)          $$tm_init$timer
+      S CODE   00:3598    00:35C5    002E(46)          $$i2c_stop$i2c
+      S CODE   00:35C6    00:3A89    04C4(1220)        $$XNCODxgenld
+      S CODE   00:3A8A    00:3A9B    0012(18)          $$ndnegu8sw
+      S CODE   00:3A9C    00:3ABB    0020(32)          $$uldivu8sw
+      S CODE   00:3ABC    00:3AC5    000A(10)          $$_branchHdr$irq
+      S CODE   00:3AC6    00:3B25    0060(96)          $$sldimou8sw
+      S CODE   00:3B26    00:3BED    00C8(200)         $$main$main
+      S CODE   00:3BEE    00:3C13    0026(38)          $$XNCODstrlen_f
+      S CODE   00:3C14    00:3C37    0024(36)          $$XNCODstrchr_n
+      S CODE   00:3C38    00:3C91    005A(90)          $$irq_init$irq
+      S CODE   00:3C92    00:3CDD    004C(76)          $$I2C_Write$main
+      S CODE   00:3CDE    00:3CF9    001C(28)          $$uart_stop$uart
+      S CODE   00:3CFA    00:3D9D    00A4(164)         $$XNCODfree_n
+      S CODE   00:3D9E    00:3E01    0064(100)         $$Init_KX022$main
+      S CODE   00:3E02    00:3E0F    000E(14)          $$sidivu8sw
+      S CODE   00:3E10    00:3ED3    00C4(196)         $$PortC_Low$main
+      S CODE   00:3ED4    00:3EED    001A(26)          $$sldivu8sw
+      S CODE   00:3EEE    00:3F2D    0040(64)          $$cidimou8sw
+      S CODE   00:3F2E    00:3F61    0034(52)          $$sidimou8sw
+      S CODE   00:3F62    00:4065    0104(260)         $$Initialization$main
+      S CODE   00:4066    00:406D    0008(8)           $$_intADC$main
+      S CODE   00:406E    00:40E5    0078(120)         $$SensorInitialization$main
+      S CODE   00:40E6    00:40F1    000C(12)          $$uidivu8sw
+      S CODE   00:40F2    00:4103    0012(18)          $$_funcUartFin$main
+      S CODE   00:4104    00:410F    000C(12)          $$_intI2c$main
+      S CODE   00:4110    00:4123    0014(20)          $$ndsubu8sw
+      S CODE   00:4124    00:41D5    00B2(178)         $$XNCODxfwprep
+      S CODE   00:41D6    00:41D7    0002(2)           $$Init_Temperature_Sensor_20$main
+      S CODE   00:41D8    00:41ED    0016(22)          $$Init_Temperature_Sensor_21$main
+      S CODE   00:41EE    00:4203    0016(22)          $$Init_Temperature_Sensor_22$main
+      S CODE   00:4204    00:4219    0016(22)          $$Init_Temperature_Sensor_23$main
+      S CODE   00:421A    00:422D    0014(20)          $$nfsubu8sw
+      S CODE   00:422E    00:426B    003E(62)          $$lstoru8sw
+      S CODE   00:426C    00:44CD    0262(610)         $$i2c_continue$i2c
+      S CODE   00:44CE    00:44E9    001C(28)          $$_intPB2INT$irq
+      S CODE   00:44EA    00:4505    001C(28)          $$_intPB3INT$irq
+      S CODE   00:4506    00:458D    0088(136)         $$fstoru8sw
+      S CODE   00:458E    00:45A9    001C(28)          $$_intPA2INT$irq
+      S CODE   00:45AA    00:45C5    001C(28)          $$_intT32HINT$irq
+      S CODE   00:45C6    00:45E1    001C(28)          $$_intVLSINT$irq
+      S CODE   00:45E2    00:4743    0162(354)         $$XNCODxdnorm
+      S CODE   00:4744    00:47A9    0066(102)         $$XNCODldiv
+      S CODE   00:47AA    00:47C9    0020(32)          $$SetOSC$main
+      S CODE   00:47CA    00:47FF    0036(54)          $$nddivu8sw
+      S CODE   00:4800    00:4839    003A(58)          $$nfdivu8sw
+      S CODE   00:483A    00:4955    011C(284)         $$Init_KMX61$main
+      S CODE   00:4956    00:4A6D    0118(280)         $$XNCODmalloc_n
+      S CODE   00:4A6E    00:4A89    001C(28)          $$_intSADINT$irq
+      S CODE   00:4A8A    00:4AA5    001C(28)          $$_intT128HINT$irq
+      S CODE   00:4AA6    00:4F3F    049A(1178)        $$XNCODxputfld
+      S CODE   00:4F40    00:507B    013C(316)         $$ADC_Read$main
+      S CODE   00:507C    00:50C7    004C(76)          $$I2C_Read$main
+      S CODE   00:50C8    00:50F1    002A(42)          $$Init_Hall_Effect_Sensors_1$main
+      S CODE   00:50F2    00:5107    0016(22)          $$Init_Hall_Effect_Sensors_2$main
+      S CODE   00:5108    00:51B7    00B0(176)         $$MainOp_UV_Sensor_10$main
+      S CODE   00:51B8    00:51D1    001A(26)          $$_intWDTINT$irq
+      S CODE   00:51D2    00:5285    00B4(180)         $$dstoru8sw
+      S CODE   00:5286    00:52A1    001C(28)          $$_intTMFINT$irq
+      S CODE   00:52A2    00:52FB    005A(90)          $$XNCODprintf_n
+      S CODE   00:52FC    00:5317    001C(28)          $$_intTMBINT$irq
+      S CODE   00:5318    00:5333    001C(28)          $$_intI2CSINT$irq
+      S CODE   00:5334    00:5473    0140(320)         $$ddivu8sw
+      S CODE   00:5474    00:548F    001C(28)          $$_intSIO0INT$irq
+      S CODE   00:5490    00:54AB    001C(28)          $$cmpfu8sw
+      S CODE   00:54AC    00:54D9    002E(46)          $$div32u8sw
+      S CODE   00:54DA    00:54F5    001C(28)          $$_intI2CMINT$irq
+      S CODE   00:54F6    00:5585    0090(144)         $$NCODml610112sw
+      S CODE   00:5586    00:55C3    003E(62)          $$XNCODmemcpy_nf
+      S CODE   00:55C4    00:5639    0076(118)         $$i2c_startSend$i2c
+      S TABLE  00:563A    00:573E    0105(261)         $$XFTABxctype
+>GAP<          00:573F    00:7FDF    28A1(10401)       (ROM)
+      S CODE   00:7FE0    00:7FFF    0020(32)          (absolute)
+
+
+Link Map - Data memory space #0
+
+      Type     Start      Stop       Size              Name
+     -------------------------------------------------------
+      Q ROMWIN 00:0000    00:7FFF    8000(32768)       (ROMWIN)
+      S DATA   00:E000    00:EDA5    0DA6(3494)        _$$dynamic_near
+      S DATA   00:EDA6    00:EEA5    0100(256)         $STACK
+      S DATA   00:EEA6    00:EEE3    003E(62)          $$NVARirq
+      S DATA   00:EEE4    00:EF33    0050(80)          $$XNVARxfiles
+      C DATA   00:EF34    00:EF3F    000C(12)          _flSensorOut
+      S DATA   00:EF40    00:EF40    0001(1)           $$NVARuart
+      C DATA   00:EF41    00:EF41    0001(1)           __flgADCFin
+      S DATA   00:EF42    00:EF42    0001(1)           $$NVARmain
+      C DATA   00:EF43    00:EF43    0001(1)           __reqNotHalt
+      C DATA   00:EF44    00:EF49    0006(6)           _uniRawSensorOut
+      S DATA   00:EF4A    00:EFBB    0072(114)         $$NINITVAR
+      S DATA   00:EFBC    00:EFFD    0042(66)          $$XNVARxprintf_nn
+      C DATA   00:EFFE    00:EFFE    0001(1)           __flgI2CFin
+      C DATA   00:EFFF    00:EFFF    0001(1)           __flgUartFin
+      Q SFR    00:F000    00:FFFF    1000(4096)        (SFR)
+
+
+Link Map - Memory space above #1
+
+      Type     Start      Stop       Size              Name
+     -------------------------------------------------------
+ ---
+      S TABLE  02:0000    02:0FFF    1000(4096)        (absolute)
+ ---
+      S TABLE  08:0000    08:7FFF    8000(32768)       (absolute)
+ ---
+      S TABLE  0A:0000    0A:0FFF    1000(4096)        (absolute)
+
+
+Not Linked segments:
+
+      Module Name         Type       Size              Segment Name 
+     --------------------------------------------------------------
+      i2c
+                          CODE       0006(6)           $$i2c_getTransSize$i2c
+                          CODE       0012(18)          $$i2c_checkIRQ$i2c
+                          CODE       0006(6)           $$i2c_clearIRQ$i2c
+     --------------------------------------------------------------
+      main
+                          TABLE      0001(1)           $$TABBH1710FVC_ONET_L_RES_MOD$main
+                          TABLE      0001(1)           $$TABKMX61_INS1$main
+                          TABLE      0001(1)           $$TABKMX61_INS2$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_THHLOW$main
+                          TABLE      0001(1)           $$TABKMX61_INC1$main
+                          TABLE      0001(1)           $$TABKMX61_INC2$main
+                          TABLE      0001(1)           $$TABKMX61_INC3$main
+                          TABLE      0001(1)           $$TABBH1710FVC_ONET_H_RES_MOD$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_DATA1LOW$main
+                          TABLE      0001(1)           $$TABKX022_COTR$main
+                          TABLE      0001(1)           $$TABKX022_TILT_TIMER$main
+                          TABLE      0001(1)           $$TABKMX61_ACCEL_YOUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_ACCEL_YOUT_L$main
+                          TABLE      0001(1)           $$TABKMX61_SN_1$main
+                          TABLE      0001(1)           $$TABKMX61_SN_2$main
+                          TABLE      0001(1)           $$TABKMX61_SN_3$main
+                          TABLE      0001(1)           $$TABKMX61_SN_4$main
+                          TABLE      0001(1)           $$TABBH1730FVC_CMD_STOP_MIM$main
+                          TABLE      0001(1)           $$TABKX022_BUF_CNTL1$main
+                          TABLE      0001(1)           $$TABKX022_BUF_CNTL2$main
+                          TABLE      0001(1)           $$TABKMX61_ZOUT_HPF_H$main
+                          TABLE      0001(1)           $$TABKMX61_ZOUT_HPF_L$main
+                          TABLE      0001(1)           $$TABBH1710FVC_CONT_H_RES_MOD$main
+                          TABLE      0001(1)           $$TABBH1721FVC_CONT_H_RES_MOD$main
+                          TABLE      0001(1)           $$TABKX022_TDTRC$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_DATA1HIGH$main
+                          TABLE      0001(1)           $$TABKMX61_INL$main
+                          TABLE      0001(1)           $$TABKMX61_XOUT_HPF_H$main
+                          TABLE      0001(1)           $$TABKMX61_XOUT_HPF_L$main
+                          TABLE      0001(1)           $$TABBH17xxFVC_PWR_DOWN$main
+                          TABLE      0001(1)           $$TABKX022_ATH$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_THLLOW$main
+                          TABLE      0001(1)           $$TABKMX61_BTH$main
+                          TABLE      0001(1)           $$TABKX022_WHO_AM_I$main
+                          TABLE      0001(1)           $$TABBH1780GLI_REG_DATAHIGH$main
+                          TABLE      0001(1)           $$TABKMX61_I2C_ADDR$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_THLHIGH$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_CLEAR$main
+                          TABLE      0001(1)           $$TABKX022_YOUTH$main
+                          TABLE      0001(1)           $$TABKX022_YOUTL$main
+                          TABLE      0001(1)           $$TABKMX61_STATUS_REG$main
+                          TABLE      0001(1)           $$TABBH1710FVC_RESET$main
+                          TABLE      0001(1)           $$TABKMX61_ACCEL_ZOUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_ACCEL_ZOUT_L$main
+                          TABLE      0001(1)           $$TABKMX61_BTSC$main
+                          TABLE      0001(1)           $$TABKMX61_COTR$main
+                          TABLE      0001(1)           $$TABKX022_ZOUTH$main
+                          TABLE      0001(1)           $$TABKX022_ZOUTL$main
+                          TABLE      0001(1)           $$TABKMX61_MAG_ZOUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_MAG_ZOUT_L$main
+                          TABLE      0000(0)           $$NTABmain
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_ID$main
+                          TABLE      0001(1)           $$TABKX022_INT_REL$main
+                          TABLE      0001(1)           $$TABKX022_HYST_SET$main
+                          TABLE      0001(1)           $$TABKX022_BUF_CLEAR$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_STATUS_H$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_STATUS_L$main
+                          TABLE      0001(1)           $$TABKX022_I2C_ADDR$main
+                          TABLE      0001(1)           $$TABKMX61_TEMP_OUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_TEMP_OUT_L$main
+                          TABLE      0001(1)           $$TABKX022_XHPH$main
+                          TABLE      0001(1)           $$TABKX022_XHPL$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_THHHIGH$main
+                          TABLE      0001(1)           $$TABKX022_WUFC$main
+                          TABLE      0001(1)           $$TABKX022_YHPH$main
+                          TABLE      0001(1)           $$TABKX022_YHPL$main
+                          TABLE      0001(1)           $$TABKX022_BUF_READ$main
+                          TABLE      0001(1)           $$TABBH1730FVC_CMD_RESET_INT_OUT$main
+                          TABLE      0001(1)           $$TABKX022_TSPP$main
+                          TABLE      0001(1)           $$TABKX022_TSCP$main
+                          TABLE      0001(1)           $$TABBH1730FVC_CMD_SW_RESET$main
+                          TABLE      0001(1)           $$TABKX022_LP_CNTL$main
+                          TABLE      0001(1)           $$TABKX022_TILT_ANGLE_HL$main
+                          TABLE      0001(1)           $$TABKMX61_MAG_YOUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_MAG_YOUT_L$main
+                          TABLE      0001(1)           $$TABKX022_TILT_ANGLE_LL$main
+                          CODE       001C(28)          $$DeviceSelection$main
+                          TABLE      0001(1)           $$TABBH17xxFVC_ADDR_1$main
+                          TABLE      0001(1)           $$TABBH17xxFVC_ADDR_2$main
+                          TABLE      0001(1)           $$TABKMX61_WUFTH$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_THRESH_H$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_THRESH_L$main
+                          TABLE      0001(1)           $$TABKX022_XOUTH$main
+                          TABLE      0001(1)           $$TABKX022_XOUTL$main
+                          TABLE      0001(1)           $$TABKX022_ZHPH$main
+                          TABLE      0001(1)           $$TABKX022_ZHPL$main
+                          TABLE      0001(1)           $$TABKX022_INS1$main
+                          TABLE      0001(1)           $$TABKX022_INS2$main
+                          TABLE      0001(1)           $$TABKX022_INS3$main
+                          TABLE      0001(1)           $$TABKMX61_WHO_AM_I$main
+                          TABLE      0001(1)           $$TABKMX61_WUFC$main
+                          TABLE      0001(1)           $$TABKX022_INC1$main
+                          TABLE      0001(1)           $$TABKX022_INC2$main
+                          TABLE      0001(1)           $$TABKX022_INC3$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_READ$main
+                          TABLE      0001(1)           $$TABKX022_INC4$main
+                          TABLE      0001(1)           $$TABKX022_INC5$main
+                          TABLE      0001(1)           $$TABKX022_INC6$main
+                          TABLE      0001(1)           $$TABKX022_CNTL2$main
+                          TABLE      0001(1)           $$TABKX022_CNTL3$main
+                          TABLE      0001(1)           $$TABKX022_TLT$main
+                          TABLE      0001(1)           $$TABKX022_TTH$main
+                          TABLE      0001(1)           $$TABKX022_TTL$main
+                          TABLE      0001(1)           $$TABKX022_TWS$main
+                          TABLE      0001(1)           $$TABBH1730FVC_CMD_START_MIM$main
+                          TABLE      0001(1)           $$TABKX022_STAT$main
+                          TABLE      0001(1)           $$TABBH1780GLI_REG_PART_ID$main
+                          TABLE      0001(1)           $$TABKMX61_ACCEL_XOUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_ACCEL_XOUT_L$main
+                          TABLE      0001(1)           $$TABBH1730FVC_REG_DATA0HIGH$main
+                          TABLE      0001(1)           $$TABKX022_STD$main
+                          TABLE      0001(1)           $$TABKMX61_YOUT_HPF_H$main
+                          TABLE      0001(1)           $$TABKMX61_YOUT_HPF_L$main
+                          TABLE      0001(1)           $$TABKX022_FTD$main
+                          TABLE      0001(1)           $$TABKX022_TDTC$main
+                          TABLE      0001(1)           $$TABKMX61_MAG_XOUT_H$main
+                          TABLE      0001(1)           $$TABKMX61_MAG_XOUT_L$main
+                          TABLE      0001(1)           $$TABKX022_BUF_STATUS_1$main
+                          TABLE      0001(1)           $$TABKX022_BUF_STATUS_2$main
+                          TABLE      0001(1)           $$TABKMX61_BUF_STATUS_REG$main
+                          TABLE      0001(1)           $$TABBH1780GLI_REG_MFG_ID$main
+                          TABLE      0001(1)           $$TABBH1710FVC_CONT_L_RES_MOD$main
+                          TABLE      0001(1)           $$TABBH1721FVC_CONT_L_RES_MOD$main
+                          TABLE      0001(1)           $$TABKX022_SELF_TEST$main
+                          TABLE      0001(1)           $$TABBH1710FVC_ONET_M_RES_MOD$main
+     --------------------------------------------------------------
+      uart
+                          CODE       0006(6)           $$uart_clearIRQ$uart
+                          CODE       0012(18)          $$uart_checkIRQ$uart
+                          CODE       0008(8)           $$uart_ErrClr$uart
+                          CODE       0006(6)           $$uart_ErrGet$uart
+                          CODE       0006(6)           $$uart_getTransSize$uart
+                          CODE       0042(66)          $$uart_startReceive$uart
+     --------------------------------------------------------------
+
+
+Total size (CODE  ) = 04CD6   (19670)
+Total size (DATA  ) = 01000   (4096)
+Total size (BIT   ) = 00000.0 (0.0)
+Total size (NVDATA) = 00000   (0)
+Total size (NVBIT ) = 00000.0 (0.0)
+Total size (TABLE ) = 0AA6E   (43630)
+
+          -----------------------
+           Symbol Table Synopsis
+          -----------------------
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+i2c
+               00:3598   Pub CODE     _i2c_stop
+               00:1404   Pub CODE     _i2c_startReceive
+               00:426C   Pub CODE     _i2c_continue
+               00:55C4   Pub CODE     _i2c_startSend
+               00:2E5E   Pub CODE     _i2c_init
+               00:EF4A   Loc DATA     __gsCtrlParam
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+irq
+               00:0C34   Loc CODE     __intCMP1INT
+               00:45AA   Loc CODE     __intT32HINT
+               00:0C58   Loc CODE     __intCMP0INT
+               00:0CC6   Loc CODE     __intTM8INT
+               00:0CE2   Loc CODE     __intTM9INT
+               00:4A8A   Loc CODE     __intT128HINT
+               00:1F08   Loc CODE     __intT2HINT
+               00:54DA   Loc CODE     __intI2CMINT
+               00:51B8   Loc CODE     __intWDTINT
+               00:0BB8   Loc CODE     __intPA0INT
+               00:0D5A   Loc CODE     __intTMAINT
+               00:0C18   Loc CODE     __intPA1INT
+               00:5474   Loc CODE     __intSIO0INT
+               00:5318   Loc CODE     __intI2CSINT
+               00:4A6E   Loc CODE     __intSADINT
+               00:0A3E   Loc CODE     __intPB0INT
+               00:3ABC   Loc CODE     __branchHdr
+               00:0D1E   Loc CODE     __intTMEINT
+               00:0A5A   Loc CODE     __intPB1INT
+               00:52FC   Loc CODE     __intTMBINT
+               00:458E   Loc CODE     __intPA2INT
+               00:0A22   Loc CODE     __intT16HINT
+               00:5286   Loc CODE     __intTMFINT
+               00:44CE   Loc CODE     __intPB2INT
+               00:44EA   Loc CODE     __intPB3INT
+               00:2F84   Loc CODE     __intPWDINT
+               00:2FA0   Loc CODE     __intPWEINT
+               00:3544   Loc CODE     __intPWCINT
+               00:1314   Loc CODE     __intUA0INT
+               00:0CB4   Loc CODE     __intUndefHdr
+               00:1330   Loc CODE     __intUA1INT
+               00:349A   Loc CODE     __intPWFINT
+               00:45C6   Loc CODE     __intVLSINT
+               00:3C38   Pub CODE     _irq_init
+               00:1F00   Pub CODE     _irq_di
+               00:1F04   Pub CODE     _irq_ei
+               00:1B2A   Pub CODE     _irq_setHdr
+               00:2062   Loc CODE     __intNullHdr
+               00:EEA6   Loc DATA     __sIrqHdr
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+main
+               00:50C8   Pub CODE     _Init_Hall_Effect_Sensors_1
+               00:50F2   Pub CODE     _Init_Hall_Effect_Sensors_2
+               00:2CE4   Pub CODE     _MainOp_Hall_Effect_Sensors_1
+               00:2D64   Pub CODE     _MainOp_Hall_Effect_Sensors_2
+               00:1B96   Pub CODE     _NOPms
+               00:0DDA   Pub CODE     _MainOp_Temperature_Sensor_20
+               00:0E8A   Pub CODE     _MainOp_Temperature_Sensor_21
+               00:0F60   Pub CODE     _MainOp_Temperature_Sensor_22
+               00:1036   Pub CODE     _MainOp_Temperature_Sensor_23
+               00:15A4   Pub CODE     _main_clrWDT
+               00:0C50   Pub CODE     _main_reqNotHalt
+               00:5108   Pub CODE     _MainOp_UV_Sensor_10
+               00:3D9E   Pub CODE     _Init_KX022
+               00:1D4A   Pub CODE     _MainOp_KMX61
+               00:41D6   Pub CODE     _Init_Temperature_Sensor_20
+               00:41D8   Pub CODE     _Init_Temperature_Sensor_21
+               00:41EE   Pub CODE     _Init_Temperature_Sensor_22
+               00:3B26   Pub CODE     _main
+               00:4204   Pub CODE     _Init_Temperature_Sensor_23
+               00:2060   Pub CODE     _Init_UV_Sensor_10
+               00:406E   Pub CODE     _SensorInitialization
+               00:3C92   Pub CODE     _I2C_Write
+               00:0D76   Pub CODE     _PortD_Low
+               00:0C78   Pub CODE     _write
+               00:3E10   Pub CODE     _PortC_Low
+               00:2D9A   Pub CODE     _PortB_Low
+               00:507C   Pub CODE     _I2C_Read
+               00:4F40   Pub CODE     _ADC_Read
+               00:14CA   Pub CODE     _MainOp_KX022
+               00:28B8   Pub CODE     _Init_Ambient_Light_Sensor_5
+               00:1B5C   Pub CODE     _Init_Ambient_Light_Sensor_6
+               00:28E2   Pub CODE     _Init_Ambient_Light_Sensor_7
+               00:297C   Pub CODE     _Init_Ambient_Light_Sensor_8
+               00:29B8   Pub CODE     _Init_Ambient_Light_Sensor_9
+               00:34F8   Pub CODE     _PortA_Low
+               00:483A   Pub CODE     _Init_KMX61
+               00:24A0   Pub CODE     _MainOp_Ambient_Light_Sensor_8
+               00:2512   Pub CODE     _MainOp_Ambient_Light_Sensor_9
+               00:2074   Pub CODE     _MainOp_Ambient_Light_Sensor_5
+               00:2190   Pub CODE     _MainOp_Ambient_Light_Sensor_6
+               00:2202   Pub CODE     _MainOp_Ambient_Light_Sensor_7
+               00:09DA   Pub TABLE    _BH1780GLI_REG_DATALOW
+               00:09F6   Pub TABLE    _BH1721FVC_CONT_A_RES_MOD
+               00:0984   Pub TABLE    _KMX61_ODCNTL
+               00:0986   Pub TABLE    _BH1730FVC_REG_INTERRUPT
+               00:0006   Pub TABLE    _KMX61_STBY_REG
+               00:08D6   Pub TABLE    _BH1710FVC_CONT_M_RES_MOD
+               00:000A   Pub TABLE    _KX022_ODCNTL
+               00:0980   Pub TABLE    _BH1730FVC_REG_TIMING
+               00:08D8   Pub TABLE    _KMX61_TEMP_EN_CNTL
+               00:09D2   Pub TABLE    _KMX61_CNTL1
+               00:09D4   Pub TABLE    _KMX61_CNTL2
+               00:014E   Pub TABLE    _BH1730FVC_REG_CONTROL
+               00:097C   Pub TABLE    _BH17xxFVC_PWR_ON
+               00:097E   Pub TABLE    _BH1780GLI_REG_CONTROL
+               00:0998   Pub TABLE    _KX022_CNTL1
+               00:0982   Pub TABLE    _BH1730FVC_REG_GAIN
+               00:09D6   Pub TABLE    _KMX61_BUF_CTRL1
+               00:09D8   Pub TABLE    _KMX61_BUF_CTRL2
+               00:0150   Pub TABLE    _BH1730FVC_REG_DATA0LOW
+               00:094E   Pub TABLE    _KMX61_SELF_TEST
+               00:40F2   Loc CODE     __funcUartFin
+               00:3F62   Loc CODE     _Initialization
+               00:0C74   Loc CODE     __intUart
+               00:4104   Loc CODE     __intI2c
+               00:47AA   Loc CODE     _SetOSC
+               00:4066   Loc CODE     __intADC
+               00:2566   Loc CODE     __funcI2CFin
+               00:099A   Loc TABLE    __uartSetParam
+               00:EF42   Loc DATA     _SensorPlatformSelection
+               00:EF5A   Loc DATA     _SensorIntializationFlag
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+ml610112
+              0000EFFF   Loc NUMBER   NEAR_RAM_END
+              0000E000   Loc NUMBER   NEAR_RAM_START
+               00:5518   Loc CODE     __wdtcounter_clear
+              000000FF   Loc NUMBER   _$$WINVAL
+               00:7FFF   Loc TABLE    _$$ROMWINEND
+               00:54FA   Loc CODE     $begin
+               00:0000   Loc TABLE    _$$ROMWINSTART
+               00:552C   Loc CODE     __init_loop
+               00:5578   Loc CODE     __init_end
+               00:54F8   Loc CODE     $$brk_reset
+               00:5538   Loc CODE     __skip
+               00:5554   Loc CODE     __init_loop2
+               00:5566   Loc CODE     __loop_by_byte
+               00:5508   Loc CODE     __near_ram_loop
+               00:54F6   Pub CODE     $$start_up
+
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+tbc
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+timer
+               00:3560   Pub CODE     _tm_init
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+uart
+               00:09F8   Pub CODE     _uart_PortSet
+               00:25CC   Pub CODE     _uart_init
+               00:0CB8   Pub CODE     _uart_ErrSet
+               00:3CDE   Pub CODE     _uart_stop
+               00:1CF4   Pub CODE     _uart_startSend
+               00:0AC0   Pub CODE     _uart_continue
+               00:2712   Pub CODE     _uart_PortClear
+               00:EF40   Loc DATA     __Err_Status
+               00:EF5C   Loc DATA     __gsCtrlParam
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+printf_n
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xfiles
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+fwrite_f
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+memchr_f
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+memcpy_nf
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+fflush
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xprintf_nn
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xctype
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+strchr_n
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+strcpy_nn
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xfwprep
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+malloc_n
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xgetmem_n
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+free_n
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xputfld
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xldtob
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xgenld
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+strlen_f
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+ldiv
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xldunsca
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xdnorm
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+memcpy_ff
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+memcpy_fn
+
+Module         Value     Type         Symbol
+------         -----     ----------   ------
+xlitob
+
+End of mapfile.
