@@ -6,7 +6,7 @@
 // Purpose:	 Firmware for Q112 for Sensor Platform Board 
 // Updated:	 July 8th, 2014
 //*****************************************************************************
-#define DebugSensor	16
+//#define DebugSensor	16
 
 // ============================= Sensor Platform Board Specs ============================== 
 //	UART to USB/PC:
@@ -316,6 +316,15 @@ const unsigned char KX022_BUF_STATUS_2	= 0x3du;
 const unsigned char KX022_BUF_CLEAR		= 0x3eu;
 const unsigned char KX022_BUF_READ		= 0x3fu;
 const unsigned char KX022_SELF_TEST		= 0x60u;
+// Configuration data
+// Set accelerometer to stand-by mode(PC1=0), +/-2g - 16bits and enable tilt position function
+const unsigned char KX022_CNTL1_CFGDAT		= 0x41u;
+// Set Output Data Rate(ODR) to 50Hz
+const unsigned char KX022_ODCNTL_CFGDAT		= 0x02u;
+// Set Tilt Output Data Rate to 50Hz
+const unsigned char KX022_CNTL3_CFGDAT		= 0xd8u;
+// Set Tilt Timer to 20ms
+const unsigned char KX022_TILT_TIMER_CFGDAT	= 0x01u;
 
 /**
  * KMX61 (Digital Tri-axis Magnetometer/Tri-axis Accelerometer)
@@ -375,45 +384,22 @@ const unsigned char KMX61_BUF_STATUS_REG	= 0x7bu;
 const unsigned char KMX61_BUF_STATUS_H		= 0x7cu;
 const unsigned char KMX61_BUF_STATUS_L		= 0x7du;
 const unsigned char KMX61_BUF_READ			= 0x7eu;
+// Configuration data
+// Disable self-test function
+const unsigned char KMX61_SELF_TEST_CFGDAT = 0x0u;
+// Disable Back to Sleep engine, Wake up engine and interrupt pin.
+// Set operating mode is higher power mode and +/-8g - 14bit
+const unsigned char KMX61_CNTL1_CFGDAT	= 0x13u;
+// Set Output Data Rate at which the wake up (motion detection) is 0.781Hz
+const unsigned char KMX61_CNTL2_CFGDAT	= 0x0u;
+// Set Output Data Rate of accelerometer and magnetometer are 12.5Hz
+const unsigned char KMX61_ODCNTL_CFGDAT	= 0x0u;
+// Enable the Temperature output when the Magnetometer is on
+const unsigned char KMX61_TEMP_EN_CNTL_CFGDAT = 0x01u;
+// Set operating mode of the sample buffer is FIFO
+const unsigned char KMX61_BUF_CTRL1_CFGDAT = 0x0u;
+const unsigned char KMX61_BUF_CTRL2_CFGDAT = 0x0u;
 
-/* //Sensor Variables
-static unsigned char			SAD_KMX61 = 0x0E;
-static unsigned char			STBY_REG = 0x29;
-static unsigned char			SELF_TEST = 0x60;
-static unsigned char			CNTL1 = 0x2A;
-static unsigned char			CNTL2 = 0x2B;
-static unsigned char			ODCNTL = 0x2C;
-static unsigned char			TEMP_EN_CNTL = 0x4C;
-static unsigned char			BUF_CTRL1 = 0x78;
-static unsigned char			BUF_CTRL2 = 0x79;	
-
-static unsigned char			STBY_REG_DATA = 0x00;
-static unsigned char			STBY_REG_OFF_DATA = 0x03;
-
-static unsigned char			SELF_TEST_DATA = 0x00;
-static unsigned char			CNTL1_DATA = 0x13;
-static unsigned char			CNTL2_DATA = 0x00;
-static unsigned char			ODCNTL_DATA = 0x00;
-static unsigned char			TEMP_EN_CNTL_DATA = 0x01;
-static unsigned char			BUF_CTRL1_DATA = 0x00;//0xA3;
-static unsigned char			BUF_CTRL2_DATA = 0x00;//0xC1;
-
-static unsigned char			KMX61_AXL = 0x0A;
-static unsigned char			KMX61_AXH = 0x0B;
-static unsigned char			KMX61_AYL = 0x0C;
-static unsigned char			KMX61_AYH = 0x0D;
-static unsigned char			KMX61_AZL = 0x0E;
-static unsigned char			KMX61_AZH = 0x0F;
-	
-static unsigned char			KMX61_MXL = 0x12;
-static unsigned char			KMX61_MXH = 0x13;
-static unsigned char			KMX61_MYL = 0x14;
-static unsigned char			KMX61_MYH = 0x15;
-static unsigned char			KMX61_MZL = 0x16;
-static unsigned char			KMX61_MZH = 0x17;
-
-static unsigned char			KMX61_TL = 0x10;
-static unsigned char			KMX61_TH = 0x11; */
 
 static unsigned char SensorPlatformSelection;
 static unsigned char SensorIntializationFlag = 1;
@@ -1044,8 +1030,8 @@ void MainOp_KX022()
 	// Wait 20ms(50Hz) to data updated
 	// NOPms(20);
 	
-	// Start read data with start address is XOUT_L
-	I2C_Read(KX022_I2C_ADDR, KX022_XOUTL, 1, uniRawSensorOut._ucharArr, 6);
+	// Start read accelerometer output with start address is XOUT_L
+	I2C_Read(KX022_I2C_ADDR, &KX022_XOUTL, 1, uniRawSensorOut._ucharArr, 6);
 	
 	// Calculate acceleration
 	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/16384.0f;	// X
@@ -1054,6 +1040,19 @@ void MainOp_KX022()
 	
 	printf("\033[2K\rKX022> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]",
 		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
+	
+	// Start read tilt position with start address is TSCP
+	I2C_Read(KX022_I2C_ADDR, &KX022_TSCP, 1, uniRawSensorOut._ucharArr, 2);
+	switch(uniRawSensorOut._ucharArr[0])
+	{
+		case 0x01u:	LEDOUT = 0x1u<<4; break;	// FU: Face-Up State (Z+). Turn on LED4
+		case 0x02u:	LEDOUT = 0x1u<<3; break;	// FD: Face-Down State (Z-). Turn on LED3
+		case 0x04u:	LEDOUT = 0x1u<<2; break;	// UP: Up State (Y+). Turn on LED2
+		case 0x08u:	LEDOUT = 0x1u<<5; break;	// DO: Down State (Y-). Turn on LED5
+		case 0x10u:	LEDOUT = 0x1u<<7; break;	// RI: Right State (X+). Turn on LED7
+		case 0x20u:	LEDOUT = 0x1u<<0; break;	// LE: Left State (X-). Turn on LED0
+		default:	LEDOUT = 0x00u; break;		// NONE
+	}
 }
 
 /*******************************************************************************
@@ -1069,17 +1068,22 @@ void MainOp_KX022()
 void MainOp_KMX61()
 { 
 	// Start read accelerometer output data with start address is ACCEL_XOUT_L
-	I2C_Read(KMX61_I2C_ADDR, KMX61_ACCEL_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
-	// Calculate acceleration
+	I2C_Read(KMX61_I2C_ADDR, &KMX61_ACCEL_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
+	uniRawSensorOut._intArr[0] = (unsigned int)uniRawSensorOut._intArr[0]>>2;
+	uniRawSensorOut._intArr[1] = (unsigned int)uniRawSensorOut._intArr[1]>>2;
+	uniRawSensorOut._intArr[2] = (unsigned int)uniRawSensorOut._intArr[2]>>2;
+	// Calculate acceleration. NOT CORRECT!!!
 	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/256.0f;	// X
 	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/256.0f;	// Y
 	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/256.0f;	// Y
-		
 	printf("\033[0J\rKMX61> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]\n\r",
 		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 	
 	// Start read magnetometer output data with start address is MAG_XOUT_L
-	I2C_Read(KMX61_I2C_ADDR, KMX61_MAG_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
+	I2C_Read(KMX61_I2C_ADDR, &KMX61_MAG_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
+	uniRawSensorOut._intArr[0] = (unsigned int)uniRawSensorOut._intArr[0]>>2;
+	uniRawSensorOut._intArr[1] = (unsigned int)uniRawSensorOut._intArr[1]>>2;
+	uniRawSensorOut._intArr[2] = (unsigned int)uniRawSensorOut._intArr[2]>>2;
 	// Calculate magnetic
 	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]*0.146f;	// X
 	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]*0.146f;	// Y
@@ -1384,14 +1388,12 @@ void Init_UV_Sensor_10()
 ******************************************************************************/
 void Init_KX022()
 {
-	// Set accelerometer to stand-by mode(PC1=0), +/-2g, 16bits
-	uniRawSensorOut._uchar = 0x40u;
-	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL1, 1, &uniRawSensorOut._uchar, 1);
-	// Set Output Data Rate(ODR) of accelerometer to 50Hz
-	uniRawSensorOut._uchar = 0x02u;
-	I2C_Write(KX022_I2C_ADDR, &KX022_ODCNTL, 1, &uniRawSensorOut._uchar, 1);
-	// Set accelerometer to operating mode(PC1=1)
-	uniRawSensorOut._uchar = 0xc0u;
+	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL1, 1, &KX022_CNTL1_CFGDAT, 1);
+	I2C_Write(KX022_I2C_ADDR, &KX022_ODCNTL, 1, &KX022_ODCNTL_CFGDAT, 1);
+	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL3, 1, &KX022_CNTL3_CFGDAT, 1);
+	I2C_Write(KX022_I2C_ADDR, &KX022_TILT_TIMER, 1, &KX022_TILT_TIMER_CFGDAT, 1);
+	// Set accelerometer to operating mode (PC1=1)
+	uniRawSensorOut._uchar = KX022_CNTL1_CFGDAT|0x80;
 	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL1, 1, &uniRawSensorOut._uchar, 1);
 }
 
@@ -1410,26 +1412,14 @@ void Init_KMX61()
 	// Set accelerometer and magnetometer to stand-by mode
 	uniRawSensorOut._uchar = 0x03u;
 	I2C_Write(KMX61_I2C_ADDR, &KMX61_STBY_REG, 1, &uniRawSensorOut._uchar, 1);
-	// Disable self-test function
-	uniRawSensorOut._uchar = 0x0u;
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_SELF_TEST, 1, &uniRawSensorOut._uchar, 1);
-	// Disable Back to Sleep engine, Wake up engine and interrupt pin.
-	// Set operating mode is higher power mode and +/-8g, 14-bit
-	uniRawSensorOut._uchar = 0x13u;
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_CNTL1, 1, &uniRawSensorOut._uchar, 1);
-	// Set Output Data Rate at which the wake up (motion detection) is 0.781Hz
-	uniRawSensorOut._uchar = 0x0u;
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_CNTL2, 1, &uniRawSensorOut._uchar, 1);
-	// Set Output Data Rate of accelerometer and magnetometer are 12.5Hz
-	uniRawSensorOut._uchar = 0x0u;
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_ODCNTL, 1, &uniRawSensorOut._uchar, 1);
-	// Enable the Temperature output when the Magnetometer is on
-	uniRawSensorOut._uchar = 0x01u;
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_TEMP_EN_CNTL, 1, &uniRawSensorOut._uchar, 1);
-	// Set operating mode of the sample buffer is FIFO
-	uniRawSensorOut._uchar = 0x0u;
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_BUF_CTRL1, 1, &uniRawSensorOut._uchar, 1);
-	I2C_Write(KMX61_I2C_ADDR, &KMX61_BUF_CTRL2, 1, &uniRawSensorOut._uchar, 1);
+	// Configure
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_SELF_TEST, 1, &KMX61_SELF_TEST_CFGDAT, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_CNTL1, 1, &KMX61_CNTL1_CFGDAT, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_CNTL2, 1, &KMX61_CNTL2_CFGDAT, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_ODCNTL, 1, &KMX61_ODCNTL_CFGDAT, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_TEMP_EN_CNTL, 1, &KMX61_TEMP_EN_CNTL_CFGDAT, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_BUF_CTRL1, 1, &KMX61_BUF_CTRL1_CFGDAT, 1);
+	I2C_Write(KMX61_I2C_ADDR, &KMX61_BUF_CTRL2, 1, &KMX61_BUF_CTRL2_CFGDAT, 1);
 	// Set accelerometer and magnetometer to operating mode
 	uniRawSensorOut._uchar = 0x0u;
 	I2C_Write(KMX61_I2C_ADDR, &KMX61_STBY_REG, 1, &uniRawSensorOut._uchar, 1);
