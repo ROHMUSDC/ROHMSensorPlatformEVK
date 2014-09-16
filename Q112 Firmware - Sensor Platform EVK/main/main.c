@@ -1043,6 +1043,7 @@ void MainOp_KX022()
 	
 	// Start read tilt position with start address is TSCP
 	I2C_Read(KX022_I2C_ADDR, &KX022_TSCP, 1, uniRawSensorOut._ucharArr, 2);
+
 	switch(uniRawSensorOut._ucharArr[0])
 	{
 		case 0x01u:	LEDOUT = 0x1u<<4; break;	// FU: Face-Up State (Z+). Turn on LED4
@@ -1069,21 +1070,34 @@ void MainOp_KMX61()
 { 
 	// Start read accelerometer output data with start address is ACCEL_XOUT_L
 	I2C_Read(KMX61_I2C_ADDR, &KMX61_ACCEL_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
-	uniRawSensorOut._intArr[0] = (unsigned int)uniRawSensorOut._intArr[0]>>2;
-	uniRawSensorOut._intArr[1] = (unsigned int)uniRawSensorOut._intArr[1]>>2;
-	uniRawSensorOut._intArr[2] = (unsigned int)uniRawSensorOut._intArr[2]>>2;
-	// Calculate acceleration. NOT CORRECT!!!
-	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/256.0f;	// X
-	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/256.0f;	// Y
-	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/256.0f;	// Y
+	uniRawSensorOut._intArr[0] = uniRawSensorOut._intArr[0]>>2;
+	uniRawSensorOut._intArr[1] = uniRawSensorOut._intArr[1]>>2;
+	uniRawSensorOut._intArr[2] = uniRawSensorOut._intArr[2]>>2;
+	// Calculate acceleration.
+	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/1024.0f;	// X
+	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/1024.0f;	// Y
+	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/1024.0f;	// Y
 	printf("\033[0J\rKMX61> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]\n\r",
 		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 	
+	if(-0.5f<flSensorOut[0] && flSensorOut[0]<0.5f && 0.866f<flSensorOut[1])
+		LEDOUT = 0x1u<<5;	// -30<angle(X,1g)<30 & angle(Y,1g)>60. Turn on LED5
+	else if(0.866f<flSensorOut[0] && -0.5f<flSensorOut[1] && flSensorOut[1]<0.5f)
+		LEDOUT = 0x1u<<0;	// 60<angle(X,1g) & -30<angle(Y,1g)<30. Turn on LED0
+	else if(-0.5f<flSensorOut[0] && flSensorOut[0]<0.5f && flSensorOut[1]<-0.866f)
+		LEDOUT = 0x1u<<2;	// -30<angle(X,1g)<30 & angle(Y,1g)<-60. Turn on LED2
+	else if(flSensorOut[0]<-0.866f && -0.5f<flSensorOut[1] && flSensorOut[1]<0.5f)
+		LEDOUT = 0x1u<<7;	// angle(X,1g)<-60 & -30<angle(Y,1g)<30. Turn on LED7
+	else if(flSensorOut[2]>0.866f)
+		LEDOUT = 0x1u<<4;	// angle(Z,1g)>60. Turn on LED4
+	else if(flSensorOut[2]<-0.866f)
+		LEDOUT = 0x1u<<3;	// angle(Z,1g)<-60. Turn on LED3
+	
 	// Start read magnetometer output data with start address is MAG_XOUT_L
 	I2C_Read(KMX61_I2C_ADDR, &KMX61_MAG_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
-	uniRawSensorOut._intArr[0] = (unsigned int)uniRawSensorOut._intArr[0]>>2;
-	uniRawSensorOut._intArr[1] = (unsigned int)uniRawSensorOut._intArr[1]>>2;
-	uniRawSensorOut._intArr[2] = (unsigned int)uniRawSensorOut._intArr[2]>>2;
+	uniRawSensorOut._intArr[0] = uniRawSensorOut._intArr[0]>>2;
+	uniRawSensorOut._intArr[1] = uniRawSensorOut._intArr[1]>>2;
+	uniRawSensorOut._intArr[2] = uniRawSensorOut._intArr[2]>>2;
 	// Calculate magnetic
 	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]*0.146f;	// X
 	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]*0.146f;	// Y
@@ -1133,11 +1147,11 @@ void MainOp_Temperature_Sensor_21()
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 7bits value
 	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
-	printf("\033[1F\033[2K\rBDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	printf("\033[0J\rBDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==1)
-		PRINTF("\n\033[2K\rBDJ0601HFV> Temperature Threshold Reached.");
+		PRINTF("\n\rBDJ0601HFV> Temperature Threshold Reached.\033[1F");
 	else
-		PRINTF("\n\033[2K\rBDJ0601HFV> Temperature Threshold Not Reached.");
+		PRINTF("\n\rBDJ0601HFV> Temperature Threshold Not Reached.\033[1F");
 }
 
 /*******************************************************************************
@@ -1159,11 +1173,11 @@ void MainOp_Temperature_Sensor_22()
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.753f, 30.0f, -0.01068f);
 	// Scale for 10bits value to 7bits value
 	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
-	printf("\033[1F\033[2K\rBDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	printf("\033[0J\rBDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==0)
-		PRINTF("\n\033[2K\rBDE0600G> Temperature Threshold Reached.");
+		PRINTF("\n\rBDE0600G> Temperature Threshold Reached.\033[1F");
 	else
-		PRINTF("\n\033[2K\rBDE0600G> Temperature Threshold Not Reached.");
+		PRINTF("\n\rBDE0600G> Temperature Threshold Not Reached.\033[1F");
 }
 
 /*******************************************************************************
@@ -1185,11 +1199,11 @@ void MainOp_Temperature_Sensor_23()
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 7bits value
 	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
-	printf("\033[1F\033[2K\rBDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	printf("\033[0J\rBDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==0)
-		PRINTF("\n\033[2K\rBDJ0550HFV> Temperature Threshold Reached.");
+		PRINTF("\n\rBDJ0550HFV> Temperature Threshold Reached.\033[1F");
 	else
-		PRINTF("\n\033[2K\rBDJ0550HFV> Temperature Threshold Not Reached.");
+		PRINTF("\n\rBDJ0550HFV> Temperature Threshold Not Reached.\033[1F");
 }
 
 /*******************************************************************************
