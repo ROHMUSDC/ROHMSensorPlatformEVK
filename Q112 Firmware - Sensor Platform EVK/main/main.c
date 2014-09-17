@@ -89,7 +89,7 @@
 /**
  * LED[7-0]
  */
-#define LEDOUT						PCD
+#define LEDOUT(x)	PCD=x
 
 //===========================================================================
 //   STRUCTURES:    
@@ -131,6 +131,7 @@ void _intI2c( void );
 void _intADC( void );
 void NOPms( unsigned int ms );
 
+unsigned char ReverseBits(unsigned char data);
 
 void DeviceSelection(void); // Initializes port D for registering Sensor Control States
 void SensorInitialization(void); 
@@ -184,6 +185,13 @@ union {
 
 float flSensorOut[3];
 
+/**
+ * ANSI Escape Code
+ */
+#define ESC_SOL			"\r"
+#define ESC_NEWLINE		"\n\r"
+#define ESC_PREVLINE	"\033[F"
+#define ESC_ERASE2END	"\033[J"
 /**
  * Ambient Light Sensors
  */ 
@@ -412,7 +420,7 @@ int main(void)
 	Initialization(); //Ports, UART, Timers, Oscillator, Comparators, etc.
 
 	PRINTF(WelcomeString);
-	
+
 #ifdef DebugSensor // Debug Initialization For devices
 	SensorIntializationFlag = 1;
 	SensorPlatformSelection = DebugSensor;
@@ -474,8 +482,8 @@ MainLoop:
 			MainOp_Temperature_Sensor_23(); // Refer to function description for list of sensors
 			break; 
 		default:
-			PRINTF("\033[2K\rNo device connected.");
-			LEDOUT = 0x0;
+			PRINTF(ESC_ERASE2END "No device connected." ESC_SOL);
+			LEDOUT(0x0);
 			break;
 	}
 	
@@ -789,23 +797,23 @@ void MainOp_Hall_Effect_Sensors_1()
 {
 	if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==1)
 	{
-		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\033[2K\rBU52004GUL> Hall – No Mag Fields Detected.");
+		LEDOUT(0x0);	// Turn off all LEDs
+		PRINTF(ESC_ERASE2END "BU52004GUL> Hall – No Mag Fields Detected." ESC_SOL);
 	}
 	else if(SENINTF_HDR1_GPIO0(D)==1 && SENINTF_HDR1_GPIO1(D)==0)
 	{
-		LEDOUT = 0x02;	// Turn on LED1
-		PRINTF("\033[2K\rBU52004GUL> Hall – North Mag Field Detected.");
+		LEDOUT(0x02);	// Turn on LED1
+		PRINTF(ESC_ERASE2END "BU52004GUL> Hall – North Mag Field Detected." ESC_SOL);
 	}
 	else if(SENINTF_HDR1_GPIO0(D)==0 && SENINTF_HDR1_GPIO1(D)==1)
 	{
-		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\033[2K\rBU52004GUL> Hall – South Mag Field Detected.");
+		LEDOUT(0x80);	// Turn on LED7
+		PRINTF(ESC_ERASE2END "BU52004GUL> Hall – South Mag Field Detected." ESC_SOL);
 	}
 	else
 	{
-		LEDOUT = 0x82;	// Turn on LED7 and LED1
-		PRINTF("\033[2K\rBU52004GUL> Hall – Both Mag Fields Detected.");
+		LEDOUT(0x82);	// Turn on LED7 and LED1
+		PRINTF(ESC_ERASE2END "BU52004GUL> Hall – Both Mag Fields Detected." ESC_SOL);
 	}
 }
 
@@ -823,13 +831,13 @@ void MainOp_Hall_Effect_Sensors_2()
 {
 	if(SENINTF_HDR1_GPIO0(D)==0)
 	{
-		LEDOUT = 0x80;	// Turn on LED7
-		PRINTF("\033[2K\rBU52011HFV> Hall – Mag Field Detected.");
+		LEDOUT(0x80);	// Turn on LED7
+		PRINTF(ESC_ERASE2END "BU52011HFV> Hall – Mag Field Detected." ESC_SOL);
 	}
 	else
 	{
-		LEDOUT = 0x0;	// Turn off all LEDs
-		PRINTF("\033[2K\rBU52011HFV> Hall – No Mag Fields Detected.");
+		LEDOUT(0x0);	// Turn off all LEDs
+		PRINTF(ESC_ERASE2END "BU52011HFV> Hall – No Mag Fields Detected." ESC_SOL);
 	}
 }
 
@@ -869,8 +877,8 @@ void MainOp_Ambient_Light_Sensor_5()
 			break;
 	}
 	// Scale for 10bits value to 8bits value
-	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>2);
-	printf("\033[2K\rBH1620FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
+	LEDOUT(ReverseBits((unsigned char)(uniRawSensorOut._uint>>2)));
+	printf(ESC_ERASE2END "BH1620FVC> Ambient Light = %lu[lx]" ESC_SOL, (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -896,8 +904,8 @@ void MainOp_Ambient_Light_Sensor_6()
 	//     Measurement Accuracy (Typ. 1.2) = Sensor out / Actual Illuminance 
 	flSensorOut[0] = (uniRawSensorOut._ucharArr[0]<<8|uniRawSensorOut._ucharArr[1])/1.2f;
 	
-	LEDOUT = uniRawSensorOut._ucharArr[0];
-	printf("\033[2K\rBH1710FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
+	LEDOUT(ReverseBits(uniRawSensorOut._ucharArr[0]));
+	printf(ESC_ERASE2END "BH1710FVC> Ambient Light = %lu[lx]" ESC_SOL, (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -936,8 +944,8 @@ void MainOp_Ambient_Light_Sensor_7()
 	else
 		flSensorOut[0] = 0;
 	
-	LEDOUT = uniRawSensorOut._ucharArr[1];
-	printf("\033[2K\rBH1730FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
+	LEDOUT(ReverseBits(uniRawSensorOut._ucharArr[1]));
+	printf(ESC_ERASE2END "BH1730FVC> Ambient Light = %lu[lx]" ESC_SOL, (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -962,8 +970,8 @@ void MainOp_Ambient_Light_Sensor_8()
 	//     Measurement Accuracy (Typ. 1.2) = Sensor out / Actual Illuminance 
 	flSensorOut[0] = (uniRawSensorOut._ucharArr[0]<<8|uniRawSensorOut._ucharArr[1])/1.2f;
 	
-	LEDOUT = uniRawSensorOut._ucharArr[0];
-	printf("\033[2K\rBH1721FVC> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
+	LEDOUT(ReverseBits(uniRawSensorOut._ucharArr[0]));
+	printf(ESC_ERASE2END "BH1721FVC> Ambient Light = %lu[lx]" ESC_SOL, (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -989,8 +997,8 @@ void MainOp_Ambient_Light_Sensor_9()
 	//     Measurement Accuracy (Typ. 1) = Sensor out / Actual Illuminance
 	flSensorOut[0] = uniRawSensorOut._uint;
 	
-	LEDOUT = uniRawSensorOut._ucharArr[1];
-	printf("\033[2K\rBH1780GLI> Ambient Light = %lu[lx]", (unsigned long)flSensorOut[0]);
+	LEDOUT(ReverseBits(uniRawSensorOut._ucharArr[1]));
+	printf(ESC_ERASE2END "BH1780GLI> Ambient Light = %lu[lx]" ESC_SOL, (unsigned long)flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -1011,8 +1019,8 @@ void MainOp_UV_Sensor_10()
 	// Calculate UV Intensity (mW/cm2)
 	flSensorOut[1] = Voltage2UVIntensity(flSensorOut[0]);
 	// Scale for 10bits value to 8bits value
-	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>2);
-	printf("\033[2K\rML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	LEDOUT(ReverseBits((unsigned char)(uniRawSensorOut._uint>>2)));
+	printf(ESC_ERASE2END "ML8511> UV Intensity = %.02f[mW/cm2]. Vsenout = %.02f[V]" ESC_SOL, flSensorOut[1], flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -1038,7 +1046,7 @@ void MainOp_KX022()
 	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/16384.0f;	// Y
 	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/16384.0f;	// Y
 	
-	printf("\033[2K\rKX022> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]",
+	printf(ESC_ERASE2END "KX022> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]" ESC_SOL,
 		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 	
 	// Start read tilt position with start address is TSCP
@@ -1046,13 +1054,13 @@ void MainOp_KX022()
 
 	switch(uniRawSensorOut._ucharArr[0])
 	{
-		case 0x01u:	LEDOUT = 0x1u<<4; break;	// FU: Face-Up State (Z+). Turn on LED4
-		case 0x02u:	LEDOUT = 0x1u<<3; break;	// FD: Face-Down State (Z-). Turn on LED3
-		case 0x04u:	LEDOUT = 0x1u<<2; break;	// UP: Up State (Y+). Turn on LED2
-		case 0x08u:	LEDOUT = 0x1u<<5; break;	// DO: Down State (Y-). Turn on LED5
-		case 0x10u:	LEDOUT = 0x1u<<7; break;	// RI: Right State (X+). Turn on LED7
-		case 0x20u:	LEDOUT = 0x1u<<0; break;	// LE: Left State (X-). Turn on LED0
-		default:	LEDOUT = 0x00u; break;		// NONE
+		case 0x01u:	LEDOUT(0x1u<<4); break;	// FU: Face-Up State (Z+). Turn on LED4
+		case 0x02u:	LEDOUT(0x1u<<3); break;	// FD: Face-Down State (Z-). Turn on LED3
+		case 0x04u:	LEDOUT(0x1u<<2); break;	// UP: Up State (Y+). Turn on LED2
+		case 0x08u:	LEDOUT(0x1u<<5); break;	// DO: Down State (Y-). Turn on LED5
+		case 0x10u:	LEDOUT(0x1u<<7); break;	// RI: Right State (X+). Turn on LED7
+		case 0x20u:	LEDOUT(0x1u<<0); break;	// LE: Left State (X-). Turn on LED0
+		default:	LEDOUT(0x00u); break;	// NONE
 	}
 }
 
@@ -1077,21 +1085,21 @@ void MainOp_KMX61()
 	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]/1024.0f;	// X
 	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]/1024.0f;	// Y
 	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]/1024.0f;	// Y
-	printf("\033[0J\rKMX61> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]\n\r",
+	printf(ESC_ERASE2END "KMX61> AccelX_raw = %d, AccelX_scaled = %.05f[g], AccelY_raw = %d, AccelY_scaled = %.05f[g], AccelZ_raw = %d, AccelZ_scaled = %.05f[g]",
 		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 	
-	if(-0.5f<flSensorOut[0] && flSensorOut[0]<0.5f && 0.866f<flSensorOut[1])
-		LEDOUT = 0x1u<<5;	// -30<angle(X,1g)<30 & angle(Y,1g)>60. Turn on LED5
-	else if(0.866f<flSensorOut[0] && -0.5f<flSensorOut[1] && flSensorOut[1]<0.5f)
-		LEDOUT = 0x1u<<0;	// 60<angle(X,1g) & -30<angle(Y,1g)<30. Turn on LED0
-	else if(-0.5f<flSensorOut[0] && flSensorOut[0]<0.5f && flSensorOut[1]<-0.866f)
-		LEDOUT = 0x1u<<2;	// -30<angle(X,1g)<30 & angle(Y,1g)<-60. Turn on LED2
-	else if(flSensorOut[0]<-0.866f && -0.5f<flSensorOut[1] && flSensorOut[1]<0.5f)
-		LEDOUT = 0x1u<<7;	// angle(X,1g)<-60 & -30<angle(Y,1g)<30. Turn on LED7
-	else if(flSensorOut[2]>0.866f)
-		LEDOUT = 0x1u<<4;	// angle(Z,1g)>60. Turn on LED4
-	else if(flSensorOut[2]<-0.866f)
-		LEDOUT = 0x1u<<3;	// angle(Z,1g)<-60. Turn on LED3
+	if(-0.5f<flSensorOut[0] && flSensorOut[0]<0.5f && 0.5f<flSensorOut[1])
+		LEDOUT(0x1u<<5);	// -30<angle(X,1g)<30 & angle(Y,1g)>30. Turn on LED5
+	else if(0.5f<flSensorOut[0] && -0.5f<flSensorOut[1] && flSensorOut[1]<0.5f)
+		LEDOUT(0x1u<<0);	// 30<angle(X,1g) & -30<angle(Y,1g)<30. Turn on LED0
+	else if(-0.5f<flSensorOut[0] && flSensorOut[0]<0.5f && flSensorOut[1]<-0.5f)
+		LEDOUT(0x1u<<2);	// -30<angle(X,1g)<30 & angle(Y,1g)<-30. Turn on LED2
+	else if(flSensorOut[0]<-0.5f && -0.5f<flSensorOut[1] && flSensorOut[1]<0.5f)
+		LEDOUT(0x1u<<7);	// angle(X,1g)<-30 & -30<angle(Y,1g)<30. Turn on LED7
+	else if(flSensorOut[2]>0.5f)
+		LEDOUT(0x1u<<4);	// angle(Z,1g)>30. Turn on LED4
+	else if(flSensorOut[2]<-0.5f)
+		LEDOUT(0x1u<<3);	// angle(Z,1g)<-30. Turn on LED3
 	
 	// Start read magnetometer output data with start address is MAG_XOUT_L
 	I2C_Read(KMX61_I2C_ADDR, &KMX61_MAG_XOUT_L, 1, uniRawSensorOut._ucharArr, 6);
@@ -1102,7 +1110,7 @@ void MainOp_KMX61()
 	flSensorOut[0] = (float)uniRawSensorOut._intArr[0]*0.146f;	// X
 	flSensorOut[1] = (float)uniRawSensorOut._intArr[1]*0.146f;	// Y
 	flSensorOut[2] = (float)uniRawSensorOut._intArr[2]*0.146f;	// Y
-	printf("KMX61> MagX_raw = %d, MagX_scaled = %.05f[uT], MagY_raw = %d, MagY_scaled = %.05f[uT], MagZ_raw = %d, MagZ_scaled = %.05f[uT]\033[1F",
+	printf(ESC_NEWLINE "KMX61> MagX_raw = %d, MagX_scaled = %.05f[uT], MagY_raw = %d, MagY_scaled = %.05f[uT], MagZ_raw = %d, MagZ_scaled = %.05f[uT]" ESC_PREVLINE,
 		uniRawSensorOut._intArr[0], flSensorOut[0], uniRawSensorOut._intArr[1], flSensorOut[1], uniRawSensorOut._intArr[2], flSensorOut[2]);
 }
 
@@ -1124,8 +1132,8 @@ void MainOp_Temperature_Sensor_20()
 	// Calculate Temperature (°C)
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 8bits value
-	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>2);
-	printf("\033[2K\rBD1020HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	LEDOUT(((unsigned char)(uniRawSensorOut._uint>>2)));
+	printf(ESC_ERASE2END "BD1020HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]" ESC_SOL, flSensorOut[1], flSensorOut[0]);
 }
 
 /*******************************************************************************
@@ -1146,12 +1154,12 @@ void MainOp_Temperature_Sensor_21()
 	// Calculate Temperature (°C)
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 7bits value
-	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
-	printf("\033[0J\rBDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	LEDOUT(ReverseBits((unsigned char)(uniRawSensorOut._uint>>3)));
+	printf(ESC_ERASE2END "BDJ0601HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==1)
-		PRINTF("\n\rBDJ0601HFV> Temperature Threshold Reached.\033[1F");
+		PRINTF(ESC_NEWLINE "BDJ0601HFV> Temperature Threshold Reached." ESC_PREVLINE);
 	else
-		PRINTF("\n\rBDJ0601HFV> Temperature Threshold Not Reached.\033[1F");
+		PRINTF(ESC_NEWLINE "BDJ0601HFV> Temperature Threshold Not Reached." ESC_PREVLINE);
 }
 
 /*******************************************************************************
@@ -1172,12 +1180,12 @@ void MainOp_Temperature_Sensor_22()
 	// Calculate Temperature (°C)
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.753f, 30.0f, -0.01068f);
 	// Scale for 10bits value to 7bits value
-	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
-	printf("\033[0J\rBDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	LEDOUT(ReverseBits((unsigned char)(uniRawSensorOut._uint>>3)));
+	printf(ESC_ERASE2END "BDE0600G> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==0)
-		PRINTF("\n\rBDE0600G> Temperature Threshold Reached.\033[1F");
+		PRINTF(ESC_NEWLINE "BDE0600G> Temperature Threshold Reached." ESC_PREVLINE);
 	else
-		PRINTF("\n\rBDE0600G> Temperature Threshold Not Reached.\033[1F");
+		PRINTF(ESC_NEWLINE "BDE0600G> Temperature Threshold Not Reached." ESC_PREVLINE);
 }
 
 /*******************************************************************************
@@ -1198,12 +1206,12 @@ void MainOp_Temperature_Sensor_23()
 	// Calculate Temperature (°C)
 	flSensorOut[1] = Voltage2Temperature(flSensorOut[0], 1.3f, 30.0f, -0.0082f);
 	// Scale for 10bits value to 7bits value
-	LEDOUT = (unsigned char)(uniRawSensorOut._uint>>3);
-	printf("\033[0J\rBDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
+	LEDOUT(ReverseBits((unsigned char)(uniRawSensorOut._uint>>3)));
+	printf(ESC_ERASE2END "BDJ0550HFV> Temperature = %.02f[°C]. Vsenout = %.02f[V]", flSensorOut[1], flSensorOut[0]);
 	if(SENINTF_HDR1_GPIO0(D)==0)
-		PRINTF("\n\rBDJ0550HFV> Temperature Threshold Reached.\033[1F");
+		PRINTF(ESC_NEWLINE "BDJ0550HFV> Temperature Threshold Reached." ESC_PREVLINE);
 	else
-		PRINTF("\n\rBDJ0550HFV> Temperature Threshold Not Reached.\033[1F");
+		PRINTF(ESC_NEWLINE "BDJ0550HFV> Temperature Threshold Not Reached." ESC_PREVLINE);
 }
 
 /*******************************************************************************
@@ -1407,7 +1415,7 @@ void Init_KX022()
 	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL3, 1, &KX022_CNTL3_CFGDAT, 1);
 	I2C_Write(KX022_I2C_ADDR, &KX022_TILT_TIMER, 1, &KX022_TILT_TIMER_CFGDAT, 1);
 	// Set accelerometer to operating mode (PC1=1)
-	uniRawSensorOut._uchar = KX022_CNTL1_CFGDAT|0x80;
+	uniRawSensorOut._uchar = (unsigned char)(KX022_CNTL1_CFGDAT|0x80);
 	I2C_Write(KX022_I2C_ADDR, &KX022_CNTL1, 1, &uniRawSensorOut._uchar, 1);
 }
 
@@ -1935,3 +1943,27 @@ TimerRestart:
 	}
 }
 	
+/*******************************************************************************
+	Routine Name:	ReverseBits
+	Form:			unsigned char ReverseBits(unsigned char data)
+	Parameters:		unsigned char data
+	Return value:	unsigned char
+	Description:	Reverse bits order of data
+******************************************************************************/	
+unsigned char ReverseBits(unsigned char data)
+{
+__asm("\n\
+	MOV r1,r0\n\
+	MOV r0,#0\n\
+	MOV r2,#8\n\
+_ReverseBits_loop:\n\
+	SLL r0,#1\n\
+	SRL r1,#1\n\
+	BGE _ReverseBits_next\n\
+	OR r0,#1\n\
+_ReverseBits_next:\n\
+	ADD	r2,	#0ffh\n\
+	CMP	r2,	#00h\n\
+	BGT _ReverseBits_loop\n\
+");
+}
