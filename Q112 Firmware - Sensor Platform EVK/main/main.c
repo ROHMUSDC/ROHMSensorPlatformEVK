@@ -133,6 +133,7 @@ void _intADC( void );
 void NOPms( unsigned int ms );
 
 unsigned char ReverseBits(unsigned char data);
+unsigned char FlashLEDs(void);
 
 void DeviceSelection(void); // Initializes port D for registering Sensor Control States
 void SensorInitialization(void); 
@@ -412,6 +413,8 @@ const unsigned char KMX61_BUF_CTRL2_CFGDAT = 0x0u;
 
 static unsigned char SensorPlatformSelection;
 static unsigned char SensorIntializationFlag = 1;
+static unsigned char LEDFlashFlag = 0;
+static unsigned char LEDChangeFlag = 0;
 
 //===========================================================================
 //  	Start of MAIN FUNCTION
@@ -484,7 +487,7 @@ MainLoop:
 			break; 
 		default:
 			PRINTF(ESC_ERASE2END "No device connected." ESC_SOL);
-			LEDOUT(0xFF);
+			FlashLEDs();
 			break;
 	}
 	
@@ -1967,4 +1970,32 @@ _ReverseBits_next:\n\
 	CMP	r2,	#00h\n\
 	BGT _ReverseBits_loop\n\
 ");
+}
+
+/*******************************************************************************
+	Routine Name:	FlashLEDs
+	Form:			unsigned char FlashLEDs(unsigned char data)
+	Parameters:		unsigned char data
+	Return value:	unsigned char
+	Description:	Flash LEDs instead of always ON
+******************************************************************************/	
+unsigned char FlashLEDs(void)
+{
+	if(LEDFlashFlag == 0){
+		if(LEDChangeFlag == 0){
+			LEDOUT(0xAA);
+			LEDChangeFlag = 1;
+		}
+		else{
+			LEDOUT(0x55);
+			LEDChangeFlag = 0;
+		}
+	}
+	else{
+		LEDOUT(0x00);
+	}
+	LEDFlashFlag++;
+	if(LEDFlashFlag >= 4){
+		LEDFlashFlag = 0;
+	}
 }
