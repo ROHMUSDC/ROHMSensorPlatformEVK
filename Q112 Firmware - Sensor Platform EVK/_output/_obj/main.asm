@@ -6879,7 +6879,7 @@ _KMX61_BUF_CTRL2_CFGDAT :
 
 	rseg $$TAB$$S30$main
 $$S30 :
-	DB	"\x1b[2J\x1b[1;1H*********************************************\x0a\x0d** Q112 Firmware - Sensor Platform EVK\x0a\x0d** Revision    : REV00\x0a\x0d** Release date: Oct  6 2014 13:31:30\x0a\x0d** By          : ROHM Semiconductor USA, LLC\x0a\x0d********************************************"
+	DB	"\x1b[2J\x1b[1;1H*********************************************\x0a\x0d** Q112 Firmware - Sensor Platform EVK\x0a\x0d** Revision    : REV00\x0a\x0d** Release date: Oct  6 2014 13:51:27\x0a\x0d** By          : ROHM Semiconductor USA, LLC\x0a\x0d********************************************"
 	DB	"*\x0a\x0d", 00H
 
 	rseg $$TAB$$S53$main

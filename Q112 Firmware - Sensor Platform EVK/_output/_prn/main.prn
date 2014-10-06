@@ -1,7 +1,7 @@
 RASU8(ML610112)Relocatable Assembler, Ver.1.61.2    assemble list. page:   1 
  Source File: _output\_obj\main.asm
  Object File: _output\_obj\main.obj
- Date  : 2014/10/06 Mon.[13:31]
+ Date  : 2014/10/06 Mon.[13:51]
  Title : 
 ## Loc. Object                   Line   Source Statements
 
@@ -6886,7 +6886,7 @@ RASU8(ML610112)Relocatable Assembler, Ver.1.61.2    assemble list. page:   1
                                  6879   
   --------------------------     6880   	rseg $$TAB$$S30$main
 00:0000                          6881   $$S30 :
-00:0000 1B 5B 32 4A 1B 5B 31 3B  6882   	DB	"\x1b[2J\x1b[1;1H*********************************************\x0a\x0d** Q112 Firmware - Sensor Platform EVK\x0a\x0d** Revision    : REV00\x0a\x0d** Release date: Oct  6 2014 13:31:30\x0a\x0d** By          : ROHM Semiconductor USA, LLC\x0a\x0d********
+00:0000 1B 5B 32 4A 1B 5B 31 3B  6882   	DB	"\x1b[2J\x1b[1;1H*********************************************\x0a\x0d** Q112 Firmware - Sensor Platform EVK\x0a\x0d** Revision    : REV00\x0a\x0d** Release date: Oct  6 2014 13:51:27\x0a\x0d** By          : ROHM Semiconductor USA, LLC\x0a\x0d********
 00:0008 31 48 2A 2A 2A 2A 2A 2A   >>>   
 00:0010 2A 2A 2A 2A 2A 2A 2A 2A   >>>   
 00:0018 2A 2A 2A 2A 2A 2A 2A 2A   >>>   
@@ -6905,7 +6905,7 @@ RASU8(ML610112)Relocatable Assembler, Ver.1.61.2    assemble list. page:   1
 00:0080 61 73 65 20 64 61 74 65   >>>   
 00:0088 3A 20 4F 63 74 20 20 36   >>>   
 00:0090 20 32 30 31 34 20 31 33   >>>   
-00:0098 3A 33 31 3A 33 30 0A 0D   >>>   
+00:0098 3A 35 31 3A 32 37 0A 0D   >>>   
 00:00A0 2A 2A 20 42 79 20 20 20   >>>   
 00:00A8 20 20 20 20 20 20 20 3A   >>>   
 00:00B0 20 52 4F 48 4D 20 53 65   >>>   
