@@ -1,5 +1,5 @@
 ;; Compile Options : /TML610112 /MS /near /Icommon /Imain /Iirq /Itimer /Iclock /Itbc /Iuart /Ii2c /SS 256 /SD /Oa /Ot /W 3 /Wc /Fa_output\_obj\ 
-;; Version Number  : Ver.3.31.4
+;; Version Number  : Ver.3.41.8
 ;; File Name       : i2c.c
 
 	type (ML610112) 
@@ -14,7 +14,7 @@
 	$$i2c_startReceive$i2c segment code 2h #0h
 	$$i2c_startSend$i2c segment code 2h #0h
 	$$i2c_stop$i2c segment code 2h #0h
-CVERSION 3.31.4
+CVERSION 3.41.8
 CGLOBAL 01H 02H 0000H "i2c_getTransSize" 08H 02H 08H 00H 80H 00H 00H 00H 01H
 CGLOBAL 01H 03H 0000H "i2c_stop" 08H 02H 05H 00H 80H 00H 00H 00H 07H
 CGLOBAL 01H 03H 0000H "i2c_startReceive" 08H 02H 03H 00H 82H 04H 00H 00H 01H

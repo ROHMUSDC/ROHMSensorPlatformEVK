@@ -70,7 +70,8 @@
 #define FLG_SET		( 0x01u )
 
 // SET DESIRED UART SETTINGS HERE! (Options in UART.h)
-#define UART_BAUDRATE		( UART_BR_115200BPS) 	// Data Bits Per Second - Tested at rates from 2400bps to 512000bps!
+//#define UART_BAUDRATE		( UART_BR_115200BPS) 	// Data Bits Per Second - Tested at rates from 2400bps to 512000bps!
+#define UART_BAUDRATE		( UART_BR_9600BPS) 	// Data Bits Per Second - Tested at rates from 2400bps to 512000bps!
 #define UART_DATA_LENGTH	( UART_LG_8BIT )		// x-Bit Data
 #define UART_PARITY_BIT		( UART_PT_NON )		// Parity
 #define UART_STOP_BIT		( UART_STP_1BIT )		// x Stop-Bits
@@ -483,7 +484,7 @@ MainLoop:
 			break; 
 		default:
 			PRINTF(ESC_ERASE2END "No device connected." ESC_SOL);
-			LEDOUT(0x0);
+			LEDOUT(0xFF);
 			break;
 	}
 	

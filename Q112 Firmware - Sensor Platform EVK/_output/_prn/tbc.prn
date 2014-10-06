@@ -1,17 +1,17 @@
 RASU8(ML610112)Relocatable Assembler, Ver.1.61.2    assemble list. page:   1 
  Source File: _output\_obj\tbc.asm
  Object File: _output\_obj\tbc.obj
- Date  : 2014/09/17 Wed.[14:49]
+ Date  : 2014/10/02 Thu.[14:23]
  Title : 
 ## Loc. Object                   Line   Source Statements
 
                                     1   ;; Compile Options : /TML610112 /MS /near /Icommon /Imain /Iirq /Itimer /Iclock /Itbc /Iuart /Ii2c /SS 256 /SD /Oa /Ot /W 3 /Wc /Fa_output\_obj\ 
-                                    2   ;; Version Number  : Ver.3.31.4
+                                    2   ;; Version Number  : Ver.3.41.8
                                     3   ;; File Name       : tbc.c
                                     4   
                                     5   	type (ML610112) 
                                     6   	model small, near
-                                    7   CVERSION 3.31.4
+                                    7   CVERSION 3.41.8
                                     8   CSTRUCTTAG 0000H 0000H 0000H 0008H 00000001H "_Notag"
                                     9   CSTRUCTMEM 52H 00000001H 00000000H "b0" 02H 00H 00H
                                    10   CSTRUCTMEM 52H 00000001H 00000001H "b1" 02H 00H 00H

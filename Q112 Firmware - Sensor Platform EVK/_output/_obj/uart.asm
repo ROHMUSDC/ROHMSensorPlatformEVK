@@ -1,5 +1,5 @@
 ;; Compile Options : /TML610112 /MS /near /Icommon /Imain /Iirq /Itimer /Iclock /Itbc /Iuart /Ii2c /SS 256 /SD /Oa /Ot /W 3 /Wc /Fa_output\_obj\ 
-;; Version Number  : Ver.3.31.4
+;; Version Number  : Ver.3.41.8
 ;; File Name       : uart.c
 
 	type (ML610112) 
@@ -20,7 +20,7 @@
 	$$uart_startReceive$uart segment code 2h #0h
 	$$uart_startSend$uart segment code 2h #0h
 	$$uart_stop$uart segment code 2h #0h
-CVERSION 3.31.4
+CVERSION 3.41.8
 CGLOBAL 01H 02H 0000H "uart_getTransSize" 08H 02H 08H 00H 80H 00H 00H 00H 01H
 CGLOBAL 01H 03H 0000H "uart_PortSet" 08H 02H 0CH 00H 80H 00H 00H 00H 07H
 CGLOBAL 01H 03H 0000H "uart_startReceive" 08H 02H 03H 00H 82H 02H 00H 00H 07H

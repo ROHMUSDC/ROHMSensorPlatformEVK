@@ -1,11 +1,11 @@
 ;; Compile Options : /TML610112 /MS /near /Icommon /Imain /Iirq /Itimer /Iclock /Itbc /Iuart /Ii2c /SS 256 /SD /Oa /Ot /W 3 /Wc /Fa_output\_obj\ 
-;; Version Number  : Ver.3.31.4
+;; Version Number  : Ver.3.41.8
 ;; File Name       : timer.c
 
 	type (ML610112) 
 	model small, near
 	$$tm_init$timer segment code 2h #0h
-CVERSION 3.31.4
+CVERSION 3.41.8
 CGLOBAL 01H 03H 0000H "tm_init" 08H 02H 00H 00H 80H 00H 00H 00H 07H
 CSTRUCTTAG 0000H 0000H 0000H 0008H 00000001H "_Notag"
 CSTRUCTMEM 52H 00000001H 00000000H "b0" 02H 00H 00H
