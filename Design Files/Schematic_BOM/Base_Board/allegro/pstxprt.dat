@@ -1,0 +1,682 @@
+FILE_TYPE = EXPANDEDPARTLIST;
+{ Using PSTWRITER 16.5.0 p001Sep-18-2014 at 10:24:58 }
+DIRECTIVES
+ PST_VERSION='PST_HDL_CENTRIC_VERSION_0';
+ ROOT_DRAWING='ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918';
+ POST_TIME='Mar 26 2012 19:10:13';
+ SOURCE_TOOL='CAPTURE_WRITER';
+END_DIRECTIVES;
+
+PART_NAME
+ C1 'C_2_C0402_0.47UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS160863@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins160863@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins160863@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C27 'C-POL_0_SM_4P3X4P3_4.7UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282374@STEPPER.C-POL_0.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282374@stepper.\c-pol_0.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282374@stepper.\c-pol_0.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C28 'C_2_C0402_0.1UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS281746@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins281746@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins281746@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C29 'C_2_C0402_0.1UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS281786@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins281786@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins281786@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C3 'C_2_C0402_0.47UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13655677@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13655677@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13655677@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C30 'C_2_C0402_0.01UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282062@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282062@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282062@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C31 'C_2_C0402_47PF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282078@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282078@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282078@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C32 'C_2_C0402_47PF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282094@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282094@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282094@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C33 'C_2_C0402_0.01UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282110@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282110@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282110@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C34 'C_2_C0402_0.1UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282126@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282126@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282126@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C4 'C_2_C0402_0.01UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS276033@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins276033@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins276033@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ C5 'C_2_C0402_4.7UF':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS276053@STEPPER.C_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins276053@stepper.\c_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins276053@stepper.\c_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D1 'SCHOTTKY_SOD-123F_20V 3A':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS161017@MINI LOW POWER MICRO EVAL BOARD.SCHOTTKY.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins161017@\mini low power micro eval board\.\schottky.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins161017@\mini low power micro eval board\.\schottky.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D10 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356126@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356126@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356126@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D11 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356253@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356253@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356253@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D12 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356512@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356512@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356512@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D13 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356558@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356558@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356558@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D14 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356604@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356604@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356604@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D15 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356654@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356654@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356654@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D16 'LED_DUAL_LED0404-DUAL_DUAL LED':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13946207@ORCAD_CAPTURE_CIS_LIB.LED_DUAL.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13946207@orcad_capture_cis_lib.\led_dual.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13946207@orcad_capture_cis_lib.\led_dual.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D8 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS355462@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins355462@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins355462@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ D9 'LED_1_LED0402_SML-P11VTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356000@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356000@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356000@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ FB1 'FERRITEBEAD_5_FB0603_600R/1A':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282182@MINI LOW POWER MICRO EVAL BOARD.FERRITEBEAD_5.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282182@\mini low power micro eval board\.\ferritebead_5.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282182@\mini low power micro eval board\.\ferritebead_5.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J1 '3-PIN JUMPER_SW_16X6P8_MM_3 POS':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS351413@STEPPERLIB.3-PIN JUMPER.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins351413@stepperlib.\3-pin jumper.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins351413@stepperlib.\3-pin jumper.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J2 '3-PIN JUMPER_HDR_THVT_1X3_100_3':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS325383@STEPPERLIB.3-PIN JUMPER.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins325383@stepperlib.\3-pin jumper.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins325383@stepperlib.\3-pin jumper.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J3 '2-PIN JUMPER_HDR_THVT_1X2_100_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS242833@STEPPERLIB.2-PIN JUMPER.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins242833@stepperlib.\2-pin jumper.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins242833@stepperlib.\2-pin jumper.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J4 'HDR 7X2_3.100"_HDR_THVT_2X2_100':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13608145@ROHMSENSORPLATFORMSCHEMATIC.HDR 7X2_3.100".NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13608145@rohmsensorplatformschematic.(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13608145@rohmsensorplatformschematic.(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J5 '13X2 HDR_1_HDR_THVT_2X8_100_16':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS352930@MINI LOW POWER MICRO EVAL BOARD.13X2 HDR_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins352930@\mini low power micro eval board\.\13x2 hdr_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins352930@\mini low power micro eval board\.\13x2 hdr_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ J8 'CONN PCB 5_0_CONN_USB_A_SMD_RA_':
+ ROOM='FTDI';
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS281962@ROHM_SENSOR_PLATFORM_SCHEMATIC_20140731.CONN PCB 5_0.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins281962@rohm_sensor_platform_schematic_20140731.\conn pcb 5_0.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins281962@rohm_sensor_platform_schematic_20140731.\conn pcb 5_0.normal\(chips)',
+ ROOM='FTDI',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ LED1 'LED_1_LED0805_SML-210MTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282282@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282282@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282282@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ LED2 'LED_1_LED0805_SML-210YTT86':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282336@STEPPER.LED_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282336@stepper.\led_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282336@stepper.\led_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R1 'RES_10K_1%_1/8W_0805PKG_R0402_1':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS354580@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins354580@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins354580@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R14 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS355280@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins355280@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins355280@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R149 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13897978@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13897978@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13897978@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R15 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS355984@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins355984@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins355984@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R150 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13898004@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13898004@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13898004@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R151 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13898030@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13898030@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13898030@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R152 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13898056@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13898056@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13898056@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R153 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13898082@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13898082@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13898082@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R154 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13898108@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13898108@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13898108@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R155 'RES_10K_1%_1/8W_0805PKG_R0402_3':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13944799@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13944799@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13944799@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R156 'RES_10K_1%_1/8W_0805PKG_R0402_3':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13945274@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13945274@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13945274@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R16 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356110@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356110@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356110@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R17 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356237@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356237@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356237@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R18 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356496@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356496@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356496@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R19 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356542@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356542@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356542@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R2 'RES_1K_1%_1/8W_0805PKG_R0603_0':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS300385@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins300385@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins300385@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R20 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356588@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356588@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356588@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R21 'RES_10K_1%_1/8W_0805PKG_R0402_2':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS356634@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins356634@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins356634@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R3 'RES_10K_1%_1/8W_0805PKG_R0402_1':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS297953@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins297953@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins297953@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R36 'RESISTOR_R0402_10K':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282230@DISCRETE.RESISTOR.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282230@discrete.\resistor.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282230@discrete.\resistor.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R37 'RES_1K_1%_1/8W_0805PKG_R0402_27':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282266@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282266@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282266@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R38 'RES_1K_1%_1/8W_0805PKG_R0402_27':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282320@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282320@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282320@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R39 'RES_1K_1%_1/8W_0805PKG_R0402__1':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282390@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282390@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282390@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R4 'RES_10K_1%_1/8W_0805PKG_R0402_4':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS354768@RESISTOR.RES_10K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins354768@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins354768@resistor.\res_10k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R40 'RES_1K_1%_1/8W_0805PKG_R0402__1':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282406@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282406@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282406@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R41 'RES_1K_1%_1/8W_0805PKG_R0402_15':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282250@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282250@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282250@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R5 'RES_1K_1%_1/8W_0805PKG_R0603_0':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS302166@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins302166@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins302166@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R6 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13606753@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13606753@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13606753@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ R7 'RES_1K_1%_1/8W_0805PKG_R0402_10':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13606777@RESISTOR.RES_1K_1%_1/8W_0805PKG.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13606777@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13606777@resistor.\res_1k_1%_1/8w_0805pkg.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ S1 'SW PUSHBUTTON_0_SW_6X6_MM_MOMEN':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS297923@ROHM_SENSOR_PLATFORM_SCHEMATIC_REV01_20140808_03.SW PUSHBUTTON_0.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins297923@rohm_sensor_platform_schematic_rev01_20140808_03.\sw pushbutton_0.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins297923@rohm_sensor_platform_schematic_rev01_20140808_03.\sw pushbutton_0.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U1 'BD3570HFP_2_SSOP5_BU33TD3WG-TR':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS160951@ROHM_SENSOR_PLATFORM_SCHEMATIC_20140731.BD3570HFP_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins160951@rohm_sensor_platform_schematic_20140731.\bd3570hfp_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins160951@rohm_sensor_platform_schematic_20140731.\bd3570hfp_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U2 'SENSORINTERFACEHEADER_1_CONN_TH':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13606461@SENSORPLATFORM.SENSORINTERFACEHEADER_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13606461@sensorplatform.\sensorinterfaceheader_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13606461@sensorplatform.\sensorinterfaceheader_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U3 'SENSORINTERFACEHEADER_2_CONN_TH':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13606483@SENSORPLATFORM.SENSORINTERFACEHEADER_2.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13606483@sensorplatform.\sensorinterfaceheader_2.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13606483@sensorplatform.\sensorinterfaceheader_2.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U4 'ML610Q112_4_LQFP32_ML610Q112':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS275917@MINI LOW POWER MICRO EVAL BOARD.ML610Q112_4.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins275917@\mini low power micro eval board\.\ml610q112_4.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins275917@\mini low power micro eval board\.\ml610q112_4.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U5 'SENSORINTERFACEHEADER_3_CONN_TH':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):INS13606505@SENSORPLATFORM.SENSORINTERFACEHEADER_3.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):ins13606505@sensorplatform.\sensorinterfaceheader_3.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):page2_ins13606505@sensorplatform.\sensorinterfaceheader_3.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+PART_NAME
+ U70 'FT230XS-R_1_SSOP16_FT230XS-R':;
+
+SECTION_NUMBER 1
+ '@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.BASE BOARD(SCH_1):FTDI IC@ROHM_SENSOR_PLATFORM_BASE_BOARD_SCH_REV02_20140918.FTDI BLOCK(SCH_1):INS282454@MINI LOW POWER MICRO EVAL BOARD.FT230XS-R_1.NORMAL(CHIPS)':
+ C_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):ins282454@\mini low power micro eval board\.\ft230xs-r_1.normal\(chips)',
+ P_PATH='@rohm_sensor_platform_base_board_sch_rev02_20140918.\base board\(sch_1):\page2_ftdi ic\@rohm_sensor_platform_base_board_sch_rev02_20140918.\ftdi block\(sch_1):page3_ins282454@\mini low power micro eval board\.\ft230xs-r_1.normal\(chips)',
+ PRIM_FILE='.\pstchip.dat',
+ SECTION='';
+
+END.
