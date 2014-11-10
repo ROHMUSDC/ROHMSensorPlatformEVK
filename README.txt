@@ -9,6 +9,14 @@ USDC Applications Engineering Team, ROHM Semiconductor
 Date Opened: 
 November 2014
 
+Application Note Information:
+Name: ROHM_Sensor_Evaluation_Kit_User_Manual_REV00_2014-10-13.pdf
+Location: "Documentation\Sensor Platform"
+
+Schematic/BOM and Layout Files can be found under...
+Location: Hardware Design Files Folder
+Hardware Design Tools: Orcad Capture and Allegro
+
 ----------------------------------------------------------------------
 The following are categorized under the GNU General Public License, Version 3
 -Hardware Design. Includes Schematic, BOM, Layout
