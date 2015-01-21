@@ -3,14 +3,15 @@
 * Developer: USDC Applications Engineering Team, ROHM Semiconductor
 * Date Started: November 2014
 * ROHM Webpage: http://www.rohm.com/web/global/sensor-platform-kit
+
 ----
 ### Repository Contents
 * Documentation Folder: Contains Application Note, MCU Datasheet, and Platform Guide for connecting this board to other device platforms
 * Firmware Folder: Contains the Source Code for the ML610Q112 firmware for the Sensor Platform Base Board
 * Hardware Design Files: Contains BOM, Schematic, and Layout files for this project
 * PC Evaluation Tools: Contains FTDI VCP drivers and a copy of Putty
-----
 
+----
 ### License
 The following are categorized under the GNU General Public License, Version 3:
 * Hardware Design. Includes Schematic, BOM, Layout
