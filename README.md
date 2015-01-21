@@ -1,26 +1,20 @@
-ROHM Sensor Platform Kit Public Repository
+# ROHM Sensor Platform Kit Public Repository
+* Description: An Open platform that can be used to quickly evaluate sensor products!
+* Developer: USDC Applications Engineering Team, ROHM Semiconductor
+* Date Started: November 2014
+* ROHM Webpage: http://www.rohm.com/web/global/sensor-platform-kit
+----
+### Repository Contents
+* Documentation Folder: Contains Application Note, MCU Datasheet, and Platform Guide for connecting this board to other device platforms
+* Firmware Folder: Contains the Source Code for the ML610Q112 firmware for the Sensor Platform Base Board
+* Hardware Design Files: Contains BOM, Schematic, and Layout files for this project
+* PC Evaluation Tools: Contains FTDI VCP drivers and a copy of Putty
+----
 
-Description: 
-An Open platform that can be used to quickly evaluate sensor products!
-
-Developer: 
-USDC Applications Engineering Team, ROHM Semiconductor
-
-Date Opened: 
-November 2014
-
-Application Note Information:
-Name: ROHM_Sensor_Evaluation_Kit_User_Manual_REV00_2014-10-13.pdf
-Location: "Documentation\Sensor Platform"
-
-Schematic/BOM and Layout Files can be found under...
-Location: Hardware Design Files Folder
-Hardware Design Tools: Orcad Capture and Allegro
-
-----------------------------------------------------------------------
-The following are categorized under the GNU General Public License, Version 3
--Hardware Design. Includes Schematic, BOM, Layout
--Firmware Design. Includes LAPIS ML610Q112 MCU C code
+### License
+The following are categorized under the GNU General Public License, Version 3:
+* Hardware Design. Includes Schematic, BOM, Layout
+* Firmware Design. Includes LAPIS ML610Q112 MCU C code
 
 Copyright (C) 2014 USDC Applications Engineering Team, ROHM Semiconductor
 
@@ -36,16 +30,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-----------------------------------------------------------------------
 
-                    GNU GENERAL PUBLIC LICENSE
-                       Version 3, 29 June 2007
+----
+### GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
-                            Preamble
+Preamble
 
   The GNU General Public License is a free, copyleft license for
 software and other kinds of works.
