@@ -492,6 +492,9 @@ MainLoop:
 	}
 	
 	HLT = 1;	//Wait time here depends on the WDT timing
+	__asm("nop\n"); 
+	__asm("nop\n");
+	
 	goto MainLoop;
 }
 //===========================================================================
@@ -1475,8 +1478,7 @@ void Init_Temperature_Sensor_20()
 	Initialization: None.
 	Description:	Gets the output of Sensor of Sensor Control 21.
 	Sensor Platform(s): Temperature Sensors
-						BDJ0601HFV						
-******************************************************************************/
+						BDJ0601HFV				******************************/
 void Init_Temperature_Sensor_21()
 {
 	// Configure pins GPIO0 of Sensor Interface Header 1 is input with a pull-up resistor
