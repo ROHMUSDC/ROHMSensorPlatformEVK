@@ -3,6 +3,7 @@
 * Developer: USDC Applications Engineering Team, ROHM Semiconductor
 * Date Started: November 2014
 * ROHM Webpage: http://www.rohm.com/web/global/sensor-platform-kit
+* Sensor Kit Promotional Video on EEWEB: http://www.eeweb.com/company-blog/rohm/sensor-platform-kit
 
 ----
 ### Repository Contents
