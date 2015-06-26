@@ -54,7 +54,7 @@ later version.
 This hardware design is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+CERN Open Hardware Licence for more details.
 
 You should have received a copy of the CERN Open Hardware Licence
 along with this program.  If not, see <http://www.ohwr.org/licenses/cern-ohl/v1.2>.
