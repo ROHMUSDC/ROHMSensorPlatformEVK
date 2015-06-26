@@ -1,4 +1,5 @@
 # ROHM Sensor Platform Kit Public Repository
+* Part Number: SENSEKIT2-EVK-101
 * Description: An Open platform that can be used to quickly evaluate sensor products!
 * Developer: USDC Applications Engineering Team, ROHM Semiconductor
 * Date Started: November 2014
@@ -11,6 +12,12 @@
 * Firmware Folder: Contains the Source Code for the ML610Q112 firmware for the Sensor Platform Base Board
 * Hardware Design Files: Contains BOM, Schematic, and Layout files for this project
 * PC Evaluation Tools: Contains FTDI VCP drivers and a copy of Putty
+
+----
+### Where to Purchase
+* Digikey: http://www.digikey.com/product-detail/en/SENSEKIT2-EVK-101/SENSEKIT2-EVK-101-ND/5300443
+* Mouser: http://www.mouser.com/search/ProductDetail.aspx?qs=ywOlPR3ZvdGy0i4DGttzbw%3d%3d&utm_source=findchips&utm_medium=aggregator&utm_campaign=755-SENSEKIT2EVK101&utm_term=SENSEKIT2-EVK-101
+* Farnell, Element 14: http://uk.farnell.com/rohm/sensekit2-evk-101/multi-sense-eval-kit/dp/2475523
 
 ----
 ### Software License
