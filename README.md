@@ -20,6 +20,23 @@
 * Farnell, Element 14: http://uk.farnell.com/rohm/sensekit2-evk-101/multi-sense-eval-kit/dp/2475523
 
 ----
+### FAQ
+* Question: 
+  * "I would like to try a different initialization setting for one of the sensors.  How would I go about uploading new firmware to the sensor platform's base board?"
+* Answer:  
+  * It is possible to modify the existing firmware of the base board.
+  * Please see the draft document entitled, “ROHM_HowToFlash-TestingGuide_SensorPlatformKit_2015-10-05” for detailed instructions on how to flash the existing base board.
+    * Programming Guide Repository Location: …/ROHMSensorPlatformEVK/Documentation/Sensor Platform/ROHM_HowToFlash-TestingGuide_SensorPlatformKit_2015-10-05.pdf
+  * Please note that the board’s default firmware source files can also be found in the Sensor Platform Repository:
+    * Default Firmware Repository Folder Location: …/ROHMSensorPlatformEVK/Firmware - Base Board ML610Q112 Code
+  * Finally, you will need LAPIS Semiconductor’s nanoEase programmer tool to debug and flash the base board.  This additional tool can be purchased on Digikey at the following link:
+    * http://www.digikey.com/product-detail/en/NANO-EASE/NANO-EASE-ND/4576425
+  * However, if you do not want to purchase the Lapis nanoEase programmer tool, another alternative would be to write some sample code for the platform you may be using.
+    * For example, in the sensor kit repository (…/ROHMSensorPlatformEVK/Documentation/Other Platform Guides/ROHM_ConnectingSensorPlatform_Arduino.pdf) you will find a platform guide and Arduino code for using these sensors with the Arduino platform.  By running this, you can easily change your Arduino code and run with the initialization routines you would like to try with this sensor.
+
+
+
+----
 ### Software License
 The following are categorized under the GNU General Public License, Version 3:
 * Firmware Design. Includes LAPIS ML610Q112 MCU main.c C code
