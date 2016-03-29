@@ -34,7 +34,10 @@
   * However, if you do not want to purchase the Lapis nanoEase programmer tool, another alternative would be to write some sample code for the platform you may be using.
     * For example, in the sensor kit repository (…/ROHMSensorPlatformEVK/Documentation/Other Platform Guides/ROHM_ConnectingSensorPlatform_Arduino.pdf) you will find a platform guide and Arduino code for using these sensors with the Arduino platform.  By running this, you can easily change your Arduino code and run with the initialization routines you would like to try with this sensor.
 
-
+* Question:
+  * "How to I save logs from this sensor kit?"
+* Answer:
+  * "Please see the closed Issue #2 in the issues tab of this repository.
 
 ----
 ### Software License
