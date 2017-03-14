@@ -14,6 +14,9 @@
 * PC Evaluation Tools: Contains FTDI VCP drivers and a copy of Putty
 
 ----
+### Updates
+* NOTE: The ML8511 and the ML8511A are OBSOLETE parts with no recommended replacement. Even though we still support this part on shield and you can find information for this sensor here; please beware that this sensor is being obsoleted and should not be used for new design.
+----
 ### Where to Purchase
 * Digikey: http://www.digikey.com/product-detail/en/SENSEKIT2-EVK-101/SENSEKIT2-EVK-101-ND/5300443
 * Mouser: http://www.mouser.com/search/ProductDetail.aspx?qs=ywOlPR3ZvdGy0i4DGttzbw%3d%3d&utm_source=findchips&utm_medium=aggregator&utm_campaign=755-SENSEKIT2EVK101&utm_term=SENSEKIT2-EVK-101
